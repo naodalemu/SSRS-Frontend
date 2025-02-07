@@ -1,0 +1,59 @@
+.errorDisplayContainer {
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    position: relative;
+    font-weight: bold;
+    color: brown;
+}
+
+.tableDisplayContainer {
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    position: relative;
+    width: 600px;
+}
+
+.tableHeader {
+    margin-bottom: 20px;
+}
+
+.tablesContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    gap: 10px;
+}
+
+.tableItem {
+    width: fit-content;
+    min-height: 40px;
+    min-width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid #333;
+}
+
+.legend {
+    display: flex;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #888;
+}
+
+.legend > div {
+    display: flex;
+    column-gap: 10px;
+    margin-right: 20px;
+    align-items: center;
+}
+
+.legend > div > p {
+    font-weight: bold;
+}

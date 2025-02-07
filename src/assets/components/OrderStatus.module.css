@@ -1,0 +1,150 @@
+.orderStatusContainer {
+    padding: 50px 50px;
+}
+
+.noOrders {
+    width: 100%;
+    text-align: center;
+    font-size: large;
+    padding: 200px;
+}
+
+.orderList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.orderCard {
+    width: 80%;
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.topPart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+}
+
+.topLeft, .topRight {
+    display: flex;
+    align-items: center;
+}
+
+.bottomPart {
+    padding: 50px;
+    height: 430px;
+    overflow: scroll;
+}
+
+.bottomPart::-webkit-scrollbar {
+    display: none;
+}
+
+.topLeft > * {
+    margin-right: 20px;
+    padding: 0px 6px;
+    border-radius: 6px;
+}
+
+.tableToolTip {
+    font-size: 10px;
+    padding-right: 5px;
+}
+
+.topRight > * {
+    margin-left: 20px;
+}
+
+.topLeft h2, .topLeft h3 {
+    border: 2px solid gray;
+    cursor: pointer;
+}
+
+.topRight p:nth-child(1) {
+    font-weight: bold;
+    padding-top: 3px;
+    border-radius: 6px;
+}
+
+.topRight p:nth-child(2) {
+    padding: 4px 20px;
+    border-radius: 6px;
+}
+
+.ticketTrick {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.leftCircle, .dashes, .rightCircle {
+    position: absolute;
+}
+
+.leftCircle, .rightCircle {
+    width: 20px;
+    height: 20px;
+    background: #dedede;
+    border-radius: 50%;
+}
+
+.leftCircle {
+    left: -10px;
+}
+
+.rightCircle {
+    right: -10px;
+}
+
+.dashes {
+    width: 100%;
+    border: 2px dashed #dedede;
+}
+
+.itemsList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    justify-items: center;
+    gap: 50px 20px;
+}
+
+.singleItem {
+    min-width: 240px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #EDF2F4;
+    padding: 20px;
+}
+
+.imageContainer {
+    height: 200px;
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.singleItemName {
+    margin-bottom: 10px;
+}
+
+.priceNQty {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tableNumber {
+    display: flex;
+    align-items: center;
+    padding: 3px 10px;
+}

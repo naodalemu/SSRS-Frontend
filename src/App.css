@@ -1,0 +1,25 @@
+body {
+    background: #dedede;
+}
+
+a {
+    text-decoration: none;
+}
+
+.App {
+    max-width: 1400px;
+    margin: auto;
+    padding: 0px 30px;
+}
+
+@media screen and (max-width: 425px) {
+    .App {
+        padding: 0px 20px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .App {
+        padding: 0px 10px;
+    }
+}

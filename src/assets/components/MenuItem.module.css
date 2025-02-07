@@ -1,0 +1,66 @@
+.menuItem {
+    width: 300px;
+    border-radius: 12px;
+    margin: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.imgNContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.imageContainer {
+    width: 100%;
+    height: 260px;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.menuItemContent {
+    padding: 10px;
+}
+
+.itemName {
+    font-size: 24px;
+}
+
+.itemDesc {
+    font-size: 16px;
+}
+
+.ingredients {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.ingredient {
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 3px 10px;
+    margin-right: 5px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.price {
+    font-size: 24px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+@media screen and (max-width: 1024px) {
+    .menuItem {
+        width: unset;
+    }
+}

@@ -1,0 +1,12 @@
+.MessageContainer {
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+    position: relative;
+    min-width: 280px;
+    width: 400px;
+    text-align: center;
+    font-weight: bold;
+}
