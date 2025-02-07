@@ -4,6 +4,7 @@ import MainMenu from "./assets/components/MainMenu";
 import About from "./assets/components/About";
 import Contact from "./assets/components/Contact";
 import OrderStatus from "./assets/components/OrderStatus";
+import SignUp from "./assets/components/SignUp";
 
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -21,6 +22,9 @@ function App({ children }) {
             <Route path="/orders" element={<OrderStatus />} />
           </Routes>
       </section>
+      <Routes>
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
     </Router>
   );
 }

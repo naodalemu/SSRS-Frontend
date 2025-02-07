@@ -33,6 +33,7 @@ function MainHeader() {
         <Link to="/orders"><li className={classes.link}>Orders</li></Link>
         <Link to="/contact"><li className={classes.link}>Contact</li></Link>
         <Link to="/about"><li className={classes.link}>About</li></Link>
+        <Link to="/signup"><li className={classes.link}>Sign Up</li></Link>
         <Link to="/menu"><li className={`${classes.link} ${classes.menuLink}`}>Menu</li></Link>
       </ul>
       <IoMenu className={classes.burgerMenu} onClick={handleMobileNavView} />
@@ -42,6 +43,7 @@ function MainHeader() {
           <Link to="/orders"><li className={classes.link}>Orders</li></Link>
           <Link to="/contact"><li className={classes.link}>Contact</li></Link>
           <Link to="/about"><li className={classes.link}>About</li></Link>
+          <Link to="/signup"><li className={classes.link}>Sign Up</li></Link>
           <Link to="/menu"><li className={`${classes.link} ${classes.menuLink}`}>Menu</li></Link>
         </ul>
       </div> : null }
