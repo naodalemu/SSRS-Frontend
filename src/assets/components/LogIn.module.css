@@ -1,4 +1,4 @@
-.signup {
+.login {
   position: absolute;
   top: 0px;
   display: flex; /* Enables flexbox layout */
@@ -86,7 +86,7 @@
   font-weight: bold;
 }
 
-.signupForm {
+.loginForm {
   width: 100%;
   max-width: 400px;
   display: flex;
@@ -120,7 +120,7 @@
   text-decoration: none;
 }
 
-.signupButton {
+.loginButton {
   width: 100%;
   padding: 12px;
   background: #ff6b00;
