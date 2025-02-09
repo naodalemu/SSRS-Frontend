@@ -1,8 +1,12 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-    color: #333;
-    scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  color: #333;
+  scroll-behavior: smooth;
+}
+
+.splide__track {
+  border-radius: 10px;
 }
