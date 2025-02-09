@@ -13,8 +13,8 @@
 
 .leftCarousel {
   width: 48%;
-  border-radius: 10px;
   overflow: hidden;
+  height: 100%;
 }
 
 .slideImage {
@@ -43,14 +43,10 @@
   line-height: 50px;
 }
 
+/* Right Side - Sign Up Section */
 .rightContent {
   width: 48%;
   height: 100%;
-}
-
-/* Right Side - Sign Up Section */
-.rightContent {
-  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;

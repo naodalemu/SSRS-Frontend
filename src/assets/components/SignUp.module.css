@@ -13,14 +13,13 @@
 
 .leftCarousel {
   width: 48%;
-  border-radius: 10px;
   overflow: hidden;
+  height: 100%;
 }
 
 .slideImage {
   height: 100%;
 }
-
 .slideContent {
   position: relative;
   width: 100%;

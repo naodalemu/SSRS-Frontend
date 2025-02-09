@@ -72,6 +72,9 @@ function LogIn() {
             </div>
           </SplideSlide>
         </Splide>
+        <div className={classes.backToHome}>
+          <p className={classes.backToHomeText}>Back To Home</p>
+        </div>
       </div>
       <div className={classes.rightContent}>
         <div className={classes.headerContainer}>
@@ -102,11 +105,11 @@ function LogIn() {
           </div>
 
           <button type="submit" className={classes.loginButton}>
-            Create account
+            Log In
           </button>
 
           <div className={classes.orDivider}>
-            <span>Or register with</span>
+            <span>Or log in with</span>
           </div>
 
           <button className={classes.googleButton}>
