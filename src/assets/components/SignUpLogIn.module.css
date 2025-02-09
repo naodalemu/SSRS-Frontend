@@ -14,8 +14,6 @@
 .leftCarousel {
   width: 48%;
   overflow: hidden;
-  height: 100%;
-  /* position: relative; */
 }
 
 .slideImage {
@@ -44,30 +42,6 @@
   line-height: 50px;
 }
 
-.backToHome {
-  background-color: #ffffff;
-  position: absolute;
-  top: 2rem;
-  right: 3rem;
-  z-index: 2;
-  padding: 5px 20px;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.backToHomeTextnIcon {
-  font-size: 0.7rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.backToHomeTextOnly {
-  margin-left: 5px;
-  padding-top: 0.1rem;
-}
-
 /* Right Side - Sign Up Section */
 .rightContent {
   width: 48%;
@@ -90,7 +64,7 @@
 }
 
 .headerText {
-  font-size: 36px;
+  font-size: 2.25rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -180,4 +154,80 @@
   width: 20px;
   height: 20px;
   margin-right: 10px;
+}
+
+.backToHome {
+  background-color: #ffffff;
+  position: absolute;
+  top: 2rem;
+  right: 3rem;
+  z-index: 2;
+  padding: 5px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.backToHomeTextnIcon {
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backToHomeTextOnly {
+  margin-left: 5px;
+  padding-top: 0.1rem;
+}
+
+@media screen and (max-width: 1024px) {
+  .leftCarousel {
+    display: none;
+  }
+
+  .rightContent {
+    width: 100%;
+  }
+
+  .backToHome {
+    right: unset;
+    left: 2rem;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .rightContent {
+    padding: 20px;
+  }
+
+  .headerText {
+    font-size: 1.5rem;
+  }
+
+  .backToHome {
+    padding: 10px 10px;
+    right: 2rem;
+    left: unset;
+  }
+
+  .backToHomeTextOnly {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .rightContent {
+    padding: 0px;
+  }
+}
+
+@media screen and (max-width: 290px) {
+  .rightContent {
+    justify-content: start;
+  }
+
+  .signupLogin {
+    height: 110%;
+    padding-top: 80px;
+  }
 }
