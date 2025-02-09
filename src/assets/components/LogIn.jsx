@@ -1,14 +1,15 @@
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import classes from "./LogIn.module.css";
+import classes from "./SignUpLogIn.module.css";
 import { Link } from "react-router-dom";
+import { TiHome } from "react-icons/ti";
 
 function LogIn() {
   return (
-    <section className={classes.login}>
+    <section className={classes.signupLogin}>
       <div className={classes.leftCarousel}>
         <Splide
-          aria-label="My Favorite Images"
+          aria-label="Food Images"
           options={{
             rewind: true,
             gap: "1rem",
@@ -72,9 +73,6 @@ function LogIn() {
             </div>
           </SplideSlide>
         </Splide>
-        <div className={classes.backToHome}>
-          <p className={classes.backToHomeText}>Back To Home</p>
-        </div>
       </div>
       <div className={classes.rightContent}>
         <div className={classes.headerContainer}>
@@ -87,7 +85,7 @@ function LogIn() {
           </p>
         </div>
 
-        <form className={classes.loginForm}>
+        <form className={classes.form}>
           <input
             type="email"
             placeholder="Email Address"
@@ -104,7 +102,7 @@ function LogIn() {
             <label htmlFor="remember">Remember me</label>
           </div>
 
-          <button type="submit" className={classes.loginButton}>
+          <button type="submit" className={classes.button}>
             Log In
           </button>
 
@@ -118,6 +116,14 @@ function LogIn() {
           </button>
         </form>
       </div>
+      <Link to="/">
+        <div className={classes.backToHome}>
+          <p className={classes.backToHomeTextnIcon}>
+            <TiHome />
+            <span className={classes.backToHomeTextOnly}>Back To Home</span>
+          </p>
+        </div>
+      </Link>
     </section>
   );
 }
