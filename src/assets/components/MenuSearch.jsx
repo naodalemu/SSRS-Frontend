@@ -7,7 +7,6 @@ import Modal from "./Modal";
 import CartSummary from "./CartSummary";
 import MessageModal from "./MessageModal";
 
-
 function MenuSearch() {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [selectedTags, setSelectedTags] = useState([]);
@@ -176,7 +175,6 @@ function MenuSearch() {
     closeModal();
   }
   
-
   return (
     <section className={classes.searchSection}>
       <div className={classes.searchNFilterSection}>

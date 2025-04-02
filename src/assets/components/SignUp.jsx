@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import classes from "./SignUpLogIn.module.css";
@@ -5,6 +6,75 @@ import { Link } from "react-router-dom";
 import { TiHome } from "react-icons/ti";
 
 function SignUp() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    termsAccepted: false,
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Handle input changes
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (!formData.termsAccepted) {
+      setError("You must accept the Terms & Conditions");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/register/admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to register");
+      }
+
+      setSuccess("Account created successfully! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 2000);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className={classes.signupLogin}>
       <div className={classes.leftCarousel}>
@@ -85,30 +155,56 @@ function SignUp() {
           </p>
         </div>
 
-        <form className={classes.form}>
+        {error && <p className={classes.errorMessage}>{error}</p>}
+        {success && <p className={classes.successMessage}>{success}</p>}
+
+        <form className={classes.form} onSubmit={handleSubmit}>
           <input
             type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Full Name"
             className={classes.inputField}
+            required
           />
           <input
             type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Email Address"
             className={classes.inputField}
+            required
           />
           <input
             type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             placeholder="Password"
             className={classes.inputField}
+            required
           />
           <input
             type="password"
-            placeholder="Confitm Password"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirm Password"
             className={classes.inputField}
+            required
           />
 
           <div className={classes.checkboxContainer}>
-            <input type="checkbox" id="terms" className={classes.checkbox} />
+            <input
+              type="checkbox"
+              id="terms"
+              name="termsAccepted"
+              checked={formData.termsAccepted}
+              onChange={handleChange}
+              className={classes.checkbox}
+            />
             <label htmlFor="terms">
               I agree to the{" "}
               <Link to="/terms" className={classes.termsLink}>
@@ -117,8 +213,8 @@ function SignUp() {
             </label>
           </div>
 
-          <button type="submit" className={classes.button}>
-            Create account
+          <button type="submit" className={classes.button} disabled={loading}>
+            {loading ? "Creating account..." : "Create account"}
           </button>
 
           <div className={classes.orDivider}>

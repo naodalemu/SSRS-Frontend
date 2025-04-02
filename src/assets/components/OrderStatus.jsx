@@ -1,118 +1,855 @@
-import React, { useEffect, useState } from 'react';
-import classes from "./OrderStatus.module.css"; // Import the CSS module for styling
+// updated OrderStatus.jsx
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import classes from "./OrderStatus.module.css";
+import Backdrop from "./Backdrop";
+import {
+  FaClock,
+  FaClone,
+  FaClosedCaptioning,
+  FaWindows,
+} from "react-icons/fa6";
+import {
+  FaRegWindowClose,
+  FaWindowClose,
+  FaWindowMaximize,
+} from "react-icons/fa";
 
 function OrderStatus() {
-    const [orders, setOrders] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("active");
+  const [orders, setOrders] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showDeleteWarning, setShowDeleteWarning] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState(null);
+  const [tooltipOrderId, setTooltipOrderId] = useState(null);
+  const [tooltipText, setTooltipText] = useState("");
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-    // Get customer_ip and customer_generated_id from local storage
-    const customerIp = localStorage.getItem('customer_ip');
-    const customerGeneratedId = localStorage.getItem('customer_generated_id');
+  useEffect(() => {
+    // Fetch from backend in real app
+    const sampleOrders = [
+      {
+        id: 352,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 359,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 353,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "pending",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/root_beer.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/t_bone_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/greek_salad.jpg",
+          },
+        ],
+      },
+      {
+        id: 354,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "processing",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/chai_tea.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_chicken.png",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ginger_ale.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+        ],
+      },
+      {
+        id: 355,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "completed",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/lemon_chicken.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ribeye_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+        ],
+      },
+      {
+        id: 356,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "cancelled",
+        arrived: false,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/classic_beef_burger.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/cappuccino.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/buffalo_wings.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/caesar_salad.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/fish_and_chips.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/carrot_juice.jpg",
+          },
+        ],
+      },
+      {
+        id: 452,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 459,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 453,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "pending",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/root_beer.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/t_bone_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/greek_salad.jpg",
+          },
+        ],
+      },
+      {
+        id: 454,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "processing",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/chai_tea.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_chicken.png",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ginger_ale.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+        ],
+      },
+      {
+        id: 455,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "completed",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/lemon_chicken.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ribeye_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+        ],
+      },
+      {
+        id: 456,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "cancelled",
+        arrived: false,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/classic_beef_burger.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/cappuccino.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/buffalo_wings.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/caesar_salad.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/fish_and_chips.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/carrot_juice.jpg",
+          },
+        ],
+      },
+      {
+        id: 552,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 559,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "ready",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/garden_salad.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/london_cafe_map.png",
+          },
+        ],
+      },
+      {
+        id: 553,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "pending",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/root_beer.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/t_bone_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/greek_salad.jpg",
+          },
+        ],
+      },
+      {
+        id: 554,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "processing",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/chai_tea.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/grilled_chicken.png",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ginger_ale.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/grilled_salmon.jpg",
+          },
+        ],
+      },
+      {
+        id: 555,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "completed",
+        arrived: true,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/lemon_chicken.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/mixed_berry_juice.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/ribeye_steak.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/veggie_supreme.jpg",
+          },
+        ],
+      },
+      {
+        id: 556,
+        date: "23 Feb 2021, 08:28 PM",
+        status: "cancelled",
+        arrived: false,
+        total: 226.49,
+        items: [
+          {
+            name: "Vegan Buddha Bowl",
+            price: 5,
+            quantity: 2,
+            image: "src/assets/images/classic_beef_burger.jpg",
+          },
+          {
+            name: "Caesar Salad with Grilled Chicken",
+            price: 12.49,
+            quantity: 7,
+            image: "src/assets/images/cappuccino.jpg",
+          },
+          {
+            name: "Rice with beef toast and chapaty",
+            price: 120,
+            quantity: 1,
+            image: "src/assets/images/buffalo_wings.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/caesar_salad.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/fish_and_chips.jpg",
+          },
+          {
+            name: "Pink Liquid on Glass",
+            price: 2,
+            quantity: 5,
+            image: "src/assets/images/carrot_juice.jpg",
+          },
+        ],
+      },
+    ];
+    setOrders(sampleOrders);
+  }, []);
 
-    useEffect(() => {
-        // Fetch the user's orders using customer_ip and customer_generated_id
-        const fetchOrders = async () => {
-            try {
-                const response = await fetch(`http://127.0.0.1:8000/api/orders?customer_ip=${customerIp}&customer_generated_id=${customerGeneratedId}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch orders');
-                }
+  const filteredOrders = orders.filter((order) => {
+    if (activeTab === "active")
+      return ["ready", "pending", "processing"].includes(
+        order.status.toLowerCase()
+      );
+    return ["completed", "cancelled"].includes(order.status.toLowerCase());
+  });
 
-                const data = await response.json();
-                setOrders(data.orders);
-                setIsLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setIsLoading(false);
-            }
-        };
+  const handleDeleteClick = (order) => {
+    setOrderToDelete(order);
+    setShowDeleteWarning(true);
+  };
 
-        fetchOrders();
-    }, [customerIp, customerGeneratedId]);
+  const handleDeleteConfirm = () => {
+    setOrders((prev) => prev.filter((order) => order !== orderToDelete));
+    setShowDeleteWarning(false);
+    setOrderToDelete(null);
+  };
 
-    if (isLoading) {
-        return <p className={classes.loading}></p>;
+  const handleUpdateClick = (order) => {
+    navigate(`/orders/${order.id}`);
+  };
+
+  const handleTooltip = (e, order) => {
+    if (order.status.toLowerCase() !== "pending") {
+      const tooltipMessage =
+        order.status.toLowerCase() === "ready"
+          ? "Once an order is ready it is impossible to cancel it!"
+          : "Once an order is Processing it is impossible to cancel and update it";
+
+      setTooltipText(tooltipMessage);
+      setTooltipOrderId(order.id);
+      setTooltipPosition({
+        x: e.currentTarget.getBoundingClientRect().left,
+        y: e.currentTarget.getBoundingClientRect().top,
+      });
     }
+  };
 
-    if (error) {
-        return <p className={classes.error}>Error: {error}</p>;
-    }
+  const handleMouseLeave = () => {
+    setTooltipOrderId(null);
+  };
 
-    // Function to truncate text with a max character limit
-    const truncateText = (text, maxLength) => {
-        return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-    };
+  return (
+    <div className={classes.orderStatus}>
+      <div className={classes.searchContainer}>
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchTerm}
+          className={classes.searchInput}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <button className={classes.searchButton}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </button>
+      </div>
 
-    const possibleStatusesBorder = {
-        pending: "2px solid gray",
-        processing: "2px solid #90C2E7",
-        ready: "2px solid #226F54",
-        completed: "2px solid #333",
-        cancelled: "2px solid #B3001B",
-    }
+      <div className={classes.tabs}>
+        <button
+          className={`${classes.tabButton} ${
+            activeTab === "active" ? classes.activeTab : ""
+          }`}
+          onClick={() => setActiveTab("active")}
+        >
+          Active Orders
+        </button>
+        <button
+          className={`${classes.tabButton} ${
+            activeTab === "history" ? classes.activeTab : ""
+          }`}
+          onClick={() => setActiveTab("history")}
+        >
+          Order History
+        </button>
+      </div>
 
-    const possibleStatusesBG = {
-        pending: "white",
-        processing: "#90C2E7",
-        ready: "#226F54",
-        completed: "#333",
-        cancelled: "#B3001B",
-    }
+      <div className={classes.ordersContainer}>
+        {filteredOrders.map((order) => (
+          <div key={order.id} className={classes.orderCard}>
+            <div className={classes.orderHeader}>
+              <div className={classes.orderInfo}>
+                <h3>Order #{order.id}</h3>
+                <p>{order.date}</p>
+              </div>
+              <div className={classes.orderStatusOnCard}>
+                <span
+                  className={`${classes.statusBadge} ${
+                    classes[order.status.toLowerCase()]
+                  }`}
+                >
+                  {order.status}
+                </span>
+                {activeTab === "active" &&
+                  order.status.toLowerCase() === "pending" && (
+                    <button
+                      className={classes.cancelButton}
+                      onClick={() => handleDeleteClick(order)}
+                      onMouseEnter={(e) => handleTooltip(e, order)}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <FaWindowClose />
+                    </button>
+                  )}
+              </div>
+            </div>
 
-    const possibleStatusesColor = {
-        pending: "black",
-        processing: "black",
-        ready: "white",
-        completed: "white",
-        cancelled: "white",
-    }
-
-    return (
-        <div className={classes.orderStatusContainer}>
-            {orders.length === 0 ? (
-                <p className={classes.noOrders}>No orders found</p>
-            ) : (
-                <div className={classes.orderList}>
-                    {orders.map(order => (
-                        <div className={classes.orderCard} key={order.id}>
-                            <div className={classes.topPart}>
-                                <div className={classes.topLeft}>
-                                    <h2>#{order.id}</h2>
-                                    <h3 className={classes.tableNumber}><span className={classes.tableToolTip}>Table</span> {order.table_id}</h3>
-                                </div>
-                                <div className={classes.topRight}>
-                                    <p>${order.total_amount}</p>
-                                    <p style={{ border: possibleStatusesBorder[order.order_status] ? possibleStatusesBorder[order.order_status] : null, background: possibleStatusesBG[order.order_status] ? possibleStatusesBG[order.order_status] : null, color: possibleStatusesColor[order.order_status] ? possibleStatusesColor[order.order_status] : null }}>{order.order_status}</p>
-                                </div>
-                            </div>
-                            <div className={classes.ticketTrick}>
-                                <div className={classes.leftCircle} />
-                                <div className={classes.dashes} />
-                                <div className={classes.rightCircle} />
-                            </div>
-                            <div className={classes.bottomPart}>
-                                <div className={classes.itemsList}>
-                                    {order.order_items.map(item => (
-                                        <div className={classes.singleItem} key={item.id}>
-                                            <div className={classes.imageContainer} style={{ backgroundImage: `url(http://127.0.0.1:8000/storage/${item.menu_item.image})` }} />
-                                            <div className={classes.singleItemContent}>
-                                                <h3 className={classes.singleItemName}>{truncateText(item.menu_item.name, 30)}</h3>
-                                                <div className={classes.priceNQty}>
-                                                    <p className={classes.singleItemPrice}>${item.menu_item.price}</p>
-                                                    <p className={classes.singleItemQuantity}>{item.quantity}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+            <div className={classes.orderItems}>
+              {order.items.map((item, itemIndex) => (
+                <div key={itemIndex} className={classes.orderItem}>
+                  <div
+                    className={classes.itemImageContainer}
+                    style={{
+                      backgroundImage: `url(${item.image})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
+                    }}
+                  />
+                  <div className={classes.ItemDetailsContainer}>
+                    <div className={classes.itemDetails}>
+                      <h4>{item.name}</h4>
+                    </div>
+                    <div className={classes.itemQuantity}>
+                      <p>${item.price}</p>
+                      <span>Qty: {item.quantity}</span>
+                    </div>
+                  </div>
                 </div>
-            )}
+              ))}
+            </div>
+
+            <div className={classes.orderFooter}>
+              <div className={classes.orderTotal}>
+                <h3>${order.total}</h3>
+              </div>
+              <div className={classes.orderActions}>
+                {activeTab === "active" &&
+                  order.status.toLowerCase() === "pending" && (
+                    <button
+                      className={`${classes.actionButton} ${classes.updateButton}`}
+                      onClick={() => handleUpdateClick(order)}
+                    >
+                      Update
+                    </button>
+                  )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {showDeleteWarning && (
+        <Backdrop onCloseBackdrop={() => setShowDeleteWarning(false)}>
+          <div className={classes.warningModal}>
+            <h2>Warning</h2>
+            <p>
+              Are you sure you want to <strong>delete</strong> the order? If you
+              have paid for the order the money will be refunded and feel free
+              to order again!
+            </p>
+            <div className={classes.modalActions}>
+              <button
+                className={classes.cancelButton}
+                onClick={() => setShowDeleteWarning(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className={classes.deleteButton}
+                onClick={handleDeleteConfirm}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </Backdrop>
+      )}
+
+      {tooltipOrderId && (
+        <div
+          className={classes.tooltip}
+          style={{
+            top: `${tooltipPosition.y - 40}px`,
+            left: `${tooltipPosition.x - 100}px`,
+          }}
+        >
+          {tooltipText}
         </div>
-    );
+      )}
+    </div>
+  );
 }
 
 export default OrderStatus;
