@@ -1,267 +1,193 @@
-import { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import classes from "./UpdateOrder.module.css"
-import Backdrop from "./Backdrop"
+import React, { useEffect, useState } from "react";
+import classes from "./UpdateOrder.module.css";
+import { FaWindowClose } from "react-icons/fa";
+import MessageModal from "./MessageModal";
+import { useLocation } from "react-router-dom";
+import MenuSearch from "./MenuSearch";
 
 function UpdateOrder() {
-  const { orderId } = useParams()
-  const navigate = useNavigate()
-  const [order, setOrder] = useState(null)
-  const [items, setItems] = useState([])
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [menuItems, setMenuItems] = useState([])
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [tableNumber, setTableNumber] = useState(null);
+  const [isValidTableNumber, setIsValidTableNumber] = useState(false);
+  const [isError, setIsError] = useState(null);
+  const location = useLocation();
+  const orderData = location.state?.orderData;
 
-  // Fetch order data
   useEffect(() => {
-    // In a real app, you would fetch the order from an API
-    // For now, we'll use sample data
-    const sampleOrder = {
-      id: orderId,
-      date: "23 Feb 2021, 08:28 PM",
-      status: "Pending",
-      items: [
-        { name: "Vegan Buddha Bowl", price: 6.75, quantity: 2, image: "/assets/images/veggie_burger.png" },
-        {
-          name: "Caesar Salad with Grilled Chicken",
-          price: 12.49,
-          quantity: 7,
-          image: "/assets/images/caesar_salad.png",
-        },
-        { name: "Caesar Salad", price: 2.49, quantity: 9, image: "/assets/images/caesar_salad.png" },
-        {
-          name: "Caesar Salad with Grilled Chicken",
-          price: 12.49,
-          quantity: 7,
-          image: "/assets/images/caesar_salad.png",
-        },
-        {
-          name: "Caesar Salad with Grilled Chicken",
-          price: 12.49,
-          quantity: 7,
-          image: "/assets/images/caesar_salad.png",
-        },
-      ],
-      total: 226.76,
+    // Extract the last part of the URL and check if it's a valid number
+    const pathParts = location.pathname.split("/");
+    const lastPart = pathParts[pathParts.length - 1];
+    const tableNum = parseInt(lastPart, 10);
+
+    if (!isNaN(tableNum)) {
+      setTableNumber(tableNum);
+      setIsValidTableNumber(true);
+      localStorage.setItem("tableNumber", tableNum);
+    } else {
+      setTableNumber(null);
+      setIsValidTableNumber(false);
+      localStorage.removeItem("tableNumber");
     }
-    setOrder(sampleOrder)
-    setItems(sampleOrder.items)
 
-    // Sample menu items for search
-    const sampleMenuItems = [
-      {
-        name: "Rice with beef toast and chapaty",
-        price: 120,
-        image: "/assets/images/t_bone_steak.jpg",
-        tags: ["Lettuce", "Rice", "Bread"],
-      },
-      {
-        name: "Rice with beef toast and chapaty",
-        price: 120,
-        image: "/assets/images/t_bone_steak.jpg",
-        tags: ["Lettuce", "Rice", "Bread"],
-      },
-      {
-        name: "Rice with beef toast and chapaty",
-        price: 120,
-        image: "/assets/images/t_bone_steak.jpg",
-        tags: ["Lettuce", "Rice", "Bread"],
-      },
-      {
-        name: "Rice with beef toast and chapaty",
-        price: 120,
-        image: "/assets/images/t_bone_steak.jpg",
-        tags: ["Lettuce", "Rice", "Bread"],
-      },
-    ]
-    setMenuItems(sampleMenuItems)
-  }, [orderId])
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value)
-  }
-
-  const handleUpdateQuantity = (index, newQuantity) => {
-    if (newQuantity < 1) return
-
-    const updatedItems = [...items]
-    updatedItems[index] = {
-      ...updatedItems[index],
-      quantity: newQuantity,
+    // Retrieve cart from local storage
+    if (orderData) {
+      setCart(orderData.items);
+      updateTotalPrice(orderData.items);
+    } else {
+      // Fallback: retrieve cart from local storage if no orderData is passed
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCart(storedCart);
+      updateTotalPrice(storedCart);
     }
-    setItems(updatedItems)
-  }
+
+    // Generate random customer_generated_id if not already set
+    if (!localStorage.getItem("customer_generated_id")) {
+      const randomId = `cust_${Math.random().toString(36).substr(2, 9)}`;
+      localStorage.setItem("customer_generated_id", randomId);
+    }
+
+    // Fetch user IP and store it in localStorage
+    if (!localStorage.getItem("customer_ip")) {
+      fetch("https://api.ipify.org?format=json")
+        .then((response) => response.json())
+        .then((data) => {
+          localStorage.setItem("customer_ip", data.ip);
+        })
+        .catch((error) => {
+          console.error("Error fetching IP:", error);
+        });
+    }
+  }, [location.pathname, orderData]);
+
+  const updateTotalPrice = (cart) => {
+    const total = cart.reduce((acc, item) => {
+      return acc + item.price * item.quantity;
+    }, 0);
+    setTotalPrice(total);
+  };
+
+  const handleAmountChange = (index, delta) => {
+    const updatedCart = [...cart];
+    updatedCart[index].quantity += delta;
+
+    if (updatedCart[index].quantity <= 0) {
+      updatedCart.splice(index, 1); // Remove the item if amount <= 0
+    }
+
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    updateTotalPrice(updatedCart);
+  };
 
   const handleRemoveItem = (index) => {
-    const updatedItems = items.filter((_, i) => i !== index)
-    setItems(updatedItems)
-  }
+    const updatedCart = [...cart];
+    updatedCart.splice(index, 1);
 
-  const calculateTotal = () => {
-    return items.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)
-  }
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    updateTotalPrice(updatedCart);
+  };
 
-  const handleUpdateOrder = () => {
-    // In a real app, you would call an API to update the order
-    setShowSuccessMessage(true)
+  const handleOrder = () => {
+    const tableNum = localStorage.getItem("tableNumber");
+    const customerGeneratedId = localStorage.getItem("customer_generated_id");
+    const customerIp = localStorage.getItem("customer_ip");
 
-    // Hide success message after 3 seconds and navigate back
-    setTimeout(() => {
-      setShowSuccessMessage(false)
-      navigate(-1)
-    }, 3000)
-  }
+    const payload = {
+      table_number: tableNum, // Ensure tableNumber is valid
+      order_items: cart.map((item) => ({
+        menu_item_id: item.id, // map `id` to `menu_item_id`
+        quantity: item.quantity,
+      })),
+      customer_ip: customerIp, // Send customer IP
+      customer_generated_id: customerGeneratedId, // Send generated ID
+    };
 
-  const handleClose = () => {
-    navigate(-1)
-  }
-
-  const handleAddToOrder = (menuItem) => {
-    // Check if item already exists in order
-    const existingItemIndex = items.findIndex((item) => item.name === menuItem.name)
-
-    if (existingItemIndex !== -1) {
-      // Increase quantity if item already exists
-      handleUpdateQuantity(existingItemIndex, items[existingItemIndex].quantity + 1)
-    } else {
-      // Add new item
-      setItems([...items, { ...menuItem, quantity: 1 }])
-    }
-  }
-
-  if (!order) {
-    return <div className={classes.loading}>Loading...</div>
-  }
+    // Send the cart data and table number to the backend
+    fetch("http://127.0.0.1:8000/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          console.error("Validation Error:", data);
+          setIsError(true);
+        } else {
+          console.log("Order placed:", data);
+          localStorage.removeItem("cart");
+          setCart([]);
+          setTotalPrice(0);
+          setIsError(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error placing order:", error);
+        setIsError(true); // Set error to true in case of network failure
+      });
+  };
 
   return (
-    <div className={classes.updateOrderPage}>
-      <div className={classes.orderContainer}>
-        <div className={classes.orderHeader}>
-          <h2>Order #{order.id}</h2>
-          <button className={classes.closeButton} onClick={handleClose}>
-            ✕
-          </button>
-        </div>
-
-        <div className={classes.orderItems}>
-          {items.map((item, index) => (
-            <div key={index} className={classes.orderItem}>
-              <div className={classes.itemInfo}>
-                <span className={classes.itemQuantity}>{item.quantity}</span>
-                <span className={classes.itemName}>{item.name}</span>
-                <span className={classes.itemPrice}>x ${item.price.toFixed(2)}</span>
-              </div>
-              <div className={classes.itemActions}>
-                <button
-                  className={classes.quantityButton}
-                  onClick={() => handleUpdateQuantity(index, item.quantity + 1)}
-                >
-                  +
-                </button>
-                <input type="text" value={item.quantity} readOnly className={classes.quantityInput} />
-                <button
-                  className={classes.quantityButton}
-                  onClick={() => handleUpdateQuantity(index, item.quantity - 1)}
-                  disabled={item.quantity <= 1}
-                >
-                  -
-                </button>
-                <button className={classes.removeItemButton} onClick={() => handleRemoveItem(index)}>
-                  ✕
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className={classes.orderFooter}>
-          <div className={classes.orderTotal}>
-            <h3>Total: ${calculateTotal()}</h3>
-          </div>
-          <button className={classes.updateButton} onClick={handleUpdateOrder}>
+    <section>
+      <div className={classes.cartSummary} onClick={(e) => e.stopPropagation()}>
+        <h3 className={classes.cartHeader}>Order #{orderData?.id}</h3>
+        {cart.length === 0 ? (
+          <p className={classes.emptyCartMessage}>
+            Please add an item to order.
+          </p>
+        ) : (
+          <ul className={classes.cartList}>
+            {cart.map((item, index) => (
+              <li key={index} className={classes.cartItem}>
+                <div className={classes.itemDetails}>
+                  <span className={classes.amountValue}>{item.quantity}</span>
+                  <span className={classes.itemName}> {item.name} </span>x{" "}
+                  <span className={classes.priceValue}>${item.price}</span>
+                </div>
+                <div className={classes.orderItemButtonsContainer}>
+                  <button
+                    className={`${classes.amountButton} ${classes.lowerButton}`}
+                    onClick={() => handleAmountChange(index, -1)}
+                  >
+                    -
+                  </button>
+                  <span className={classes.amountValue}>{item.quantity}</span>
+                  <button
+                    className={`${classes.amountButton} ${classes.upperButton}`}
+                    onClick={() => handleAmountChange(index, 1)}
+                  >
+                    +
+                  </button>
+                  <button
+                    className={classes.removeButton}
+                    onClick={() => handleRemoveItem(index)}
+                  >
+                    <FaWindowClose />
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className={classes.orderContainer}>
+          <p className={classes.totalPrice}>Total: ${totalPrice.toFixed(2)}</p>
+          <button
+            onClick={handleOrder}
+            className={classes.orderButton}
+            disabled={!isValidTableNumber || cart.length === 0} // Disable button if no valid table number or cart is empty
+          >
             Update
           </button>
         </div>
       </div>
 
-      <div className={classes.menuContainer}>
-        <div className={classes.searchContainer}>
-          <input
-            type="text"
-            placeholder="Search"
-            className={classes.searchInput}
-            value={searchTerm}
-            onChange={handleSearch}
-          />
-          <button className={classes.searchButton}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-        </div>
-
-        <div className={classes.menuItems}>
-          {menuItems.map((item, index) => (
-            <div key={index} className={classes.menuItem}>
-              <div className={classes.menuItemImage}>
-                <img src={item.image || "/placeholder.svg"} alt={item.name} />
-              </div>
-              <div className={classes.menuItemDetails}>
-                <h3>{item.name}</h3>
-                <p className={classes.menuItemDescription}>
-                  The top choice among our customers and the house special with amazing ingredients and special sauce.
-                  It is the best choice for lunch
-                </p>
-                <div className={classes.menuItemTags}>
-                  {item.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className={classes.tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className={classes.menuItemFooter}>
-                  <span className={classes.menuItemPrice}>${item.price}</span>
-                  <div className={classes.menuItemQuantity}>
-                    <button className={classes.quantityCircleButton}>-</button>
-                    <span>2</span>
-                    <button className={classes.quantityCircleButton}>+</button>
-                  </div>
-                  <button className={classes.addButton} onClick={() => handleAddToOrder(item)}>
-                    Add
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Success Message */}
-      {showSuccessMessage && (
-        <Backdrop onCloseBackdrop={() => setShowSuccessMessage(false)}>
-          <div className={classes.successModal} onClick={(e) => e.stopPropagation()}>
-            <h2>Successful</h2>
-            <p>
-              You have successfully updated your order please let us know you have arrived when you arrive so that we
-              will start preparing your food
-            </p>
-          </div>
-        </Backdrop>
-      )}
-    </div>
-  )
+      <MenuSearch />
+    </section>
+  );
 }
 
-export default UpdateOrder
-
+export default UpdateOrder;

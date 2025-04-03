@@ -59,7 +59,7 @@ function OrderStatus() {
       {
         id: 359,
         date: "23 Feb 2021, 08:28 PM",
-        status: "ready",
+        status: "completed",
         arrived: true,
         total: 226.49,
         items: [
@@ -236,7 +236,7 @@ function OrderStatus() {
       {
         id: 452,
         date: "23 Feb 2021, 08:28 PM",
-        status: "ready",
+        status: "completed",
         arrived: true,
         total: 226.49,
         items: [
@@ -290,7 +290,7 @@ function OrderStatus() {
       {
         id: 453,
         date: "23 Feb 2021, 08:28 PM",
-        status: "pending",
+        status: "completed",
         arrived: true,
         total: 226.49,
         items: [
@@ -440,7 +440,7 @@ function OrderStatus() {
       {
         id: 552,
         date: "23 Feb 2021, 08:28 PM",
-        status: "ready",
+        status: "completed",
         arrived: true,
         total: 226.49,
         items: [
@@ -665,7 +665,7 @@ function OrderStatus() {
   };
 
   const handleUpdateClick = (order) => {
-    navigate(`/orders/${order.id}`);
+    navigate(`${order.id}`, { state: { orderData: order } });
   };
 
   const handleTooltip = (e, order) => {
@@ -821,7 +821,7 @@ function OrderStatus() {
             </p>
             <div className={classes.modalActions}>
               <button
-                className={classes.cancelButton}
+                className={classes.deleteButton}
                 onClick={() => setShowDeleteWarning(false)}
               >
                 Cancel
