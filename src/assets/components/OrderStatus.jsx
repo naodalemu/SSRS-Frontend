@@ -26,625 +26,6 @@ function OrderStatus() {
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    // Fetch from backend in real app
-    const sampleOrders = [
-      {
-        id: 352,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "ready",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 359,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 353,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "pending",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/root_beer.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/t_bone_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/greek_salad.jpg",
-          },
-        ],
-      },
-      {
-        id: 354,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "processing",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/chai_tea.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_chicken.png",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ginger_ale.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-        ],
-      },
-      {
-        id: 355,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/lemon_chicken.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ribeye_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-        ],
-      },
-      {
-        id: 356,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "cancelled",
-        arrived: false,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/classic_beef_burger.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/cappuccino.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/buffalo_wings.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/caesar_salad.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/fish_and_chips.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/carrot_juice.jpg",
-          },
-        ],
-      },
-      {
-        id: 452,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 459,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "ready",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 453,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/root_beer.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/t_bone_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/greek_salad.jpg",
-          },
-        ],
-      },
-      {
-        id: 454,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "processing",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/chai_tea.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_chicken.png",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ginger_ale.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-        ],
-      },
-      {
-        id: 455,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/lemon_chicken.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ribeye_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-        ],
-      },
-      {
-        id: 456,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "pending",
-        arrived: false,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/classic_beef_burger.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/cappuccino.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/buffalo_wings.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/caesar_salad.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/fish_and_chips.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/carrot_juice.jpg",
-          },
-        ],
-      },
-      {
-        id: 552,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 559,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "ready",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/garden_salad.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/london_cafe_map.png",
-          },
-        ],
-      },
-      {
-        id: 553,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "pending",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/root_beer.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/t_bone_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/greek_salad.jpg",
-          },
-        ],
-      },
-      {
-        id: 554,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "processing",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/chai_tea.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/grilled_chicken.png",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ginger_ale.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/grilled_salmon.jpg",
-          },
-        ],
-      },
-      {
-        id: 555,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "completed",
-        arrived: true,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/lemon_chicken.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/mixed_berry_juice.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/ribeye_steak.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/veggie_supreme.jpg",
-          },
-        ],
-      },
-      {
-        id: 556,
-        date: "23 Feb 2025, 08:28 PM",
-        status: "cancelled",
-        arrived: false,
-        total: 226.49,
-        items: [
-          {
-            name: "Vegan Buddha Bowl",
-            price: 5,
-            quantity: 2,
-            image: "src/assets/images/classic_beef_burger.jpg",
-          },
-          {
-            name: "Caesar Salad with Grilled Chicken",
-            price: 12.49,
-            quantity: 7,
-            image: "src/assets/images/cappuccino.jpg",
-          },
-          {
-            name: "Rice with beef toast and chapaty",
-            price: 120,
-            quantity: 1,
-            image: "src/assets/images/buffalo_wings.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/caesar_salad.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/fish_and_chips.jpg",
-          },
-          {
-            name: "Pink Liquid on Glass",
-            price: 2,
-            quantity: 5,
-            image: "src/assets/images/carrot_juice.jpg",
-          },
-        ],
-      },
-    ];
-    setOrders(sampleOrders);
-  }, []);
-
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active")
       return ["ready", "pending", "processing"].includes(
@@ -703,6 +84,36 @@ function OrderStatus() {
     navigate(`${order.id}`);
   };
 
+  const handleArrivalClick = async (order) => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/orders/${order.id}/notify-arrival`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+          },
+          body: JSON.stringify({
+            table_number: 36,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error("Failed to notify arrival:", result);
+        alert("Something went wrong. Please try again.");
+      } else {
+        console.log("Arrival notified:", result);
+        // setOrders(prev => prev.map(o => o.id === order.id ? {...o, arrived: true} : o));
+      }
+    } catch (error) {
+      console.error("Error notifying arrival:", error);
+    }
+  };
+
   const handleTooltip = (e, order) => {
     if (order.status.toLowerCase() !== "pending") {
       const tooltipMessage =
@@ -726,7 +137,7 @@ function OrderStatus() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/orders/user", {
+        const response = await fetch("http://127.0.0.1:8000/api/orders/", {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
@@ -738,7 +149,24 @@ function OrderStatus() {
         }
 
         const data = await response.json();
-        setOrders(data); // Assuming the API returns an array of orders
+
+        // Map the API data to the structure used in the component
+        const mappedOrders = data.orders.map((order) => ({
+          id: order.id,
+          date: new Date(order.order_date_time).toLocaleString(), // Format the date
+          status: order.order_status,
+          arrived: !!order.arrived,
+          total: parseFloat(order.total_price),
+          items: order.order_items.map((item) => ({
+            id: item.id,
+            name: item.menu_item.name,
+            price: parseFloat(item.menu_item.price),
+            quantity: item.quantity,
+            image: `http://127.0.0.1:8000/storage/${item.menu_item.image}`, // Full image URL
+          })),
+        }));
+
+        setOrders(mappedOrders);
       } catch (error) {
         console.error("Error fetching orders:", error);
       }
@@ -830,12 +258,21 @@ function OrderStatus() {
               <div className={classes.orderActions}>
                 {activeTab === "active" &&
                   order.status.toLowerCase() === "pending" && (
-                    <button
-                      className={`${classes.actionButton} ${classes.updateButton}`}
-                      onClick={() => handleUpdateClick(order)}
-                    >
-                      Update
-                    </button>
+                    <>
+                      <button
+                        className={`${classes.actionButton} ${classes.arrivedButton}`}
+                        onClick={() => handleArrivalClick(order)}
+                        disabled={order.arrived}
+                      >
+                        Arrived
+                      </button>
+                      <button
+                        className={`${classes.actionButton} ${classes.updateButton}`}
+                        onClick={() => handleUpdateClick(order)}
+                      >
+                        Update
+                      </button>
+                    </>
                   )}
               </div>
             </div>

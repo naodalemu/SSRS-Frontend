@@ -212,12 +212,12 @@
 }
 
 .arrivedButton {
-  background-color: #4caf50;
+  background-color: #333;
   color: white;
 }
 
 .arrivedButton:hover {
-  background-color: #43a047;
+  background-color: #444;
 }
 
 .arrivedButtonDisabled {
