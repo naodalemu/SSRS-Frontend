@@ -1,256 +1,271 @@
 .searchSection {
-    padding-bottom: 50px;
+  padding-bottom: 50px;
 }
 
 .searchNFilterSection {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 20px;
 }
 
 .searchInputField {
-    padding: 10px 20px;
-    outline: none;
-    border-radius: 6px;
-    border: none;
-    margin-right: 10px;
-    font-size: 20px;
-    font-weight: 500;
-    z-index: 2;
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 6px;
+  border: none;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  z-index: 2;
 }
 
 .filterBackdrop {
-    position: absolute;
-    width: 99vw;
-    height: 88vh;
-    top: 0;
-    z-index: 1;
+  position: absolute;
+  width: 99vw;
+  height: 88vh;
+  top: 0;
+  z-index: 1;
 }
 
 .filterButton {
-    padding: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 6px;
-    border: 3px solid white;
-    cursor: pointer;
-    z-index: 2;
-    position: relative;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 3px solid white;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
 }
 
 .filterContainer {
-    position: absolute;
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    top: 80px;
-    background: white;
-    border-radius: 24px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    z-index: 2;
+  position: absolute;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  top: 80px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  z-index: 2;
 }
 
 .filterName {
-    padding: 30px 40px 20px 40px;
-    border-bottom: 5px solid #dedede;
-    font-weight: 700;
+  padding: 30px 40px 20px 40px;
+  border-bottom: 5px solid #dedede;
+  font-weight: 700;
 }
 
 .filtertagContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    padding: 30px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  padding: 30px 40px;
 }
 
 .cateogryContainer {
-    font-weight: 600;
+  font-weight: 600;
 }
 
 .cateogryContainer input {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .categorySelector {
-    display: flex;
+  display: flex;
 }
 
 .foodCategory,
 .drinkCategory {
-    margin: 15px;
-    padding: 10px 30px;
-    background: white;
-    border-radius: 6px 6px 0px 0px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
+  margin: 15px;
+  padding: 10px 30px;
+  background: white;
+  border-radius: 6px 6px 0px 0px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .foodCategory.active,
 .drinkCategory.active {
-    background-color: #333;
-    color: white;
+  background-color: #333;
+  color: white;
 }
 
 .foodDisplayContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .gridLayout {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .columnLayout {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .sign {
-    position: relative;
-    height: 50px;
-    margin: auto;
-    width: 97%;
+  position: relative;
+  height: 50px;
+  margin: auto;
+  width: 97%;
 }
 
 .sign p {
-    position: absolute;
-    top: 20%;
-    left: 40px;
-    font-size: 20px;
-    background: #dedede;
-    padding: 0px 20px;
-    z-index: 1;
+  position: absolute;
+  top: 20%;
+  left: 40px;
+  font-size: 20px;
+  background: #dedede;
+  padding: 0px 20px;
+  z-index: 1;
 }
 
 .horizontalLine {
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    background: #333;
-    top: 50%;
-    padding: 0px 15px;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #333;
+  top: 50%;
+  padding: 0px 15px;
 }
 
 .foodListContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
-    margin: 20px;
-    flex-wrap: wrap;
-    row-gap: 10px;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  flex-wrap: wrap;
+  row-gap: 10px;
 }
 
 .pageNumber {
-    margin: 0 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: 2px solid #ccc;
-    border-radius: 4px;
+  margin: 0 5px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .activePage {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #333;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
 }
 
 .categoryNPriceContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .showOrdersButton {
-    margin: 15px;
-    padding: 10px 20px;
-    background: #333;
-    border: none;
-    color: white;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    font-size: 16px;
-    position: relative;
+  margin: 15px;
+  padding: 10px 20px;
+  background: #333;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
 }
 
-.checkoutNotification, .filterNotification {
-    width: 6px;
-    height: 6px;
-    position: absolute;
-    border-radius: 50%;
+.checkoutNotification,
+.filterNotification {
+  width: 6px;
+  height: 6px;
+  position: absolute;
+  border-radius: 50%;
 }
 
 .checkoutNotification {
-    background: #dedede;
-    top: 9px;
-    right: 9px;
+  background: #dedede;
+  top: 9px;
+  right: 9px;
 }
 
 .filterNotification {
-    background: #333;
-    top: 4px;
-    right: 4px;
-    width: 5px;
-    height: 5px;
+  background: #333;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+}
+
+.emptyMessage {
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: #999;
+  margin-top: 6rem;
+  width: 100%;
 }
 
 @media screen and (max-width: 1300px) {
-    .filterContainer {
-        width: 70%;
-    }
+  .filterContainer {
+    width: 70%;
+  }
 }
 
 @media screen and (max-width: 550px) {
-    .searchInputField {
-        font-size: 16px;
-        width: 300px;
-    }
+  .searchInputField {
+    font-size: 16px;
+    width: 300px;
+  }
 
-    .filterButton {
-        padding: 13px;
-    }
+  .filterButton {
+    padding: 13px;
+  }
 
-    .categorySelector {
-        justify-content: flex-end;
-    }
+  .categorySelector {
+    justify-content: flex-end;
+  }
 
-    .filterContainer {
-        width: 100%;
-    }
+  .filterContainer {
+    width: 100%;
+  }
 
-    .categoryNPriceContainer {
-        align-items: unset;
-        flex-direction: column-reverse;
-    }
+  .categoryNPriceContainer {
+    align-items: unset;
+    flex-direction: column-reverse;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .categorySelector {
-        justify-content: center;
-    }
+  .categorySelector {
+    justify-content: center;
+  }
 }
 
 @media screen and (max-width: 375px) {
-    .searchInputField {
-        font-size: 16px;
-        width: 200px;
-        padding: 10px 15px;
-    }
+  .searchInputField {
+    font-size: 16px;
+    width: 200px;
+    padding: 10px 15px;
+  }
 
-    .filterButton {
-        padding: 9px;
-    }
+  .filterButton {
+    padding: 9px;
+  }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from "./MenuItem.module.css";
 
-function MenuItem({ item, onClick }) {
+function MenuItem({ item, onClick, onAddItem }) {
     // Function to truncate text with a max character limit
     const truncateText = (text, maxLength) => {
         return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;

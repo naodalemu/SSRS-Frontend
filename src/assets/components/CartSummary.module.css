@@ -1,173 +1,272 @@
 .cartSummary {
-    padding: 40px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-    position: relative;
-    min-width: 700px;
+  padding: 40px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  position: relative;
+  min-width: 700px;
 }
 
 .cartList {
-    max-height: 320px;
-    overflow: scroll;
-    overflow-x: hidden;
+  max-height: 320px;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .cartList::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .cartHeader {
-    margin-bottom: 20px;
-    font-size: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .cartSummary ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
 .cartSummary ul li {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .orderButton {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .orderButton:hover {
-    background-color: #444;
+  background-color: #444;
 }
 
 .orderContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
 }
 
-.amountValue, .priceValue {
-    font-weight: bold;
+.amountValue,
+.priceValue {
+  font-weight: bold;
 }
 
 .amountValue {
-    padding: 0px 10px;
+  padding: 0px 10px;
 }
 
 .emptyCartMessage {
-    font-size: 16px;
-    margin-bottom: 20px;
-    text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 .totalPrice {
-    font-weight: bold;
-    font-size: 16px;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .cartItem {
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid gray;
-    padding: 10px 15px;
-    border-radius: 6px;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid gray;
+  padding: 10px 15px;
+  border-radius: 6px;
+  align-items: center;
 }
 
 .itemDetails {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
-
 .amountInput {
-    width: 40px;
-    text-align: center;
-    border: none;
-    font-size: 20px;
-    font-weight: 500;
+  width: 40px;
+  text-align: center;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .amountButton {
-    background: #333;
-    color: white;
-    padding: 0px 10px;
-    font-weight: bold;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
+  background: #333;
+  color: white;
+  padding: 0px 10px;
+  font-weight: bold;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
 }
 
 .lowerButton {
-    border-radius: 6px 0px 0px 6px;
+  border-radius: 6px 0px 0px 6px;
 }
 
 .upperButton {
-    border-radius: 0px 6px 6px 0px;
+  border-radius: 0px 6px 6px 0px;
 }
 
 .removeButton {
-    color: #333;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    font-size: 30px;
-    margin-left: 10px;
-    display: flex;
-    align-items: center;
+  color: #333;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .orderItemButtonsContainer {
-    display: flex;
-    align-items: center;
-    width: 150px;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  width: 150px;
+  justify-content: space-between;
 }
 
 .closeButton {
-    color: #333;
-    cursor: pointer;
-    position: absolute;
-    top: 36px;
-    right: 40px;
-    background: transparent;
-    border: none;
-    font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 36px;
+  right: 40px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+}
+
+.orderOptions > label > input {
+  margin-right: 7px;
+}
+
+.orderOptions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.orderOptions > label {
+  padding: 8px 14px;
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tableInputContainer > input {
+  padding: 5px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100px;
+}
+
+.orderControllerButtonsContainer {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  gap: 10px;
+}
+
+.orderButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.orderOptions > label > input[type="radio"] {
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  position: relative;
+  cursor: pointer;
+}
+
+.orderOptions > label > input[type="radio"]::before {
+  content: "";
+  display: block;
+  width: 100%; 
+  height: 100%;
+  background-color: #fff; /* Black background */
+  border-radius: 50%; /* Make it circular */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1; /* Ensure it appears above the button */
+}
+
+.orderOptions > label > input[type="radio"]:checked::before {
+  box-shadow: inset 0 0 0 4px #fff; /* White glowing border inward */
+  background-color: #333; /* Keep the center black */
 }
 
 @media screen and (max-width: 800px) {
-    .cartSummary {
-        width: 700px;
-        min-width: unset;
-    }
+  .cartSummary {
+    width: 700px;
+    min-width: unset;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .orderContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .orderControllerButtonsContainer {
+    width: 100%;
+    justify-content: right;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .orderControllerButtonsContainer {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .tableInputContainer > input {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 425px) {
-    .cartSummary {
-        width: 700px;
-        min-width: unset;
-    }
+  .cartSummary {
+    width: 700px;
+    min-width: unset;
+  }
 
-    .cartItem {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .cartItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .itemDetails {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
+  .itemDetails {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
 
-    .itemDetails > .amountValue {
-        padding: 0px 10px 0px 0px;
-    }
+  .itemDetails > .amountValue {
+    padding: 0px 10px 0px 0px;
+  }
 
-    .cartList {
-        max-height: 65vh;
-    }
+  .cartList {
+    max-height: 65vh;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .orderOptions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

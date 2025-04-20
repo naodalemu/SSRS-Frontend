@@ -31,7 +31,7 @@ function OrderStatus() {
     const sampleOrders = [
       {
         id: 352,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "ready",
         arrived: true,
         total: 226.49,
@@ -58,7 +58,7 @@ function OrderStatus() {
       },
       {
         id: 359,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -85,7 +85,7 @@ function OrderStatus() {
       },
       {
         id: 353,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "pending",
         arrived: true,
         total: 226.49,
@@ -124,7 +124,7 @@ function OrderStatus() {
       },
       {
         id: 354,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "processing",
         arrived: true,
         total: 226.49,
@@ -157,7 +157,7 @@ function OrderStatus() {
       },
       {
         id: 355,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -190,7 +190,7 @@ function OrderStatus() {
       },
       {
         id: 356,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "cancelled",
         arrived: false,
         total: 226.49,
@@ -235,7 +235,7 @@ function OrderStatus() {
       },
       {
         id: 452,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -262,7 +262,7 @@ function OrderStatus() {
       },
       {
         id: 459,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "ready",
         arrived: true,
         total: 226.49,
@@ -289,7 +289,7 @@ function OrderStatus() {
       },
       {
         id: 453,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -328,7 +328,7 @@ function OrderStatus() {
       },
       {
         id: 454,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "processing",
         arrived: true,
         total: 226.49,
@@ -361,7 +361,7 @@ function OrderStatus() {
       },
       {
         id: 455,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -394,8 +394,8 @@ function OrderStatus() {
       },
       {
         id: 456,
-        date: "23 Feb 2021, 08:28 PM",
-        status: "cancelled",
+        date: "23 Feb 2025, 08:28 PM",
+        status: "pending",
         arrived: false,
         total: 226.49,
         items: [
@@ -439,7 +439,7 @@ function OrderStatus() {
       },
       {
         id: 552,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -466,7 +466,7 @@ function OrderStatus() {
       },
       {
         id: 559,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "ready",
         arrived: true,
         total: 226.49,
@@ -493,7 +493,7 @@ function OrderStatus() {
       },
       {
         id: 553,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "pending",
         arrived: true,
         total: 226.49,
@@ -532,7 +532,7 @@ function OrderStatus() {
       },
       {
         id: 554,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "processing",
         arrived: true,
         total: 226.49,
@@ -565,7 +565,7 @@ function OrderStatus() {
       },
       {
         id: 555,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "completed",
         arrived: true,
         total: 226.49,
@@ -598,7 +598,7 @@ function OrderStatus() {
       },
       {
         id: 556,
-        date: "23 Feb 2021, 08:28 PM",
+        date: "23 Feb 2025, 08:28 PM",
         status: "cancelled",
         arrived: false,
         total: 226.49,
@@ -665,7 +665,42 @@ function OrderStatus() {
   };
 
   const handleUpdateClick = (order) => {
-    navigate(`${order.id}`, { state: { orderData: order } });
+    const formattedOrder = {
+      id: order.id,
+      customer_id: order.customer_id || null,
+      table_id: order.table_id || null,
+      customer_ip: order.customer_ip || null,
+      order_date_time: order.date,
+      order_type: "dine-in", // Assuming dine-in for now
+      total_price: order.total,
+      order_status: order.status,
+      payment_status: "pending", // Assuming pending for now
+      tx_ref: null,
+      arrived: order.arrived,
+      customer_temp_id: null,
+      is_remote: false,
+      notified_arrival: null,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      order_items: order.items.map((item) => ({
+        id: item.id || null,
+        menu_item_id: item.menu_item_id || null,
+        quantity: item.quantity,
+        total_price: item.price * item.quantity,
+        menu_item: {
+          id: item.id || null,
+          name: item.name,
+          description: item.description || "",
+          image: item.image,
+          price: item.price,
+          category_id: null,
+          nutritional_info: null,
+        },
+      })),
+    };
+
+    localStorage.setItem(`order_${order.id}`, JSON.stringify(formattedOrder));
+    navigate(`${order.id}`);
   };
 
   const handleTooltip = (e, order) => {
@@ -688,34 +723,32 @@ function OrderStatus() {
     setTooltipOrderId(null);
   };
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/orders/user", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+
+        const data = await response.json();
+        setOrders(data); // Assuming the API returns an array of orders
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   return (
     <div className={classes.orderStatus}>
-      <div className={classes.searchContainer}>
-        <input
-          type="text"
-          placeholder="Search"
-          value={searchTerm}
-          className={classes.searchInput}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button className={classes.searchButton}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </button>
-      </div>
-
       <div className={classes.tabs}>
         <button
           className={`${classes.tabButton} ${

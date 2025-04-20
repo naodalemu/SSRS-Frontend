@@ -12,49 +12,57 @@ function MenuSearch() {
   const [selectedTags, setSelectedTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentCategory, setCurrentCategory] = useState("food");
-  const [currentLunchPage, setCurrentLunchPage] = useState(1);
-  const [currentBreakfastPage, setCurrentBreakfastPage] = useState(1);
-  const [currentDinnerPage, setCurrentDinnerPage] = useState(1);
+  // removed currentLunchPage, currentBreakfastPage, currentDinnerPage
+  const [currentFoodPage, setCurrentFoodPage] = useState(1);
   const [currentDrinkPage, setCurrentDrinkPage] = useState(1);
   const [isCartSummaryVisible, setIsCartSummaryVisible] = useState(false);
   const [menuItems, setMenuItems] = useState([]);
   const [allTagNames, setAllTagNames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [orderError, setOrderError] = useState(null)
-  
+  const [orderError, setOrderError] = useState(null);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const itemsPerPage = 8;
-  const drinkItemsPerPage = 16;
+  const drinkItemsPerPage = 8;
+  const foodItemsPerPage = 8;
 
-  const cartItems = JSON.parse(localStorage.getItem('cart'));
+  const cartItems = JSON.parse(localStorage.getItem("cart"));
 
   // Fetch menu items from the API
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/menu-items");
-        const menuItems = response.data;
+        const response = await fetch("http://127.0.0.1:8000/api/menuitems", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+          },
+        });
 
-        // Create a Set to ensure unique tag names
+        if (!response.ok) {
+          throw new Error("Failed to fetch menu items");
+        }
+
+        const data = await response.json();
+        setMenuItems(data); // Assuming the API returns an array of menu items
+
+        // Extract unique tag names from menu items
         const tagSet = new Set();
-
-        menuItems.forEach(item => {
-          item.tags.forEach(tag => {
+        data.forEach((item) => {
+          item.tags.forEach((tag) => {
             tagSet.add(tag.name); // Add each tag's name to the Set
           });
         });
 
         // Convert the Set back to an array and store it in state
         setAllTagNames([...tagSet]);
-
-        setMenuItems(menuItems);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching menu items:", error);
         setError("Failed to load menu items");
+      } finally {
         setLoading(false);
       }
     };
@@ -63,7 +71,6 @@ function MenuSearch() {
   }, []);
 
   const menuTags = allTagNames;
-
 
   const toggleFilter = () => {
     setIsFilterVisible((prevState) => !prevState);
@@ -89,16 +96,16 @@ function MenuSearch() {
         item.ingredients.some((ingredient) =>
           ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-  
+
       const matchesTags =
         selectedTags.length === 0 ||
         selectedTags.every((tag) =>
           item.tags.some((itemTag) => itemTag.name === tag)
         );
-  
+
       return matchesSearchTerm && matchesTags;
     });
-  };  
+  };
 
   const getPaginatedItems = (items, page, itemsPerPage) => {
     const startIndex = (page - 1) * itemsPerPage;
@@ -113,37 +120,41 @@ function MenuSearch() {
     return <p>{error}</p>; // Error state
   }
 
-  const foodItems = menuItems.filter((item) => item.categories.toLowerCase() === "food");
-  const drinkItems = menuItems.filter((item) => item.categories.toLowerCase() === "drink");  
+  const foodItems = menuItems.filter(
+    (item) => item.category?.name?.toLowerCase() === "food"
+  );
+
+  const drinkItems = menuItems.filter(
+    (item) => item.category?.name?.toLowerCase() === "drink"
+  );
 
   const filteredFoodItems = filterItems(foodItems);
   const filteredDrinkItems = filterItems(drinkItems);
 
-  const lunchItems = foodItems.filter(item =>
-    item.tags.some(tag => tag.name.toLowerCase() === "lunch")
-  );
-  const breakfastItems = foodItems.filter(item =>
-    item.tags.some(tag => tag.name.toLowerCase() === "breakfast")
-  );
-  const dinnerItems = foodItems.filter(item =>
-    item.tags.some(tag => tag.name.toLowerCase() === "dinner")
-  );
+  // Removed lunchItems, breakfastItems, dinnerItems
   const drinkItemsFiltered = drinkItems;
 
-  const paginatedLunchItems = getPaginatedItems(lunchItems, currentLunchPage, itemsPerPage);
-  const paginatedBreakfastItems = getPaginatedItems(breakfastItems, currentBreakfastPage, itemsPerPage);
-  const paginatedDinnerItems = getPaginatedItems(dinnerItems, currentDinnerPage, itemsPerPage);
-  const paginatedDrinkItems = getPaginatedItems(drinkItemsFiltered, currentDrinkPage, drinkItemsPerPage);
+  // Removed paginatedLunchItems, paginatedBreakfastItems, paginatedDinnerItems
+  const paginatedFoodItems = getPaginatedItems(
+    filteredFoodItems,
+    currentFoodPage,
+    foodItemsPerPage
+  );
+  const paginatedDrinkItems = getPaginatedItems(
+    drinkItemsFiltered,
+    currentDrinkPage,
+    drinkItemsPerPage
+  );
 
-  const lunchTotalPages = Math.ceil(lunchItems.length / itemsPerPage);
-  const breakfastTotalPages = Math.ceil(breakfastItems.length / itemsPerPage);
-  const dinnerTotalPages = Math.ceil(dinnerItems.length / itemsPerPage);
-  const drinkTotalPages = Math.ceil(drinkItemsFiltered.length / drinkItemsPerPage);
+  // Removed lunchTotalPages, breakfastTotalPages, dinnerTotalPages
+  const drinkTotalPages = Math.ceil(
+    drinkItemsFiltered.length / drinkItemsPerPage
+  );
+  const foodTotalPages = Math.ceil(filteredFoodItems.length / foodItemsPerPage);
 
-  const handleLunchPageClick = (pageNumber) => setCurrentLunchPage(pageNumber);
-  const handleBreakfastPageClick = (pageNumber) => setCurrentBreakfastPage(pageNumber);
-  const handleDinnerPageClick = (pageNumber) => setCurrentDinnerPage(pageNumber);
+  // Removed handleLunchPageClick, handleDinnerPageClick, handleDinnerPageClick
   const handleDrinkPageClick = (pageNumber) => setCurrentDrinkPage(pageNumber);
+  const handleFoodPageClick = (pageNumber) => setCurrentFoodPage(pageNumber);
 
   const isSearchingOrFiltering = searchTerm !== "" || selectedTags.length > 0;
 
@@ -167,14 +178,15 @@ function MenuSearch() {
 
   function checkThatFilter(clickedTagData) {
     // Check if the clicked tag is already in the selectedTags array
-    setSelectedTags((prevTags) =>
-      prevTags.includes(clickedTagData)
-        ? prevTags.filter((t) => t !== clickedTagData)  // If already selected, remove it
-        : [...prevTags, clickedTagData]  // Otherwise, add the clicked tag
+    setSelectedTags(
+      (prevTags) =>
+        prevTags.includes(clickedTagData)
+          ? prevTags.filter((t) => t !== clickedTagData) // If already selected, remove it
+          : [...prevTags, clickedTagData] // Otherwise, add the clicked tag
     );
     closeModal();
   }
-  
+
   return (
     <section className={classes.searchSection}>
       <div className={classes.searchNFilterSection}>
@@ -194,7 +206,9 @@ function MenuSearch() {
           onClick={toggleFilter}
         >
           <FaFilter className={classes.icon} />
-          { selectedTags.length > 0 ? <p className={classes.filterNotification} /> : null }
+          {selectedTags.length > 0 ? (
+            <p className={classes.filterNotification} />
+          ) : null}
         </button>
         {isFilterVisible && (
           <>
@@ -238,92 +252,60 @@ function MenuSearch() {
             Drink
           </div>
         </div>
-        <button type="button" className={classes.showOrdersButton} onClick={toggleCartSummary}>Checkout { cartItems && cartItems.length > 0 ? <p className={classes.checkoutNotification} /> : null }</button>
+        <button
+          type="button"
+          className={classes.showOrdersButton}
+          onClick={toggleCartSummary}
+        >
+          Checkout{" "}
+          {cartItems && cartItems.length > 0 ? (
+            <p className={classes.checkoutNotification} />
+          ) : null}
+        </button>
       </div>
       <div className={classes.displayContainer}>
         {currentCategory === "food" ? (
-          <div className={`${classes.foodDisplayContainer} ${
-            searchTerm || selectedTags.length > 0 ? classes.gridLayout : classes.columnLayout
-          }`}>
-            {isSearchingOrFiltering ? (
-              filteredFoodItems.map((item) => (
-                <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
-              ))
-            ) : (
-              <>
-                <div className={classes.lunchSlider}>
-                  <div className={classes.sign}>
-                    <p>Lunch</p>
-                    <div className={classes.horizontalLine} />
-                  </div>
-                  <div className={classes.foodListContainer}>
-                    {paginatedLunchItems.map((item) => (
-                      <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
-                    ))}
-                  </div>
-                  <div className={classes.pagination}>
-                    {[...Array(lunchTotalPages).keys()].map((number) => (
-                      <span
-                        key={number + 1}
-                        onClick={() => handleLunchPageClick(number + 1)}
-                        className={`${classes.pageNumber} ${
-                          currentLunchPage === number + 1 ? classes.activePage : ""
-                        }`}
-                      >
-                        {number + 1}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className={classes.breakfastSlider}>
-                  <div className={classes.sign}>
-                    <p>Breakfast</p>
-                    <div className={classes.horizontalLine} />
-                  </div>
-                  <div className={classes.foodListContainer}>
-                    {paginatedBreakfastItems.map((item) => (
-                      <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
-                    ))}
-                  </div>
-                  <div className={classes.pagination}>
-                    {[...Array(breakfastTotalPages).keys()].map((number) => (
-                      <span
-                        key={number + 1}
-                        onClick={() => handleBreakfastPageClick(number + 1)}
-                        className={`${classes.pageNumber} ${
-                          currentBreakfastPage === number + 1 ? classes.activePage : ""
-                        }`}
-                      >
-                        {number + 1}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <div className={classes.dinnerSlider}>
-                  <div className={classes.sign}>
-                    <p>Dinner</p>
-                    <div className={classes.horizontalLine} />
-                  </div>
-                  <div className={classes.foodListContainer}>
-                    {paginatedDinnerItems.map((item) => (
-                      <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
-                    ))}
-                  </div>
-                  <div className={classes.pagination}>
-                    {[...Array(dinnerTotalPages).keys()].map((number) => (
-                      <span
-                        key={number + 1}
-                        onClick={() => handleDinnerPageClick(number + 1)}
-                        className={`${classes.pageNumber} ${
-                          currentDinnerPage === number + 1 ? classes.activePage : ""
-                        }`}
-                      >
-                        {number + 1}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </>
+          <div className={classes.foodDisplayContainer}>
+            <div className={classes.sign}>
+              <p>Foods</p>
+              <div className={classes.horizontalLine} />
+            </div>
+            {filteredFoodItems.length === 0 && (
+              <div className={classes.emptyMessage}>
+                No food found for your search.
+              </div>
+            )}
+            <div className={classes.foodListContainer}>
+              {isSearchingOrFiltering
+                ? filteredFoodItems.map((item) => (
+                    <MenuItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleItemClick(item)}
+                    />
+                  ))
+                : paginatedFoodItems.map((item) => (
+                    <MenuItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleItemClick(item)}
+                    />
+                  ))}
+            </div>
+            {searchTerm || selectedTags.length > 0 ? null : (
+              <div className={classes.pagination}>
+                {[...Array(foodTotalPages).keys()].map((number) => (
+                  <span
+                    key={number + 1}
+                    onClick={() => handleFoodPageClick(number + 1)}
+                    className={`${classes.pageNumber} ${
+                      currentFoodPage === number + 1 ? classes.activePage : ""
+                    }`}
+                  >
+                    {number + 1}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
         ) : (
@@ -332,44 +314,82 @@ function MenuSearch() {
               <p>Drinks</p>
               <div className={classes.horizontalLine} />
             </div>
+            {filteredDrinkItems.length === 0 && (
+              <div className={classes.emptyMessage}>
+                No drink found for your search.
+              </div>
+            )}
             <div className={classes.foodListContainer}>
               {isSearchingOrFiltering
                 ? filteredDrinkItems.map((item) => (
-                    <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
+                    <MenuItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleItemClick(item)}
+                    />
                   ))
                 : paginatedDrinkItems.map((item) => (
-                    <MenuItem key={item.id} item={item} onClick={() => handleItemClick(item)} />
+                    <MenuItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleItemClick(item)}
+                    />
                   ))}
             </div>
-            {searchTerm || selectedTags.length > 0 ? null : <div className={classes.pagination}>
-              {[...Array(drinkTotalPages).keys()].map((number) => (
-                <span
-                  key={number + 1}
-                  onClick={() => handleDrinkPageClick(number + 1)}
-                  className={`${classes.pageNumber} ${
-                    currentDrinkPage === number + 1 ? classes.activePage : ""
-                  }`}
-                >
-                  {number + 1}
-                </span>
-              ))}
-            </div> }
+            {searchTerm || selectedTags.length > 0 ? null : (
+              <div className={classes.pagination}>
+                {[...Array(drinkTotalPages).keys()].map((number) => (
+                  <span
+                    key={number + 1}
+                    onClick={() => handleDrinkPageClick(number + 1)}
+                    className={`${classes.pageNumber} ${
+                      currentDrinkPage === number + 1 ? classes.activePage : ""
+                    }`}
+                  >
+                    {number + 1}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
 
       {/* Render Modal */}
       {isModalVisible && (
-        <Modal selectedItem={selectedItem} onCloseModal={closeModal} onTagClicked={(sentClickedTagData) => {checkThatFilter(sentClickedTagData)}} />
+        <Modal
+          selectedItem={selectedItem}
+          onCloseModal={closeModal}
+          onTagClicked={(sentClickedTagData) => {
+            checkThatFilter(sentClickedTagData);
+          }}
+        />
       )}
 
       {/* Render Cart Summary */}
-      { isCartSummaryVisible && (
-        <CartSummary closeBackdrop={toggleCartSummary} successMessage={(isItError) => {setOrderError(isItError)}} />
+      {isCartSummaryVisible && (
+        <CartSummary
+          closeBackdrop={toggleCartSummary}
+          successMessage={(isItError) => {
+            setOrderError(isItError);
+          }}
+        />
       )}
 
       {/* Render Message */}
-      { orderError !== null ? <MessageModal isItError={orderError} message={orderError ? "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!" : "Ordered placed successfully"} closeMessageBackdrop={() => {setOrderError(null)}} /> : null}
+      {orderError !== null ? (
+        <MessageModal
+          isItError={orderError}
+          message={
+            orderError
+              ? "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!"
+              : "Ordered placed successfully"
+          }
+          closeMessageBackdrop={() => {
+            setOrderError(null);
+          }}
+        />
+      ) : null}
     </section>
   );
 }

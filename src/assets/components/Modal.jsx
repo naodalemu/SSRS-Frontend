@@ -33,6 +33,7 @@ function Modal({ selectedItem, onCloseModal, onTagClicked }) {
         // Optionally reset the amount value or close the modal
         setAmountValue(1);
         onCloseModal();
+
     };
 
     return (

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import classes from "./UpdateOrder.module.css";
 import { FaWindowClose } from "react-icons/fa";
 import MessageModal from "./MessageModal";
@@ -6,7 +7,10 @@ import { useLocation } from "react-router-dom";
 import MenuSearch from "./MenuSearch";
 
 function UpdateOrder() {
-  const [cart, setCart] = useState([]);
+  const { orderId } = useParams();
+  const storedOrder = localStorage.getItem(`order_${orderId}`);
+  const initialOrder = storedOrder ? JSON.parse(storedOrder) : { items: [] };
+  const [cart, setCart] = useState(initialOrder.items || []);
   const [totalPrice, setTotalPrice] = useState(0);
   const [tableNumber, setTableNumber] = useState(null);
   const [isValidTableNumber, setIsValidTableNumber] = useState(false);
@@ -15,33 +19,21 @@ function UpdateOrder() {
   const orderData = location.state?.orderData;
 
   useEffect(() => {
-    // Extract the last part of the URL and check if it's a valid number
-    const pathParts = location.pathname.split("/");
-    const lastPart = pathParts[pathParts.length - 1];
-    const tableNum = parseInt(lastPart, 10);
-
-    if (!isNaN(tableNum)) {
-      setTableNumber(tableNum);
-      setIsValidTableNumber(true);
-      localStorage.setItem("tableNumber", tableNum);
+    const storedOrder = localStorage.getItem(`order_${orderId}`);
+    if (storedOrder) {
+      const parsedOrder = JSON.parse(storedOrder);
+      setCart(parsedOrder.order_items || []); // Use `order_items` from the stored order
+      updateTotalPrice(parsedOrder.order_items || []);
+      setTableNumber(parsedOrder.table_id || null);
+      setIsValidTableNumber(!!parsedOrder.table_id);
     } else {
+      setCart([]);
+      updateTotalPrice([]);
       setTableNumber(null);
       setIsValidTableNumber(false);
-      localStorage.removeItem("tableNumber");
     }
 
-    // Retrieve cart from local storage
-    if (orderData) {
-      setCart(orderData.items);
-      updateTotalPrice(orderData.items);
-    } else {
-      // Fallback: retrieve cart from local storage if no orderData is passed
-      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-      setCart(storedCart);
-      updateTotalPrice(storedCart);
-    }
-
-    // Generate random customer_generated_id if not already set
+    // Generate random customer ID if not already set
     if (!localStorage.getItem("customer_generated_id")) {
       const randomId = `cust_${Math.random().toString(36).substr(2, 9)}`;
       localStorage.setItem("customer_generated_id", randomId);
@@ -58,11 +50,11 @@ function UpdateOrder() {
           console.error("Error fetching IP:", error);
         });
     }
-  }, [location.pathname, orderData]);
+  }, [orderId]);
 
   const updateTotalPrice = (cart) => {
     const total = cart.reduce((acc, item) => {
-      return acc + item.price * item.quantity;
+      return acc + item.total_price;
     }, 0);
     setTotalPrice(total);
   };
@@ -70,13 +62,20 @@ function UpdateOrder() {
   const handleAmountChange = (index, delta) => {
     const updatedCart = [...cart];
     updatedCart[index].quantity += delta;
+    updatedCart[index].total_price =
+      updatedCart[index].menu_item.price * updatedCart[index].quantity;
 
     if (updatedCart[index].quantity <= 0) {
-      updatedCart.splice(index, 1); // Remove the item if amount <= 0
+      updatedCart.splice(index, 1); // Remove the item if quantity <= 0
     }
 
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    const updatedOrder = {
+      ...JSON.parse(localStorage.getItem(`order_${orderId}`)),
+      order_items: updatedCart,
+    };
+    localStorage.setItem(`order_${orderId}`, JSON.stringify(updatedOrder));
     updateTotalPrice(updatedCart);
   };
 
@@ -85,51 +84,115 @@ function UpdateOrder() {
     updatedCart.splice(index, 1);
 
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    const updatedOrder = {
+      ...JSON.parse(localStorage.getItem(`order_${orderId}`)),
+      order_items: updatedCart,
+    };
+    localStorage.setItem(`order_${orderId}`, JSON.stringify(updatedOrder));
     updateTotalPrice(updatedCart);
   };
 
-  const handleOrder = () => {
-    const tableNum = localStorage.getItem("tableNumber");
-    const customerGeneratedId = localStorage.getItem("customer_generated_id");
-    const customerIp = localStorage.getItem("customer_ip");
-
+  const handleOrder = async () => {
     const payload = {
-      table_number: tableNum, // Ensure tableNumber is valid
+      table_number: tableNumber,
       order_items: cart.map((item) => ({
-        menu_item_id: item.id, // map `id` to `menu_item_id`
+        menu_item_id: item.menu_item.id,
         quantity: item.quantity,
       })),
-      customer_ip: customerIp, // Send customer IP
-      customer_generated_id: customerGeneratedId, // Send generated ID
+      customer_ip: localStorage.getItem("customer_ip"),
+      customer_generated_id: localStorage.getItem("customer_generated_id"),
     };
 
-    // Send the cart data and table number to the backend
-    fetch("http://127.0.0.1:8000/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          console.error("Validation Error:", data);
-          setIsError(true);
-        } else {
-          console.log("Order placed:", data);
-          localStorage.removeItem("cart");
-          setCart([]);
-          setTotalPrice(0);
-          setIsError(false);
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/orders/${orderId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+          },
+          body: JSON.stringify(payload),
         }
-      })
-      .catch((error) => {
-        console.error("Error placing order:", error);
-        setIsError(true); // Set error to true in case of network failure
-      });
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Validation Error:", data);
+        setIsError(true);
+      } else {
+        console.log("Order updated:", data);
+        localStorage.removeItem(`order_${orderId}`);
+        setCart([]);
+        setTotalPrice(0);
+        setIsError(false);
+      }
+    } catch (error) {
+      console.error("Error updating order:", error);
+      setIsError(true);
+    }
   };
+
+  const handleAddItem = (menuItem) => {
+    const updatedCart = [...cart];
+    const existingIndex = updatedCart.findIndex(
+      (item) => item.menu_item.id === menuItem.id
+    );
+
+    if (existingIndex !== -1) {
+      updatedCart[existingIndex].quantity += 1;
+      updatedCart[existingIndex].total_price =
+        updatedCart[existingIndex].menu_item.price *
+        updatedCart[existingIndex].quantity;
+    } else {
+      updatedCart.push({
+        menu_item: menuItem,
+        quantity: 1,
+        total_price: menuItem.price,
+      });
+    }
+
+    setCart(updatedCart);
+
+    const updatedOrder = {
+      ...JSON.parse(localStorage.getItem(`order_${orderId}`)),
+      order_items: updatedCart,
+    };
+    localStorage.setItem(`order_${orderId}`, JSON.stringify(updatedOrder));
+    updateTotalPrice(updatedCart);
+  };
+
+  useEffect(() => {
+    const fetchOrderDetails = async () => {
+      try {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/orders/${orderId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch order details");
+        }
+
+        const data = await response.json();
+        setCart(data.order_items || []); // Use `order_items` from the API response
+        updateTotalPrice(data.order_items || []);
+        setTableNumber(data.table_id || null);
+        setIsValidTableNumber(!!data.table_id);
+      } catch (error) {
+        console.error("Error fetching order details:", error);
+      }
+    };
+
+    fetchOrderDetails();
+  }, [orderId]);
 
   return (
     <section>
@@ -145,8 +208,14 @@ function UpdateOrder() {
               <li key={index} className={classes.cartItem}>
                 <div className={classes.itemDetails}>
                   <span className={classes.amountValue}>{item.quantity}</span>
-                  <span className={classes.itemName}> {item.name} </span>x{" "}
-                  <span className={classes.priceValue}>${item.price}</span>
+                  <span className={classes.itemName}>
+                    {" "}
+                    {item.menu_item.name}{" "}
+                  </span>
+                  x{" "}
+                  <span className={classes.priceValue}>
+                    ${item.menu_item.price.toFixed(2)}
+                  </span>
                 </div>
                 <div className={classes.orderItemButtonsContainer}>
                   <button
@@ -185,7 +254,7 @@ function UpdateOrder() {
         </div>
       </div>
 
-      <MenuSearch />
+      <MenuSearch onAddItem={handleAddItem} />
     </section>
   );
 }
