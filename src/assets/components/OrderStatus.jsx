@@ -3,46 +3,33 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import classes from "./OrderStatus.module.css";
 import Backdrop from "./Backdrop";
-import {
-  FaClock,
-  FaClone,
-  FaClosedCaptioning,
-  FaWindows,
-} from "react-icons/fa6";
-import {
-  FaRegWindowClose,
-  FaWindowClose,
-  FaWindowMaximize,
-} from "react-icons/fa";
+import { FaWindowClose } from "react-icons/fa";
+import MessageModal from "./MessageModal";
 
 function OrderStatus() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("active");
   const [orders, setOrders] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteWarning, setShowDeleteWarning] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState(null);
   const [tooltipOrderId, setTooltipOrderId] = useState(null);
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [tableNumber, setTableNumber] = useState();
+  const [arrivalStatus, setArrivalStatus] = useState(null); // true = success, false = error
+  const [arrivalMessage, setArrivalMessage] = useState(""); // to hold the message
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active")
       return ["ready", "pending", "processing"].includes(
         order.status.toLowerCase()
       );
-    return ["completed", "cancelled"].includes(order.status.toLowerCase());
+    return ["completed", "canceled"].includes(order.status.toLowerCase());
   });
 
   const handleDeleteClick = (order) => {
     setOrderToDelete(order);
     setShowDeleteWarning(true);
-  };
-
-  const handleDeleteConfirm = () => {
-    setOrders((prev) => prev.filter((order) => order !== orderToDelete));
-    setShowDeleteWarning(false);
-    setOrderToDelete(null);
   };
 
   const handleUpdateClick = (order) => {
@@ -95,7 +82,7 @@ function OrderStatus() {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
           },
           body: JSON.stringify({
-            table_number: 36,
+            table_number: tableNumber,
           }),
         }
       );
@@ -104,14 +91,73 @@ function OrderStatus() {
 
       if (!response.ok) {
         console.error("Failed to notify arrival:", result);
-        alert("Something went wrong. Please try again.");
+        setArrivalStatus(false);
+        setArrivalMessage(result?.error || "Failed to notify arrival");
       } else {
         console.log("Arrival notified:", result);
-        // setOrders(prev => prev.map(o => o.id === order.id ? {...o, arrived: true} : o));
+        setArrivalStatus(true);
+        setArrivalMessage(
+          <>
+            Arrival successfully notified!
+            <br />
+            Check the order status and once it is "Ready" you can go take it at
+            one of the windows!
+          </>
+        );
+
+        // Instantly reflect change in UI
+        setOrders((prev) =>
+          prev.map((o) => (o.id === order.id ? { ...o, arrived: true } : o))
+        );
       }
     } catch (error) {
       console.error("Error notifying arrival:", error);
+      setArrivalStatus(false);
+      setArrivalMessage("Unexpected error occurred. Please try again.");
     }
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/orders/${orderToDelete.id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+          },
+          body: JSON.stringify({ order_status: "canceled" }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error("Failed to cancel the order:", result);
+        setArrivalStatus(false);
+        setArrivalMessage(result?.error || "Failed to cancel the order");
+      } else {
+        console.log("Order Canceled:", result);
+        setArrivalStatus(false);
+        setArrivalMessage(
+          <>
+            Order Canceled Successfully!
+            <br />
+            You can find it in order history tab!
+          </>
+        );
+        setArrivalStatus(true);
+
+        await fetchOrders();
+      }
+    } catch (error) {
+      console.error("Error canceling order:", error);
+      setArrivalMessage("Unexpected error occurred. Please try again.");
+      setArrivalStatus(false);
+    }
+
+    setShowDeleteWarning(false);
   };
 
   const handleTooltip = (e, order) => {
@@ -134,44 +180,49 @@ function OrderStatus() {
     setTooltipOrderId(null);
   };
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/orders/", {
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/orders/user?customer_ip=${localStorage.getItem(
+          "customer_ip"
+        )}&customer_temp_id=${localStorage.getItem("customer_generated_id")}`,
+        {
           method: "GET",
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
           },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
         }
+      );
 
-        const data = await response.json();
-
-        // Map the API data to the structure used in the component
-        const mappedOrders = data.orders.map((order) => ({
-          id: order.id,
-          date: new Date(order.order_date_time).toLocaleString(), // Format the date
-          status: order.order_status,
-          arrived: !!order.arrived,
-          total: parseFloat(order.total_price),
-          items: order.order_items.map((item) => ({
-            id: item.id,
-            name: item.menu_item.name,
-            price: parseFloat(item.menu_item.price),
-            quantity: item.quantity,
-            image: `http://127.0.0.1:8000/storage/${item.menu_item.image}`, // Full image URL
-          })),
-        }));
-
-        setOrders(mappedOrders);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
       }
-    };
 
+      const data = await response.json();
+
+      const mappedOrders = data.orders.map((order) => ({
+        id: order.id,
+        date: new Date(order.order_date_time).toLocaleString(),
+        status: order.order_status,
+        arrived: !!order.arrived,
+        total: parseFloat(order.total_price),
+        is_remote: order.order_type === "remote",
+        items: order.order_items.map((item) => ({
+          id: item.id,
+          name: item.menu_item.name,
+          price: parseFloat(item.menu_item.price),
+          quantity: item.quantity,
+          image: `http://127.0.0.1:8000/storage/${item.menu_item.image}`,
+        })),
+      }));
+
+      setOrders(mappedOrders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
+  useEffect(() => {
     fetchOrders();
   }, []);
 
@@ -259,13 +310,33 @@ function OrderStatus() {
                 {activeTab === "active" &&
                   order.status.toLowerCase() === "pending" && (
                     <>
-                      <button
-                        className={`${classes.actionButton} ${classes.arrivedButton}`}
-                        onClick={() => handleArrivalClick(order)}
-                        disabled={order.arrived}
-                      >
-                        Arrived
-                      </button>
+                      {order.is_remote && !order.arrived && (
+                        <div className={classes.remoteOrderActions}>
+                          <div className={classes.tableInputContainer}>
+                            <input
+                              type="number"
+                              id="tableNumber"
+                              placeholder="Table No"
+                              value={tableNumber || ""}
+                              onChange={(e) => {
+                                const value = parseInt(e.target.value, 10);
+                                if (!isNaN(value)) {
+                                  setTableNumber(value);
+                                } else {
+                                  setTableNumber(null);
+                                }
+                              }}
+                            />
+                          </div>
+                          <button
+                            className={`${classes.actionButton} ${classes.arrivedButton}`}
+                            onClick={() => handleArrivalClick(order)}
+                            disabled={order.arrived || !tableNumber}
+                          >
+                            Arrived
+                          </button>
+                        </div>
+                      )}
                       <button
                         className={`${classes.actionButton} ${classes.updateButton}`}
                         onClick={() => handleUpdateClick(order)}
@@ -317,6 +388,17 @@ function OrderStatus() {
         >
           {tooltipText}
         </div>
+      )}
+
+      {arrivalStatus !== null && (
+        <MessageModal
+          isItError={!arrivalStatus}
+          message={arrivalMessage}
+          closeMessageBackdrop={() => {
+            setArrivalStatus(null);
+            setArrivalMessage("");
+          }}
+        />
       )}
     </div>
   );

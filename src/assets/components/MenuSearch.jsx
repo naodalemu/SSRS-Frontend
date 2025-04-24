@@ -383,7 +383,7 @@ function MenuSearch() {
           message={
             orderError
               ? "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!"
-              : "Ordered placed successfully"
+              : "Order placed successfully"
           }
           closeMessageBackdrop={() => {
             setOrderError(null);

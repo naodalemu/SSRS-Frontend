@@ -4,8 +4,10 @@ import classes from "./UpdateOrder.module.css";
 import { FaWindowClose } from "react-icons/fa";
 import MenuSearch from "./MenuSearch";
 import MessageModal from "./MessageModal";
+import { useNavigate } from "react-router-dom";
 
 function UpdateOrder() {
+  const navigate = useNavigate();
   const { orderId } = useParams();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -147,6 +149,10 @@ function UpdateOrder() {
       setIsError(true);
       console.error("Error submitting order:", err);
     }
+
+    setTimeout(() => {
+      navigate("/orders");
+    }, 1000);
   };
 
   return (
