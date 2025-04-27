@@ -356,7 +356,7 @@ function OrderStatus() {
           <div className={classes.warningModal}>
             <h2>Warning</h2>
             <p>
-              Are you sure you want to <strong>delete</strong> the order? If you
+              Are you sure you want to <strong>cancel</strong> the order? If you
               have paid for the order the money will be refunded and feel free
               to order again!
             </p>
@@ -365,13 +365,13 @@ function OrderStatus() {
                 className={classes.deleteButton}
                 onClick={() => setShowDeleteWarning(false)}
               >
-                Cancel
+                Don't Cancel
               </button>
               <button
                 className={classes.deleteButton}
                 onClick={handleDeleteConfirm}
               >
-                Delete
+                Cancel Order
               </button>
             </div>
           </div>

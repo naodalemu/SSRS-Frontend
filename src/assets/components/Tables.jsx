@@ -45,7 +45,7 @@ function Tables({ onCloseBackdrop }) {
                 <div className={classes.tablesContainer}>
                     {tables.map((table) => (
                         <Link 
-                            key={table.id}
+                            key={table.table_number}
                             to={table.table_status === "occupied" ? null : `/menu/${table.table_number}`}
                             className={classes.tableItem} 
                             style={{ 
