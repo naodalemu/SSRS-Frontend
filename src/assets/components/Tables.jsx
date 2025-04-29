@@ -11,8 +11,11 @@ function Tables({ onCloseBackdrop }) {
     useEffect(() => {
         const fetchTables = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/tables"); // API URL to fetch tables
-                setTables(response.data); // Update state with fetched data
+                const response = await axios.get("http://127.0.0.1:8000/api/tables");
+                const sortedTables = Array.isArray(response.data)
+                ? response.data.sort((a, b) => a.table_number - b.table_number)
+                : [];
+                setTables(sortedTables);
             } catch (error) {
                 setError("Failed to load table data");
             }
