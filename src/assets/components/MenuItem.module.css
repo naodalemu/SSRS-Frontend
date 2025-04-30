@@ -54,10 +54,33 @@
     font-weight: 600;
 }
 
+.menuitemBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
 .price {
     font-size: 24px;
     font-weight: bold;
     padding-left: 10px;
+}
+
+.priceCurrency {
+    font-size: 20px;
+}
+
+.calories {
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    padding-right: 10px;
+}
+
+.calUnit {
+    font-size: 10px;
 }
 
 @media screen and (max-width: 1024px) {

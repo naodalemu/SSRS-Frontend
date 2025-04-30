@@ -1,0 +1,256 @@
+.menuItemSelector {
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+/* Search Bar */
+.searchContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.searchInput {
+  padding: 10px 20px;
+  outline: none;
+  border-radius: 6px;
+  border: none;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 500;
+  z-index: 2;
+}
+
+.filterButton {
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 3px solid white;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+}
+
+.filterBackdrop {
+  position: absolute;
+  width: 99vw;
+  height: 88vh;
+  top: 0;
+  z-index: 1;
+}
+
+.filterContainer {
+  position: absolute;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  top: 80px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+  z-index: 2;
+}
+
+.filterName {
+  padding: 30px 40px 20px 40px;
+  border-bottom: 5px solid #dedede;
+  font-weight: 700;
+}
+
+.filtertagContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  padding: 30px 40px;
+}
+
+.filterNotification {
+  background: #333;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cateogryContainer {
+  font-weight: 600;
+}
+
+.cateogryContainer input {
+  margin-right: 5px;
+}
+
+.categorySelector {
+  display: flex;
+}
+
+/* Category Tabs */
+.categoryTabs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.categoryTab {
+  padding: 10px 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.activeTab {
+  background-color: #333;
+  color: white;
+}
+
+/* Section Header */
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.divider {
+  flex-grow: 1;
+  height: 1px;
+  background-color: #ccc;
+  margin-left: 15px;
+}
+
+/* Menu Grid */
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.menuCard {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.itemImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.itemName {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.itemDescription {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tagContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.tag {
+  padding: 4px 10px;
+  background-color: #f0f0f0;
+  border-radius: 15px;
+  font-size: 12px;
+  color: #333;
+}
+
+.priceActionContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.addButton {
+  padding: 6px 20px;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+.filterTag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 1300px) {
+  .filterContainer {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .searchInputField {
+    font-size: 16px;
+    width: 300px;
+  }
+
+  .filterButton {
+    padding: 13px;
+  }
+
+  .categorySelector {
+    justify-content: flex-end;
+  }
+
+  .filterContainer {
+    width: 100%;
+  }
+}

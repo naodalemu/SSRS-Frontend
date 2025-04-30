@@ -1,76 +1,48 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import classes from "./SignUpLogIn.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { TiHome } from "react-icons/ti";
 
-function SignUp() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
+function VerifyEmail() {
+  const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const email = localStorage.getItem("email_to_verify");
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
-    setSuccess("");
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
 
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/register", {
+      const response = await fetch("http://127.0.0.1:8000/api/verify-otp", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify({ email, otp }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to register");
+        throw new Error(data.message || "Verification failed");
       }
 
-      setSuccess(
-        <>
-          Account created successfully!
-          Redirecting in 3 seconds!
-        </>
-      );
+      setSuccess(<>Email Verified successfully!</>);
       setTimeout(() => {
-        localStorage.setItem("email_to_verify", formData.email);
-        navigate("/verify-email");
+        localStorage.removeItem("email_to_verify")
+        navigate("/login");
       }, 3000);
-    } catch (err) {
-      setError(err.message || "Something went wrong");
+    } catch (error) {
+      setError(error.message || "Something went wrong");
+      console.log(error)
     } finally {
       setLoading(false);
     }
@@ -147,80 +119,37 @@ function SignUp() {
       </div>
       <div className={classes.rightContent}>
         <div className={classes.headerContainer}>
-          <h1 className={classes.headerText}>Create an account</h1>
+          <h1 className={classes.headerText}>Verify Email</h1>
           <p className={classes.loginOp}>
-            Already have an account?{" "}
-            <Link to="/login">
-              <span className={classes.loginLink}>Log in</span>
-            </Link>
+            We have sent you OTP code in your email! Please verify your email by
+            pasting it in the input field below
           </p>
         </div>
 
         {error && <p className={classes.errorMessage}>{error}</p>}
         {success && <p className={classes.successMessage}>{success}</p>}
 
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form className={classes.form}>
           <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
+            type="number"
+            placeholder="OTP Code"
             className={classes.inputField}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email Address"
-            className={classes.inputField}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className={classes.inputField}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className={classes.inputField}
-            required
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
           />
 
-          <button type="submit" className={classes.button} disabled={loading}>
-            {loading ? "Creating account..." : "Create account"}
-          </button>
-
-          <div className={classes.orDivider}>
-            <span>Or register with</span>
-          </div>
-
-          <button className={classes.googleButton}>
-            <img src="src/assets/images/Google.png" alt="Google" />
-            Google
+          <button
+            type="submit"
+            className={classes.button}
+            disabled={loading || otp === ""}
+            onClick={handleSubmit}
+          >
+            {loading ? "Verifying account..." : "Verify"}
           </button>
         </form>
       </div>
-      <Link to="/menu">
-        <div className={classes.backToHome}>
-          <p className={classes.backToHomeTextnIcon}>
-            <TiHome />
-            <span className={classes.backToHomeTextOnly}>Back To Home</span>
-          </p>
-        </div>
-      </Link>
     </section>
   );
 }
 
-export default SignUp;
+export default VerifyEmail;

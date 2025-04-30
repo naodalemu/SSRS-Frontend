@@ -10,6 +10,7 @@ import LogIn from "./assets/components/LogIn";
 
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import VerifyEmail from "./assets/components/VerifyEmail";
 
 function App({ children }) {
   return (
@@ -28,6 +29,7 @@ function App({ children }) {
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
     </Router>
   );

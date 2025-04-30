@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import classes from "./UpdateOrder.module.css";
 import { FaWindowClose } from "react-icons/fa";
-import MenuSearch from "./MenuSearch";
 import MessageModal from "./MessageModal";
 import { useNavigate } from "react-router-dom";
+import MenuItemSelector from "./MenuItemSelector";
 
 function UpdateOrder() {
   const navigate = useNavigate();
@@ -174,7 +174,7 @@ function UpdateOrder() {
                   </span>
                   x
                   <span className={classes.priceValue}>
-                    ${Number(item.menu_item.price).toFixed(2)}
+                    {Number(item.menu_item.price).toFixed(2)} ETB
                   </span>
                 </div>
                 <div className={classes.orderItemButtonsContainer}>
@@ -203,7 +203,7 @@ function UpdateOrder() {
           </ul>
         )}
         <div className={classes.orderContainer}>
-          <p className={classes.totalPrice}>Total: ${totalPrice.toFixed(2)}</p>
+          <p className={classes.totalPrice}>Total: {totalPrice.toFixed(2)} ETB</p>
           <button
             onClick={handleOrder}
             className={classes.orderButton}
@@ -213,7 +213,7 @@ function UpdateOrder() {
           </button>
         </div>
       </div>
-      <MenuSearch onAddItem={handleAddItem} />
+      <MenuItemSelector onAddItem={handleAddItem} />
       {isError !== null && (
         <MessageModal
           isItError={isError}

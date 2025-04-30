@@ -107,6 +107,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("auth_token")
       },
       body: JSON.stringify(payload),
     })
@@ -183,7 +184,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                 <div className={classes.itemDetails}>
                   <span className={classes.amountValue}>{item.quantity}</span>
                   <span className={classes.itemName}> {item.name} </span>x{" "}
-                  <span className={classes.priceValue}>${item.price}</span>
+                  <span className={classes.priceValue}>{item.price} ETB</span>
                 </div>
                 <div className={classes.orderItemButtonsContainer}>
                   <button
@@ -211,7 +212,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
           </ul>
         )}
         <div className={classes.orderContainer}>
-          <p className={classes.totalPrice}>Total: ${totalPrice.toFixed(2)}</p>
+          <p className={classes.totalPrice}>Total: {totalPrice.toFixed(2)} ETB</p>
           <div className={classes.orderControllerButtonsContainer}>
             {orderType === "dine-in" && (
               <div className={classes.tableInputContainer}>

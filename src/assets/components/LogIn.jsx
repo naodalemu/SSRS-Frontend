@@ -1,10 +1,49 @@
+import { useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
 import classes from "./SignUpLogIn.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TiHome } from "react-icons/ti";
 
 function LogIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      console.log(data);
+
+      localStorage.setItem("auth_token", data.access_token);
+      navigate("/");
+    } catch (error) {
+      setError(error.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className={classes.signupLogin}>
       <div className={classes.leftCarousel}>
@@ -85,25 +124,33 @@ function LogIn() {
           </p>
         </div>
 
+        {error && <p className={classes.errorMessage}>{error}</p>}
+        {success && <p className={classes.successMessage}>{success}</p>}
+
         <form className={classes.form}>
           <input
             type="email"
             placeholder="Email Address"
             className={classes.inputField}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
             placeholder="Password"
             className={classes.inputField}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
 
           <div className={classes.checkboxContainer}>
-            <input type="checkbox" id="remember" className={classes.checkbox} />
-            <label htmlFor="remember">Remember me</label>
+            <Link to="/forgot-password">Forgot Password</Link>
           </div>
 
-          <button type="submit" className={classes.button}>
-            Log In
+          <button type="submit" className={classes.button} disabled={loading} onClick={handleSubmit}>
+            {loading ? "Logging In..." : "Log In"}
           </button>
 
           <div className={classes.orDivider}>
@@ -116,7 +163,7 @@ function LogIn() {
           </button>
         </form>
       </div>
-      <Link to="/">
+      <Link to="/menu">
         <div className={classes.backToHome}>
           <p className={classes.backToHomeTextnIcon}>
             <TiHome />
