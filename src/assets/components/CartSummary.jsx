@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./CartSummary.module.css";
 import { FaWindowClose } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MessageModal from "./MessageModal";
 import Backdrop from "./Backdrop";
 
@@ -12,6 +12,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
   const [isValidTableNumber, setIsValidTableNumber] = useState(false);
   const [isError, setIsError] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const [orderType, setOrderType] = useState("dine-in");
   const [initialTableNumberFromUrl, setInitialTableNumberFromUrl] =
     useState(null);
@@ -103,11 +104,12 @@ function CartSummary({ closeBackdrop, successMessage }) {
     };
 
     // Send the cart data and table number to the backend
-    fetch("http://127.0.0.1:8000/api/orders", {
+    fetch("http://127.0.0.1:8000/api/orders/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": localStorage.getItem("auth_token")
+        "Authorization": localStorage.getItem("auth_token"),
+        "Accept": "application/json"
       },
       body: JSON.stringify(payload),
     })
@@ -136,6 +138,14 @@ function CartSummary({ closeBackdrop, successMessage }) {
           setCart([]);
           setTotalPrice(0);
           setIsError(false);
+          
+          // Show success message first
+          successMessage("Your order has been placed successfully! To complete your order, please proceed with the payment.");
+          
+          // Wait for 2 seconds to show the message before navigating
+          setTimeout(() => {
+            navigate(`/payment/${totalPrice}/${data.order_id}`);
+          }, 1000);
         }
       })
       .catch((error) => {
@@ -281,7 +291,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                   : ""
               }
             >
-              Order
+              Proceed to Payment
             </button>
           </div>
         </div>
