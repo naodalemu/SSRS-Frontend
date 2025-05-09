@@ -96,6 +96,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
       order_items: cart.map((item) => ({
         menu_item_id: item.id, // map `id` to `menu_item_id`
         quantity: item.quantity,
+        excluded_ingredients: item.excluded_ingredients.length !== 0 ? item.excluded_ingredients : null,
       })),
       customer_ip: customerIp, // Send customer IP
       customer_temp_id: customerGeneratedId, // Send generated ID

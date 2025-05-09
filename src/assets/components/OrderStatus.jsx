@@ -294,7 +294,7 @@ function OrderStatus() {
                       <h4>{item.name}</h4>
                     </div>
                     <div className={classes.itemQuantity}>
-                      <p>${item.price}</p>
+                      <p>{item.price} ETB</p>
                       <span>Qty: {item.quantity}</span>
                     </div>
                   </div>
@@ -304,7 +304,7 @@ function OrderStatus() {
 
             <div className={classes.orderFooter}>
               <div className={classes.orderTotal}>
-                <h3>${order.total}</h3>
+                <h3>{order.total} ETB</h3>
               </div>
               <div className={classes.orderActions}>
                 {activeTab === "active" &&

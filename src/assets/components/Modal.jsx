@@ -1,18 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./Modal.module.css";
 import { FaWindowClose } from "react-icons/fa";
 import Backdrop from "./Backdrop";
 
 function Modal({ selectedItem, onCloseModal, onTagClicked }) {
   const [amountValue, setAmountValue] = useState(1);
+  const [excludedIngredients, setExcludedIngredients] = useState([]);
+
+  // Initialize excluded ingredients when the modal opens
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingItem = cart.find((item) => item.id === selectedItem.id);
+    if (existingItem) {
+      setExcludedIngredients(existingItem.excluded_ingredients || []);
+    } else {
+      setExcludedIngredients([]);
+    }
+  }, [selectedItem]);
+
+  const handleIngredientToggle = (ingredientId) => {
+    setExcludedIngredients(
+      (prev) =>
+        prev.includes(ingredientId)
+          ? prev.filter((id) => id !== ingredientId) // Remove if already excluded
+          : [...prev, ingredientId] // Add if not excluded
+    );
+  };
 
   const handleAddToCart = () => {
     const cartItem = {
-      id: selectedItem.id, // Assuming each item has a unique ID
+      id: selectedItem.id,
       name: selectedItem.name,
       price: selectedItem.price,
       image: selectedItem.image,
       quantity: amountValue,
+      excluded_ingredients: excludedIngredients, // Include excluded ingredients
     };
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -22,8 +44,9 @@ function Modal({ selectedItem, onCloseModal, onTagClicked }) {
       (item) => item.id === selectedItem.id
     );
     if (existingItemIndex !== -1) {
-      // Update the amount if it already exists
+      // Update the amount and excluded ingredients if it already exists
       cart[existingItemIndex].quantity += amountValue;
+      cart[existingItemIndex].excluded_ingredients = excludedIngredients;
     } else {
       // Add new item
       cart.push(cartItem);
@@ -34,6 +57,7 @@ function Modal({ selectedItem, onCloseModal, onTagClicked }) {
 
     // Optionally reset the amount value or close the modal
     setAmountValue(1);
+    setExcludedIngredients([]);
     onCloseModal();
   };
 
@@ -63,9 +87,25 @@ function Modal({ selectedItem, onCloseModal, onTagClicked }) {
               </p>
               <div className={classes.ingredients}>
                 {selectedItem.ingredients.map((ingredient, index) => (
-                  <span key={index} className={classes.ingredient}>
-                    {ingredient.name}
-                  </span>
+                  <div
+                    key={index}
+                    className={`${classes.ingredient} ${
+                      excludedIngredients.includes(ingredient.id)
+                        ? classes.excluded
+                        : ""
+                    }`}
+                  >
+                    <label htmlFor={`ingredient-${ingredient.id}`}>
+                      <input
+                        type="checkbox"
+                        hidden
+                        id={`ingredient-${ingredient.id}`}
+                        checked={excludedIngredients.includes(ingredient.id)}
+                        onChange={() => handleIngredientToggle(ingredient.id)}
+                      />
+                      {ingredient.name} -
+                    </label>
+                  </div>
                 ))}
               </div>
               <div className={classes.ingredients}>
