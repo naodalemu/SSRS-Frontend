@@ -21,6 +21,7 @@ function SignUp() {
   // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -45,15 +46,16 @@ function SignUp() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-        },
+          "Accept": "application/json"
+        },        
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
           password: formData.password,
         }),
       });
-
       const data = await response.json();
+      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to register");

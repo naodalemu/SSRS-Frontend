@@ -23,6 +23,7 @@ function LogIn() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: JSON.stringify({ email, password }),
       });
@@ -38,6 +39,7 @@ function LogIn() {
       localStorage.setItem("auth_token", data.access_token);
       navigate("/");
     } catch (error) {
+      console.error("Login error:", error);
       setError(error.message || "Something went wrong");
     } finally {
       setLoading(false);

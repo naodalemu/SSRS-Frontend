@@ -7,6 +7,7 @@ import OrderStatus from "./assets/components/OrderStatus";
 import UpdateOrder from "./assets/components/UpdateOrder";
 import SignUp from "./assets/components/SignUp";
 import LogIn from "./assets/components/LogIn";
+import PaymentSucess from "./assets/components/PaymentSucess";
 
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -19,18 +20,18 @@ function App({ children }) {
       <MainHeader />
           <Routes>
             <Route path="/" element={<Landing>{children}</Landing>} />
-            <Route path="/menu/*" element={<MainMenu />} />
+            <Route path="/menu" element={<MainMenu />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/orders" element={<OrderStatus />} />
             <Route path="/orders/:orderId" element={<UpdateOrder />} />
-          </Routes>
-      </section>
-      <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<LogIn />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/payment/:totalPrice/:orderId" element={<PaymentSucess />} />
+        <Route path="/payment" element={<PaymentSucess />} />
       </Routes>
+      </section>
     </Router>
   );
 }

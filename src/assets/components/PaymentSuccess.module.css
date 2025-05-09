@@ -1,0 +1,213 @@
+.container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .message {
+    text-align: center;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .paymentForm {
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    border-radius: 12px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .lockIcon {
+    font-size: 2.5rem;
+    color: #3498db;
+    margin-bottom: 1rem;
+    display: block;
+    margin: 0 auto 1rem;
+  }
+  
+  .paymentForm h2 {
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-weight: 600;
+  }
+  
+  .subtitle {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .formGroup {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  .formGroup label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #34495e;
+    font-size: 0.95rem;
+  }
+  
+  .inputIcon {
+    margin-right: 0.5rem;
+    color: #3498db;
+    font-size: 1.1rem;
+  }
+  
+  .formGroup input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.5rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #ffffff;
+  }
+  
+  .formGroup input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+  }
+  
+  .formGroup input:hover {
+    border-color: #bdc3c7;
+  }
+  
+  .paymentSummary {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+  }
+  
+  .paymentSummary h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .summaryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .amount {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.2rem;
+  }
+  
+  .button {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1.5rem;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  
+  .buttonIcon {
+    font-size: 1.2rem;
+  }
+  
+  .button:hover {
+    background: linear-gradient(135deg, #2980b9, #2573a7);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+  }
+  
+  .button:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .message h2 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .message p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Success state specific styles */
+  .message.success {
+    border-top: 4px solid #2ecc71;
+  }
+  
+  .message.success h2 {
+    color: #27ae60;
+  }
+  
+  /* Error state specific styles */
+  .message.error {
+    border-top: 4px solid #e74c3c;
+  }
+  
+  .message.error h2 {
+    color: #c0392b;
+  }
+  
+  /* Add a nice animation for the form */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .paymentForm {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Add a nice hover effect for form groups */
+  .formGroup:hover label {
+    color: #3498db;
+  }
+  
+  /* Add a nice focus effect for the button */
+  .button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+  } 
