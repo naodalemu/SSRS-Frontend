@@ -177,10 +177,17 @@
 
 .orderFooter {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 15px 30px;
   border-top: 1px solid #eee;
+  gap: 10px;
+}
+
+.PriceNButtons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .orderTotal h3 {
@@ -281,10 +288,10 @@
 }
 
 .orderStatusOnCard {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .cancelButton * {
   color: white;
@@ -441,4 +448,20 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+}
+
+.payButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.payButton:hover {
+  background-color: #218838;
 }

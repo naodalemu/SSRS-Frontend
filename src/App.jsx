@@ -20,7 +20,7 @@ function App({ children }) {
       <MainHeader />
           <Routes>
             <Route path="/" element={<Landing>{children}</Landing>} />
-            <Route path="/menu" element={<MainMenu />} />
+            <Route path="/menu/*" element={<MainMenu />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/orders" element={<OrderStatus />} />

@@ -1,203 +1,216 @@
 .modal {
-    background: white;
-    padding: 40px;
-    border-radius: 12px;
-    max-width: 1200px;
-    width: 100%;
-    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-    position: relative;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  max-width: 1200px;
+  width: 100%;
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  position: relative;
 }
 
 .closeButton {
-    color: #333;
-    cursor: pointer;
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    background: transparent;
-    border: none;
-    font-size: 30px;
+  color: #333;
+  cursor: pointer;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: transparent;
+  border: none;
+  font-size: 30px;
 }
 
 .modalContent {
-    width: 100%;
-    min-height: 400px;
-    max-height: 80vh;
-    display: flex;
-    align-items: stretch;
-    overflow: scroll;
+  width: 100%;
+  min-height: 400px;
+  max-height: 80vh;
+  display: flex;
+  align-items: stretch;
+  overflow: scroll;
 }
 
 .modalContent::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .modalImageContainer {
-    width: 40%;
-    margin-right: 40px;
-    border-radius: 6px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+  width: 40%;
+  margin-right: 40px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .modalTextContainer {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .modalContentName {
-    padding-right: 40px;
-    margin-bottom: 10px;
+  padding-right: 40px;
+  margin-bottom: 10px;
 }
 
 .modalContentDesc {
-    margin-bottom: 15px;
-    line-height: 20px;
-    max-height: 30vh;
-    overflow: scroll;
+  margin-bottom: 15px;
+  line-height: 20px;
+  max-height: 30vh;
+  overflow: scroll;
 }
 
 .ingredients {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px 0;
 }
 
 .ingredient {
-    border: 1px solid #333;
-    border-radius: 20px;
-    padding: 3px 10px;
-    margin-right: 5px;
-    font-size: 12px;
-    margin-bottom: 5px;
-    font-weight: 600;
+  border: 1px solid #333;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-right: 5px;
+  font-size: 12px;
+  margin-bottom: 5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ingredient.excluded {
+  border: 1px solid red; /* Red border for excluded ingredients */
+}
+
+.ingredient.excluded > label {
+    color: red;
+}
+
+.ingredient > label {
+  cursor: pointer;
 }
 
 .tag {
-    margin-right: 10px;
-    color: rgb(18, 72, 72);
-    cursor: pointer;
+  margin-right: 10px;
+  color: rgb(18, 72, 72);
+  cursor: pointer;
 }
 
 .modalContentPrice {
-    font-size: 24px;
-    font-weight: bold;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .modalLowerContents {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .menuItemAmount {
-    display: flex;
-    align-items: stretch;
+  display: flex;
+  align-items: stretch;
 }
 
 .amountInput {
-    width: 40px;
-    text-align: center;
-    border: none;
-    font-size: 20px;
-    font-weight: 500;
+  width: 40px;
+  text-align: center;
+  border: none;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .amountButton {
-    background: #333;
-    color: white;
-    padding: 2px 10px;
-    font-weight: bold;
-    font-size: 20px;
-    border: none;
-    cursor: pointer;
+  background: #333;
+  color: white;
+  padding: 2px 10px;
+  font-weight: bold;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
 }
 
 .lowerButton {
-    border-radius: 6px 0px 0px 6px;
+  border-radius: 6px 0px 0px 6px;
 }
 
 .upperButton {
-    border-radius: 0px 6px 6px 0px;
+  border-radius: 0px 6px 6px 0px;
 }
 
 .addToCartButton {
-    background: none;
-    padding: 5px 20px;
-    border: 2px solid #333;
-    border-radius: 6px;
-    margin-left: 20px;
-    font-weight: 700;
-    background: #333;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
+  background: none;
+  padding: 5px 20px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  margin-left: 20px;
+  font-weight: 700;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
 }
 
 .calories {
-    font-size: 14px;
+  font-size: 14px;
 }
 
-@media screen and (min-width: 768px) {  
-    .modalContentDesc::-webkit-scrollbar {
-        display: none;
-    }
+@media screen and (min-width: 768px) {
+  .modalContentDesc::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
-    .modalContentDesc {
-        max-height: 10vh;
-    }
+  .modalContentDesc {
+    max-height: 10vh;
+  }
 
-    .modalContent {
-        flex-direction: column;
-        width: 100%;
-        height: 80vh;
-    }
+  .modalContent {
+    flex-direction: column;
+    width: 100%;
+    height: 80vh;
+  }
 
-    .modalImageContainer {
-        width: 100%;
-        height: 100%;
-        margin-bottom: 20px;
-        margin-right: 0px;
-    }
+  .modalImageContainer {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    margin-right: 0px;
+  }
 
-    .modalTextContainer {
-        width: 100%;
-        height: 60%;
-    }
+  .modalTextContainer {
+    width: 100%;
+    height: 60%;
+  }
 
-    .closeButton {
-        top: 15px;
-        right: 15px;
-        display: flex;
-        align-items: start;
-    }
+  .closeButton {
+    top: 15px;
+    right: 15px;
+    display: flex;
+    align-items: start;
+  }
 
-    .closeButton > * {
-        font-size: 20px;
-    }
+  .closeButton > * {
+    font-size: 20px;
+  }
 }
 
 @media screen and (max-width: 450px) {
-    .modalLowerContents {
-        flex-direction: column;
-        align-items: end;
-    }
+  .modalLowerContents {
+    flex-direction: column;
+    align-items: end;
+  }
 
-    .modalContentPrice {
-        margin-bottom: 10px;
-    }
+  .modalContentPrice {
+    margin-bottom: 10px;
+  }
 
-    .modal {
-        padding: 30px;
-    }
+  .modal {
+    padding: 30px;
+  }
 
-    .closeButton {
-        top: 10px;
-        right: 10px;
-    }
+  .closeButton {
+    top: 10px;
+    right: 10px;
+  }
 }
