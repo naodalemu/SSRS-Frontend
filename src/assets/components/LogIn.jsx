@@ -10,20 +10,21 @@ function LogIn() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [success, setSuccess] = useState(""); // State for success message
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
+    setSuccess("");
 
     try {
       const response = await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          Accept: "application/json",
         },
         body: JSON.stringify({ email, password }),
       });
@@ -36,8 +37,16 @@ function LogIn() {
 
       console.log(data);
 
+      // Save the auth token to localStorage
       localStorage.setItem("auth_token", data.access_token);
-      navigate("/");
+
+      // Show success message
+      setSuccess(<>Successfully logged in! Redirecting to the main page!</>);
+
+      // Redirect to the main page after a delay
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.error("Login error:", error);
       setError(error.message || "Something went wrong");
@@ -151,7 +160,12 @@ function LogIn() {
             <Link to="/forgot-password">Forgot Password</Link>
           </div>
 
-          <button type="submit" className={classes.button} disabled={loading} onClick={handleSubmit}>
+          <button
+            type="submit"
+            className={classes.button}
+            disabled={loading}
+            onClick={handleSubmit}
+          >
             {loading ? "Logging In..." : "Log In"}
           </button>
 

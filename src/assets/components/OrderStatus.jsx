@@ -204,6 +204,7 @@ function OrderStatus() {
         id: order.id,
         date: new Date(order.order_date_time).toLocaleString(),
         status: order.order_status,
+        payment_status: order.payment_status,
         arrived: !!order.arrived,
         total: parseFloat(order.total_price),
         is_remote: order.order_type === "remote",
@@ -252,7 +253,7 @@ function OrderStatus() {
           <div key={order.id} className={classes.orderCard}>
             <div className={classes.orderHeader}>
               <div className={classes.orderInfo}>
-                <h3>Order #{order.id}</h3>
+                <h3>Order #{order.id} {order.payment_status.toLowerCase() === "completed" && "(Paid)"}</h3>
                 <p>{order.date}</p>
               </div>
               <div className={classes.orderStatusOnCard}>
@@ -303,49 +304,65 @@ function OrderStatus() {
             </div>
 
             <div className={classes.orderFooter}>
-              <div className={classes.orderTotal}>
-                <h3>{order.total} ETB</h3>
-              </div>
-              <div className={classes.orderActions}>
-                {activeTab === "active" &&
-                  order.status.toLowerCase() === "pending" && (
-                    <>
-                      {order.is_remote && !order.arrived && (
-                        <div className={classes.remoteOrderActions}>
-                          <div className={classes.tableInputContainer}>
-                            <input
-                              type="number"
-                              id="tableNumber"
-                              placeholder="Table No"
-                              value={tableNumber || ""}
-                              onChange={(e) => {
-                                const value = parseInt(e.target.value, 10);
-                                if (!isNaN(value)) {
-                                  setTableNumber(value);
-                                } else {
-                                  setTableNumber(null);
-                                }
-                              }}
-                            />
+              <div className={classes.PriceNButtons}>
+                <div className={classes.orderTotal}>
+                  <h3>{order.total} ETB</h3>
+                </div>
+                <div className={classes.orderActions}>
+                  {activeTab === "active" &&
+                    order.status.toLowerCase() === "pending" && (
+                      <>
+                        {order.is_remote && !order.arrived && (
+                          <div className={classes.remoteOrderActions}>
+                            <div className={classes.tableInputContainer}>
+                              <input
+                                type="number"
+                                id="tableNumber"
+                                placeholder="Table No"
+                                value={tableNumber || ""}
+                                onChange={(e) => {
+                                  const value = parseInt(e.target.value, 10);
+                                  if (!isNaN(value)) {
+                                    setTableNumber(value);
+                                  } else {
+                                    setTableNumber(null);
+                                  }
+                                }}
+                              />
+                            </div>
+                            <button
+                              className={`${classes.actionButton} ${classes.arrivedButton}`}
+                              onClick={() => handleArrivalClick(order)}
+                              disabled={order.arrived || !tableNumber}
+                            >
+                              Arrived
+                            </button>
                           </div>
-                          <button
-                            className={`${classes.actionButton} ${classes.arrivedButton}`}
-                            onClick={() => handleArrivalClick(order)}
-                            disabled={order.arrived || !tableNumber}
-                          >
-                            Arrived
-                          </button>
-                        </div>
-                      )}
-                      <button
-                        className={`${classes.actionButton} ${classes.updateButton}`}
-                        onClick={() => handleUpdateClick(order)}
-                      >
-                        Update
-                      </button>
-                    </>
-                  )}
+                        )}
+                        <button
+                          className={`${classes.actionButton} ${classes.updateButton}`}
+                          onClick={() => handleUpdateClick(order)}
+                        >
+                          Update
+                        </button>
+                      </>
+                    )}
+                </div>
               </div>
+
+              {/* Add Pay Button */}
+              {order.payment_status.toLowerCase() !== "completed" &&
+                order.status.toLowerCase() !== "completed" &&
+                order.status.toLowerCase() !== "canceled" && (
+                  <button
+                    className={`${classes.actionButton} ${classes.payButton}`}
+                    onClick={() =>
+                      navigate(`/payment/${order.total}/${order.id}`)
+                    }
+                  >
+                    Pay
+                  </button>
+                )}
             </div>
           </div>
         ))}
