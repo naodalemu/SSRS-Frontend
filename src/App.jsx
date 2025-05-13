@@ -12,6 +12,7 @@ import PaymentSucess from "./assets/components/PaymentSucess";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import VerifyEmail from "./assets/components/VerifyEmail";
+import Feedback from "./assets/components/Feedback";
 
 function App({ children }) {
   return (
@@ -21,8 +22,8 @@ function App({ children }) {
           <Routes>
             <Route path="/" element={<Landing>{children}</Landing>} />
             <Route path="/menu/*" element={<MainMenu />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="/about" element={<><About /><Contact /></>} />
+            <Route path="/feedback" element={<Feedback />} />
             <Route path="/orders" element={<OrderStatus />} />
             <Route path="/orders/:orderId" element={<UpdateOrder />} />
         <Route path="/signup" element={<SignUp />} />

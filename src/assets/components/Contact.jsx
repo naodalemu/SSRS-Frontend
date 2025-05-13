@@ -18,8 +18,8 @@ function Contact() {
                     <FaFacebook />
                     <FaXTwitter />
                     <FaInstagram />
-                    <FaMedium />
                     <FaTelegram />
+                    <FaMedium />
                 </div>
             </div>
         </section>
