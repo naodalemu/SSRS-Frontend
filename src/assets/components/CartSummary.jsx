@@ -91,27 +91,39 @@ function CartSummary({ closeBackdrop, successMessage }) {
     const tableNum = localStorage.getItem("tableNumber");
     const customerGeneratedId = localStorage.getItem("customer_generated_id");
     const customerIp = localStorage.getItem("customer_ip");
+    const authToken = localStorage.getItem("auth_token");
 
     const payload = {
       table_number: orderType === "dine-in" ? tableNumber : null,
       order_items: cart.map((item) => ({
         menu_item_id: item.id, // map `id` to `menu_item_id`
         quantity: item.quantity,
-        excluded_ingredients: item.excluded_ingredients.length !== 0 ? item.excluded_ingredients : null,
+        excluded_ingredients:
+          item.excluded_ingredients.length !== 0
+            ? item.excluded_ingredients
+            : null,
       })),
       customer_ip: customerIp, // Send customer IP
       customer_temp_id: customerGeneratedId, // Send generated ID
       order_type: orderType,
     };
 
+    // Determine the API endpoint based on login status
+    const url = authToken
+      ? "http://127.0.0.1:8000/api/orders/logged-in"
+      : "http://127.0.0.1:8000/api/orders/guest";
+
+    // Set headers conditionally
+    const headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(authToken && { Authorization: `Bearer ${authToken}` }),
+    };
+
     // Send the cart data and table number to the backend
-    fetch("http://127.0.0.1:8000/api/orders/", {
+    fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": localStorage.getItem("auth_token"),
-        "Accept": "application/json"
-      },
+      headers,
       body: JSON.stringify(payload),
     })
       .then(async (response) => {
@@ -139,13 +151,15 @@ function CartSummary({ closeBackdrop, successMessage }) {
           setCart([]);
           setTotalPrice(0);
           setIsError(false);
-          
+
           // Show success message first
-          successMessage("Your order has been placed successfully! To complete your order, please proceed with the payment.");
-          
+          successMessage(
+            "Your order has been placed successfully! To complete your order, please proceed with the payment."
+          );
+
           // Wait for 2 seconds to show the message before navigating
           setTimeout(() => {
-            navigate(`/payment/${totalPrice}/${data.order_id}`);
+            navigate(`/payment/${totalPrice}/${data.order.id}`);
           }, 1000);
         }
       })
@@ -223,7 +237,9 @@ function CartSummary({ closeBackdrop, successMessage }) {
           </ul>
         )}
         <div className={classes.orderContainer}>
-          <p className={classes.totalPrice}>Total: {totalPrice.toFixed(2)} ETB</p>
+          <p className={classes.totalPrice}>
+            Total: {totalPrice.toFixed(2)} ETB
+          </p>
           <div className={classes.orderControllerButtonsContainer}>
             {orderType === "dine-in" && (
               <div className={classes.tableInputContainer}>

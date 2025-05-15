@@ -22,8 +22,8 @@ function Feedback() {
     try {
       const authToken = localStorage.getItem("auth_token");
       const url = authToken
-        ? "http://127.0.0.1:8000/api/auth-feedbacks"
-        : "http://127.0.0.1:8000/api/feedbacks";
+        ? "http://127.0.0.1:8000/api/feedbacks/logged-in"
+        : "http://127.0.0.1:8000/api/feedbacks/guest";
 
       const response = await fetch(url, {
         method: "POST",
