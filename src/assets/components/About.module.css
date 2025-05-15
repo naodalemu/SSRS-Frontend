@@ -1,40 +1,7 @@
-.aboutContainer {
-    font-family: Arial, sans-serif;
-    color: #333;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-}
-
 .heroSection {
-    position: relative;
-    background-image: url('path-to-your-large-background-image.jpg'); /* Replace with your image */
-    background-size: cover;
-    background-position: center;
-    height: 80vh;
-    width: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     margin-top: 20px;
 }
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-    padding: 50px;
-    border-radius: 20px;
-}
 
 .scrollableContainer {
     overflow-x: scroll;
@@ -88,6 +55,33 @@
     border: 2px solid #fff;
 }
 
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.headerTextPart {
+    text-align: left;
+}
+
+.feedbackButton {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    text-wrap-mode: nowrap;
+}
+
+.feedbackButton:hover {
+    background-color: #444;
+}
+
 @media screen and (max-width: 1024px) {
     .heroSection {
         width: 100%;
@@ -97,6 +91,13 @@
 @media screen and (max-width: 768px) {
     .heroSection {
         width: 90%;
+        margin-top: 0;
+    }
+
+    .headerContainer {
+        flex-direction: column;
+        align-items: start;
+        margin-bottom: 20px;
     }
 }
 
@@ -104,10 +105,6 @@
     .heroSection {
         width: 100%;
 
-    }
-
-    .overlay {
-        padding: 30px;
     }
 
     .imageContainer {

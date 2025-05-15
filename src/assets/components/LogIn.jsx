@@ -168,15 +168,6 @@ function LogIn() {
           >
             {loading ? "Logging In..." : "Log In"}
           </button>
-
-          <div className={classes.orDivider}>
-            <span>Or log in with</span>
-          </div>
-
-          <button className={classes.googleButton}>
-            <img src="src/assets/images/Google.png" alt="Google" />
-            Google
-          </button>
         </form>
       </div>
       <Link to="/menu">

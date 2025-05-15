@@ -88,9 +88,6 @@ function MainHeader() {
         <Link to="/orders">
           <li className={classes.link}>Orders</li>
         </Link>
-        <Link to="/contact">
-          <li className={classes.link}>Contact</li>
-        </Link>
         <Link to="/about">
           <li className={classes.link}>About</li>
         </Link>
@@ -113,9 +110,6 @@ function MainHeader() {
             </li>
             <Link to="/orders">
               <li className={classes.link}>Orders</li>
-            </Link>
-            <Link to="/contact">
-              <li className={classes.link}>Contact</li>
             </Link>
             <Link to="/about">
               <li className={classes.link}>About</li>

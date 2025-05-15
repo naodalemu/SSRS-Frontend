@@ -202,15 +202,6 @@ function SignUp() {
           <button type="submit" className={classes.button} disabled={loading}>
             {loading ? "Creating account..." : "Create account"}
           </button>
-
-          <div className={classes.orDivider}>
-            <span>Or register with</span>
-          </div>
-
-          <button className={classes.googleButton}>
-            <img src="src/assets/images/Google.png" alt="Google" />
-            Google
-          </button>
         </form>
       </div>
       <Link to="/menu">
