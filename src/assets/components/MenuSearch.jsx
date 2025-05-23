@@ -35,7 +35,7 @@ function MenuSearch() {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/menuitems", {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/menuitems`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required

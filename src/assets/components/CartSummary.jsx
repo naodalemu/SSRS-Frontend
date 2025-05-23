@@ -110,8 +110,8 @@ function CartSummary({ closeBackdrop, successMessage }) {
 
     // Determine the API endpoint based on login status
     const url = authToken
-      ? "http://127.0.0.1:8000/api/orders/logged-in"
-      : "http://127.0.0.1:8000/api/orders/guest";
+      ? `${import.meta.env.VITE_BASE_URL}/api/orders/logged-in`
+      : `${import.meta.env.VITE_BASE_URL}/api/orders/guest`;
 
     // Set headers conditionally
     const headers = {

@@ -16,7 +16,7 @@ function MenuItemSelector({ onAddItem }) {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/menuitems", {
+        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/menuitems`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
           },
@@ -145,7 +145,7 @@ function MenuItemSelector({ onAddItem }) {
             <div className={classes.cardContent}>
               <div className={classes.imageContainer}>
                 <img
-                  src={`http://127.0.0.1:8000/storage/${item.image}`}
+                  src={`${import.meta.env.VITE_BASE_URL}/storage/${item.image}`}
                   alt={item.name}
                   className={classes.itemImage}
                   onError={(e) => {
