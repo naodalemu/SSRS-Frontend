@@ -74,7 +74,7 @@ function OrderStatus() {
   const handleArrivalClick = async (order) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/orders/${order.id}/notify-arrival`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/${order.id}/notify-arrival`,
         {
           method: "PATCH",
           headers: {
@@ -120,7 +120,7 @@ function OrderStatus() {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/orders/${orderToDelete.id}/status`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/${orderToDelete.id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -183,7 +183,7 @@ function OrderStatus() {
   const fetchOrders = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/orders/user?customer_ip=${localStorage.getItem(
+        `${import.meta.env.VITE_BASE_URL}/api/orders/user?customer_ip=${localStorage.getItem(
           "customer_ip"
         )}&customer_temp_id=${localStorage.getItem("customer_generated_id")}`,
         {
@@ -213,7 +213,7 @@ function OrderStatus() {
           name: item.menu_item.name,
           price: parseFloat(item.menu_item.price),
           quantity: item.quantity,
-          image: `http://127.0.0.1:8000/storage/${item.menu_item.image}`,
+          image: `${import.meta.env.VITE_BASE_URL}/storage/${item.menu_item.image}`,
         })),
       }));
 

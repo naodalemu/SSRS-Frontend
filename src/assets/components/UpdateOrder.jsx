@@ -19,7 +19,7 @@ function UpdateOrder() {
     const fetchAndStoreOrder = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/orders/${orderId}`,
+          `${import.meta.env.VITE_BASE_URL}/api/orders/${orderId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
@@ -124,7 +124,7 @@ function UpdateOrder() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/orders/${orderId}`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/${orderId}`,
         {
           method: "PUT",
           headers: {
@@ -203,7 +203,9 @@ function UpdateOrder() {
           </ul>
         )}
         <div className={classes.orderContainer}>
-          <p className={classes.totalPrice}>Total: {totalPrice.toFixed(2)} ETB</p>
+          <p className={classes.totalPrice}>
+            Total: {totalPrice.toFixed(2)} ETB
+          </p>
           <button
             onClick={handleOrder}
             className={classes.orderButton}

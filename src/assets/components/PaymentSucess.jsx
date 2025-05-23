@@ -42,7 +42,7 @@ function PaymentSuccess() {
     const fetchOrderDetails = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/orders/${orderId}`,
+          `${import.meta.env.VITE_BASE_URL}/api/orders/${orderId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -86,7 +86,7 @@ function PaymentSuccess() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/payment/chapa/initialize",
+        `${import.meta.env.VITE_BASE_URL}/api/payment/chapa/initialize`,
         {
           method: "POST",
           headers: {
