@@ -18,6 +18,7 @@ function OrderStatus() {
   const [tableNumber, setTableNumber] = useState();
   const [arrivalStatus, setArrivalStatus] = useState(null);
   const [arrivalMessage, setArrivalMessage] = useState("");
+  const [ingredientsMap, setIngredientsMap] = useState({});
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active")
@@ -70,6 +71,38 @@ function OrderStatus() {
     localStorage.setItem(`order_${order.id}`, JSON.stringify(formattedOrder));
     navigate(`${order.id}`);
   };
+
+  // Fetch ingredients and create a map
+  const fetchIngredients = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/ingredients`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch ingredients");
+      }
+
+      const data = await response.json();
+      const map = {};
+      data.ingredients.forEach((ingredient) => {
+        map[ingredient.id] = ingredient.name;
+      });
+      setIngredientsMap(map);
+    } catch (error) {
+      console.error("Error fetching ingredients:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchIngredients();
+  }, []);
 
   const handleArrivalClick = async (order) => {
     try {
@@ -309,6 +342,7 @@ function OrderStatus() {
           name: item.menu_item.name,
           price: parseFloat(item.menu_item.price),
           quantity: item.quantity,
+          excluded_ingredients: item.excluded_ingredients,
           image: `${import.meta.env.VITE_BASE_URL}/storage/${
             item.menu_item.image
           }`,
@@ -358,6 +392,9 @@ function OrderStatus() {
         </button>
       </div>
 
+      {filteredOrders.length === 0 && (
+        <p className={classes.noOrderText}>You have no orders here!</p>
+      )}
       <div className={classes.ordersContainer}>
         {filteredOrders.map((order) => (
           <div key={order.id} className={classes.orderCard}>
@@ -393,28 +430,51 @@ function OrderStatus() {
             </div>
 
             <div className={classes.orderItems}>
-              {order.items.map((item, itemIndex) => (
-                <div key={itemIndex} className={classes.orderItem}>
-                  <div
-                    className={classes.itemImageContainer}
-                    style={{
-                      backgroundImage: `url(${item.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                  />
-                  <div className={classes.ItemDetailsContainer}>
-                    <div className={classes.itemDetails}>
-                      <h4>{item.name}</h4>
-                    </div>
-                    <div className={classes.itemQuantity}>
-                      <p>{item.price} ETB</p>
-                      <span>Qty: {item.quantity}</span>
+              {order.items.map((item, itemIndex) => {
+                // Parse excluded ingredients
+                let excludedIngredients = [];
+                if (item.excluded_ingredients) {
+                  try {
+                    excludedIngredients = JSON.parse(item.excluded_ingredients);
+                  } catch (error) {
+                    console.error("Error parsing excluded ingredients:", error);
+                  }
+                }
+
+                return (
+                  <div key={itemIndex} className={classes.orderItem}>
+                    <div
+                      className={classes.itemImageContainer}
+                      style={{
+                        backgroundImage: `url(${item.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    />
+                    <div className={classes.ItemDetailsContainer}>
+                      <div className={classes.itemDetails}>
+                        <h4>{item.name}</h4>
+                      </div>
+                      <div className={classes.itemQuantity}>
+                        <p>{item.price} ETB</p>
+                        <span>Qty: {item.quantity}</span>
+                      </div>
+                      {/* Display excluded ingredients */}
+                      {excludedIngredients.length > 0 && (
+                        <div className={classes.excludedIngredients}>
+                          <span>Excluded:</span>{" "}
+                          {excludedIngredients
+                            .map(
+                              (id) => ingredientsMap[id] || `Ingredient ${id}`
+                            )
+                            .join(", ")}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className={classes.orderFooter}>

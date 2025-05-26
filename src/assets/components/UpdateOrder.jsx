@@ -37,6 +37,7 @@ function UpdateOrder() {
           menu_item: item.menu_item,
           quantity: Number(item.quantity),
           total_price: Number(item.total_price),
+          excluded_ingredients: item.excluded_ingredients,
         }));
 
         setCart(structuredCart);
@@ -117,6 +118,9 @@ function UpdateOrder() {
       order_items: cart.map((item) => ({
         menu_item_id: item.menu_item.id,
         quantity: item.quantity,
+        excluded_ingredients: item.excluded_ingredients
+          ? JSON.parse(item.excluded_ingredients)
+          : null,
       })),
       customer_ip: localStorage.getItem("customer_ip"),
       customer_generated_id: localStorage.getItem("customer_generated_id"),
@@ -143,7 +147,6 @@ function UpdateOrder() {
       } else {
         setIsError(false);
         localStorage.removeItem(`order_${orderId}`);
-        console.log("Order updated successfully");
       }
     } catch (err) {
       setIsError(true);
@@ -209,7 +212,7 @@ function UpdateOrder() {
           <button
             onClick={handleOrder}
             className={classes.orderButton}
-            disabled={!isValidTableNumber || cart.length === 0}
+            disabled={cart.length === 0}
           >
             Update
           </button>

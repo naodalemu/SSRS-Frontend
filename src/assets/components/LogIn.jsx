@@ -51,7 +51,7 @@ function LogIn() {
       setSuccess("Successfully logged in! Redirecting to the main page...");
       setTimeout(() => {
         navigate("/");
-      }, 2000);
+      }, 1000);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {

@@ -16,11 +16,14 @@ function MenuItemSelector({ onAddItem }) {
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/menuitems`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/menuitems`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+            },
+          }
+        );
 
         if (!response.ok) throw new Error("Failed to fetch menu items");
 
@@ -77,7 +80,6 @@ function MenuItemSelector({ onAddItem }) {
     });
 
     setFilteredItems(filtered);
-    console.log(filteredItems);
   }, [searchTerm, selectedTags, menuItems]);
 
   const handleTagChange = (tag) => {
@@ -159,10 +161,14 @@ function MenuItemSelector({ onAddItem }) {
               <p className={classes.itemDescription}>{item.description}</p>
 
               <div className={classes.tagContainer}>
-                {item.tags.map((tag) => (
-                  <span key={tag} className={classes.tag}>
-                    {tag}
-                  </span>
+                {item.ingredients.split(", ").map((ingredient) => (
+                  <div
+                    key={ingredient}
+                    className={classes.ingredient}
+                    onClick={() => handleIngredientToggle(item.id, ingredient)}
+                  >
+                    {ingredient}
+                  </div>
                 ))}
               </div>
             </div>
