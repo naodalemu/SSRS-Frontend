@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import classes from "./MenuSearch.module.css";
 import { FaFilter } from "react-icons/fa";
 import MenuItem from "./MenuItem";

@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import classes from "./SignUpLogIn.module.css";
-import { Link, useNavigate } from "react-router-dom";
-import { TiHome } from "react-icons/ti";
+import { useState, useEffect } from "react";
+import { FaEnvelope, FaKey, FaArrowLeft, FaCheck } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import classes from "./ResetPassword.module.css";
 
 function VerifyEmail() {
   const [otp, setOtp] = useState("");
@@ -11,23 +9,42 @@ function VerifyEmail() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const email = localStorage.getItem("email_to_verify");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    // Get email from localStorage
+    const storedEmail = localStorage.getItem("email_to_verify");
+    if (storedEmail) {
+      setEmail(storedEmail);
+    } else {
+      // If no email found, redirect to signup
+      navigate("/user-profile");
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setSuccess("");
+
+    if (!otp) {
+      setError("OTP code is required");
+      return;
+    }
 
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/verify-otp`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, otp }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/verify-otp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
 
       const data = await response.json();
 
@@ -35,120 +52,97 @@ function VerifyEmail() {
         throw new Error(data.message || "Verification failed");
       }
 
-      setSuccess(<>Email Verified successfully!</>);
+      setSuccess("Email verified successfully! Redirecting to login...");
       setTimeout(() => {
-        localStorage.removeItem("email_to_verify")
+        localStorage.removeItem("email_to_verify");
         navigate("/login");
-      }, 3000);
-    } catch (error) {
-      setError(error.message || "Something went wrong");
-      console.log(error)
+      }, 2000);
+    } catch (err) {
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section className={classes.signupLogin}>
-      <div className={classes.leftCarousel}>
-        <Splide
-          aria-label="Food Images"
-          options={{
-            rewind: true,
-            gap: "1rem",
-            autoplay: true,
-            interval: 5000,
-            arrows: false,
-            type: "loop",
-            heightRatio: 0.9,
-            autoHeight: true,
-            autoWidth: true,
-            pagination: true,
-          }}
-          className={classes.splide}
-        >
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Have Customized Order.jpg"
-                alt="Buffalo Wings"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Have a <br />
-                  Customized <br />
-                  Order Call
-                </h2>
-              </div>
-            </div>
-          </SplideSlide>
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Start Getting Your Order History.jpg"
-                alt="Carrot Juice"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Start Getting <br />
-                  Your Order <br />
-                  History
-                </h2>
-              </div>
-            </div>
-          </SplideSlide>
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Alternate Black.jpg"
-                alt="Grilled Salmon"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Experience <br />
-                  Amazing <br />
-                  Food
-                </h2>
-              </div>
-            </div>
-          </SplideSlide>
-        </Splide>
-      </div>
-      <div className={classes.rightContent}>
-        <div className={classes.headerContainer}>
-          <h1 className={classes.headerText}>Verify Email</h1>
-          <p className={classes.loginOp}>
-            We have sent you OTP code in your email! Please verify your email by
-            pasting it in the input field below
-          </p>
+    <div className={classes.container}>
+      <div className={classes.card}>
+        <div className={classes.header}>
+          <div className={classes.icon}>
+            <FaEnvelope />
+          </div>
+          <h1>Verify Email</h1>
+          <p>Enter the OTP code sent to your email</p>
         </div>
 
-        {error && <p className={classes.errorMessage}>{error}</p>}
-        {success && <p className={classes.successMessage}>{success}</p>}
+        <div className={classes.content}>
+          {error && <div className={classes.errorMessage}>{error}</div>}
+          {success && <div className={classes.successMessage}>{success}</div>}
 
-        <form className={classes.form}>
-          <input
-            type="number"
-            placeholder="OTP Code"
-            className={classes.inputField}
-            value={otp}
-            onChange={(e) => setOtp(e.target.value)}
-          />
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <div className={classes.inputGroup}>
+              <label htmlFor="email">Email Address</label>
+              <div className={classes.inputWrapper}>
+                <FaEnvelope className={classes.inputIcon} />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={email}
+                  disabled
+                  className={classes.disabledInput}
+                />
+              </div>
+            </div>
 
-          <button
-            type="submit"
-            className={classes.button}
-            disabled={loading || otp === ""}
-            onClick={handleSubmit}
-          >
-            {loading ? "Verifying account..." : "Verify"}
-          </button>
-        </form>
+            <div className={classes.inputGroup}>
+              <label htmlFor="otp">OTP Code</label>
+              <div className={classes.inputWrapper}>
+                <FaKey className={classes.inputIcon} />
+                <input
+                  type="text"
+                  id="otp"
+                  name="otp"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  placeholder="Enter the OTP code"
+                  required
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading || !otp}
+              className={classes.submitButton}
+            >
+              {loading ? (
+                <>
+                  <div className={classes.spinner}></div>
+                  Verifying...
+                </>
+              ) : (
+                <>
+                  <FaCheck />
+                  Verify Email
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className={classes.footer}>
+            <button
+              onClick={() => navigate("/signup")}
+              className={classes.backButton}
+            >
+              <FaArrowLeft />
+              Back to Sign Up
+            </button>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 }
 

@@ -16,8 +16,8 @@ function OrderStatus() {
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [tableNumber, setTableNumber] = useState();
-  const [arrivalStatus, setArrivalStatus] = useState(null); // true = success, false = error
-  const [arrivalMessage, setArrivalMessage] = useState(""); // to hold the message
+  const [arrivalStatus, setArrivalStatus] = useState(null);
+  const [arrivalMessage, setArrivalMessage] = useState("");
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active")
@@ -74,7 +74,9 @@ function OrderStatus() {
   const handleArrivalClick = async (order) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/api/orders/${order.id}/notify-arrival`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/${
+          order.id
+        }/notify-arrival`,
         {
           method: "PATCH",
           headers: {
@@ -120,7 +122,9 @@ function OrderStatus() {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/api/orders/${orderToDelete.id}/status`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/${
+          orderToDelete.id
+        }/status`,
         {
           method: "PATCH",
           headers: {
@@ -180,27 +184,119 @@ function OrderStatus() {
     setTooltipOrderId(null);
   };
 
-  const fetchOrders = async () => {
+  const fetchOrderStatuses = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BASE_URL}/api/orders/user?customer_ip=${localStorage.getItem(
-          "customer_ip"
-        )}&customer_temp_id=${localStorage.getItem("customer_generated_id")}`,
+        `${import.meta.env.VITE_BASE_URL}/api/orders/statuses`,
         {
           method: "GET",
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
           },
         }
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch orders");
+        throw new Error("Failed to fetch order statuses");
       }
 
       const data = await response.json();
 
-      const mappedOrders = data.orders.map((order) => ({
+      // Update the order statuses in the state
+      setOrders((prevOrders) =>
+        prevOrders.map((order) => {
+          const updatedStatus = data.orders.find((o) => o.id === order.id);
+          return updatedStatus
+            ? { ...order, status: updatedStatus.order_status }
+            : order;
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching order statuses:", error);
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      const authToken = localStorage.getItem("auth_token");
+      let loggedInOrders = [];
+      let guestOrders = [];
+
+      // If the user is logged in, fetch their profile and orders
+      if (authToken) {
+        // Fetch user profile to get the customer ID
+        const profileResponse = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/user/profile`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        if (!profileResponse.ok) {
+          throw new Error("Failed to fetch user profile");
+        }
+
+        const profileData = await profileResponse.json();
+        const customerId = profileData.id;
+
+        // Fetch all orders and filter by customer_id
+        const allOrdersResponse = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/orders`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${authToken}`,
+            },
+          }
+        );
+
+        if (!allOrdersResponse.ok) {
+          throw new Error("Failed to fetch all orders");
+        }
+
+        const allOrdersData = await allOrdersResponse.json();
+        loggedInOrders = allOrdersData.orders.filter(
+          (order) => order.customer_id === customerId
+        );
+      }
+
+      // Fetch guest orders using customer_temp_id and customer_ip
+      const customerTempId = localStorage.getItem("customer_generated_id");
+      const customerIp = localStorage.getItem("customer_ip");
+
+      const guestOrdersResponse = await fetch(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/orders/user?customer_ip=${customerIp}&customer_temp_id=${customerTempId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            ...(authToken && { Authorization: `Bearer ${authToken}` }),
+          },
+        }
+      );
+
+      if (!guestOrdersResponse.ok) {
+        throw new Error("Failed to fetch guest orders");
+      }
+
+      const guestOrdersData = await guestOrdersResponse.json();
+      guestOrders = guestOrdersData.orders;
+
+      // Merge logged-in orders and guest orders
+      const allOrders = [...loggedInOrders, ...guestOrders];
+
+      // Sort orders by creation time (most recent first)
+      allOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+      // Map and format orders for rendering
+      const mappedOrders = allOrders.map((order) => ({
         id: order.id,
         date: new Date(order.order_date_time).toLocaleString(),
         status: order.order_status,
@@ -213,7 +309,9 @@ function OrderStatus() {
           name: item.menu_item.name,
           price: parseFloat(item.menu_item.price),
           quantity: item.quantity,
-          image: `${import.meta.env.VITE_BASE_URL}/storage/${item.menu_item.image}`,
+          image: `${import.meta.env.VITE_BASE_URL}/storage/${
+            item.menu_item.image
+          }`,
         })),
       }));
 
@@ -224,8 +322,20 @@ function OrderStatus() {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    const initializeOrders = async () => {
+      await fetchOrders();
+
+      // Only set up the interval if there are orders
+      if (orders.length > 0) {
+        const intervalId = setInterval(fetchOrderStatuses, 3000);
+
+        // Clear the interval when the component unmounts
+        return () => clearInterval(intervalId);
+      }
+    };
+
+    initializeOrders();
+  }, [orders.length]);
 
   return (
     <div className={classes.orderStatus}>
@@ -253,7 +363,11 @@ function OrderStatus() {
           <div key={order.id} className={classes.orderCard}>
             <div className={classes.orderHeader}>
               <div className={classes.orderInfo}>
-                <h3>Order #{order.id} {order.payment_status.toLowerCase() === "completed" && "(Paid)"}</h3>
+                <h3>
+                  Order #{order.id}{" "}
+                  {order.payment_status.toLowerCase() === "completed" &&
+                    "(Paid)"}
+                </h3>
                 <p>{order.date}</p>
               </div>
               <div className={classes.orderStatusOnCard}>

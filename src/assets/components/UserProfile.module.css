@@ -1,0 +1,359 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+}
+
+.profileCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #111 0%, #222 100%);
+  color: white;
+  padding: 30px;
+  text-align: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  font-size: 32px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #6c7f9c;
+}
+
+.profileInfo {
+  padding: 30px;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.infoItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.infoItem label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.infoItem span {
+  color: #1f2937;
+  font-size: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.role {
+  background: #f3f4f6;
+  padding: 4px 12px !important;
+  border-radius: 20px;
+  display: inline-block;
+  font-weight: 500;
+  text-transform: capitalize;
+  border-bottom: none !important;
+}
+
+.status {
+  font-weight: 500;
+  padding: 4px 12px !important;
+  border-radius: 20px;
+  display: inline-block;
+  border-bottom: none !important;
+}
+
+.verified {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.unverified {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.actions {
+  padding: 0 30px 30px;
+}
+
+.changePasswordButton {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.changePasswordButton:hover {
+  background: #444;
+}
+
+.lockIcon > * {
+  color: white;
+}
+
+.passwordForm {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.formHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.formHeader h3 {
+  margin: 0;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.closeButton:hover {
+  color: #374151;
+}
+
+.inputGroup {
+  margin-bottom: 20px;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.passwordInput {
+  position: relative;
+}
+
+.passwordInput input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.passwordInput input:focus {
+  outline: none;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.eyeButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.eyeButton:hover {
+  color: #374151;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.saveButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+
+.saveButton:hover:not(:disabled) {
+  background: #059669;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.errorMessage {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.successMessage {
+  background: #d1fae5;
+  color: #065f46;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f4f6;
+  border-top: 4px solid #4f46e5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.buttonSpinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.bottomContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.verifyButton {
+  background: none;
+  color: #555;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.verifyButton:hover {
+  text-decoration: underline;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #991b1b;
+}
+
+.retryButton {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.retryButton:hover {
+  background: #4338ca;
+}
+
+.forgetPassword {
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    padding: 20px;
+  }
+
+  .profileInfo {
+    padding: 20px;
+  }
+
+  .actions {
+    padding: 0 20px 20px;
+  }
+
+  .bottomContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

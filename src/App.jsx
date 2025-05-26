@@ -13,6 +13,9 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import VerifyEmail from "./assets/components/VerifyEmail";
 import Feedback from "./assets/components/Feedback";
+import UserProfile from "./assets/components/UserProfile";
+import ForgetPassword from "./assets/components/ForgetPassword";
+import ResetPassword from "./assets/components/ResetPassword";
 
 function App({ children }) {
   return (
@@ -26,12 +29,15 @@ function App({ children }) {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/orders" element={<OrderStatus />} />
             <Route path="/orders/:orderId" element={<UpdateOrder />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
-        <Route path="/payment/:totalPrice/:orderId" element={<PaymentSucess />} />
-        <Route path="/payment" element={<PaymentSucess />} />
-      </Routes>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/payment/:totalPrice/:orderId" element={<PaymentSucess />} />
+            <Route path="/payment" element={<PaymentSucess />} />
+            <Route path="/user-profile" element={<UserProfile />} />
+            <Route path="/forget-password" element={<ForgetPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+          </Routes>
       </section>
     </Router>
   );
