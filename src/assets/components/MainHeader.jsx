@@ -1,17 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 import classes from "./MainHeader.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Tables from "./Tables";
 import tableData from "../tableData.json";
 import { IoMenu } from "react-icons/io5";
-import MessageModal from "./MessageModal"; // Import the MessageModal component
+import MessageModal from "./MessageModal";
 
 function MainHeader() {
   const [isTableVisible, setTableVisibility] = useState(false);
   const [isMobileNavVisible, setMobileNavVisibility] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("auth_token"));
-  const [message, setMessage] = useState(""); // State for informational messages
-  const [isError, setIsError] = useState(false); // State to determine if the message is an error
+  const { isLoggedIn, userDetails, logout, message, isError, setMessage } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleTablesView = () => {
@@ -22,57 +22,7 @@ function MainHeader() {
     setMobileNavVisibility((prev) => !prev);
   };
 
-  const handleLogout = async () => {
-    // Check if the user is already logged out
-    if (!localStorage.getItem("auth_token")) {
-      setIsError(true);
-      setMessage("You are already logged out.");
-      return;
-    }
-
-    try {
-      // Call the logout API
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to log out");
-      }
-
-      // Clear the auth_token from localStorage
-      localStorage.removeItem("auth_token");
-      setToken(null); // Update the token state
-
-      // Show the logout success message
-      setMessage(
-        "Successfully logged out, but the orders you make while you are logged out cannot be guaranteed to be preserved in case your IP changes!"
-      );
-      setIsError(false);
-    } catch (error) {
-      console.error("Logout failed:", error.message);
-      setMessage("Failed to log out. Please try again.");
-      setIsError(true);
-    }
-  };
-
   const handleLoginRedirect = () => {
-    // Check if the user is already logged in
-    if (localStorage.getItem("auth_token")) {
-      setIsError(true);
-      setMessage("You are already signed in. But if you want, this account will be logged out and a new one will be logged in if you login again.");
-
-      // Redirect to the main page after showing the message
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-      return;
-    }
-
     navigate("/login");
   };
 
@@ -91,12 +41,20 @@ function MainHeader() {
         <Link to="/about">
           <li className={classes.link}>About</li>
         </Link>
-        <li className={classes.link} onClick={handleLogout}>
-          Log Out
-        </li>
-        <li className={classes.link} onClick={handleLoginRedirect}>
-          Log In
-        </li>
+        {isLoggedIn && userDetails ? (
+          <>
+            <li className={classes.link} onClick={logout}>
+              Log Out
+            </li>
+            <li className={classes.link}>
+              <Link to="/user-profile">Profile</Link>
+            </li>
+          </>
+        ) : (
+          <li className={classes.link} onClick={handleLoginRedirect}>
+            Log In
+          </li>
+        )}
         <Link to="/menu">
           <li className={`${classes.link} ${classes.menuLink}`}>Menu</li>
         </Link>
@@ -114,12 +72,20 @@ function MainHeader() {
             <Link to="/about">
               <li className={classes.link}>About</li>
             </Link>
-            <li className={classes.link} onClick={handleLogout}>
-              Log Out
-            </li>
-            <li className={classes.link} onClick={handleLoginRedirect}>
-              Log In
-            </li>
+            {isLoggedIn && userDetails ? (
+              <>
+                <li className={classes.link} onClick={logout}>
+                  Log Out
+                </li>
+                <li className={classes.link}>
+                  <Link to="/user-profile">Profile</Link>
+                </li>
+              </>
+            ) : (
+              <li className={classes.link} onClick={handleLoginRedirect}>
+                Log In
+              </li>
+            )}
             <Link to="/menu">
               <li className={`${classes.link} ${classes.menuLink}`}>Menu</li>
             </Link>

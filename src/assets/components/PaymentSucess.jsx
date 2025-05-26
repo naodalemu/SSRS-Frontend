@@ -102,6 +102,7 @@ function PaymentSuccess() {
       );
 
       const data = await response.json();
+      console.log(data)
 
       if (data.status === "success" && data.checkout_url) {
         localStorage.setItem("chapa_tx_ref", data.tx_ref);

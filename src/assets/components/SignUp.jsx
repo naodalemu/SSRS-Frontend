@@ -1,34 +1,31 @@
 import React, { useState } from "react";
-import { Splide, SplideSlide } from "@splidejs/react-splide";
-import "@splidejs/react-splide/css";
-import classes from "./SignUpLogIn.module.css";
 import { Link, useNavigate } from "react-router-dom";
-import { TiHome } from "react-icons/ti";
+import {
+  FaEnvelope,
+  FaLock,
+  FaUser,
+  FaArrowLeft,
+  FaCheck,
+} from "react-icons/fa";
+import classes from "./ResetPassword.module.css";
 
 function SignUp() {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -42,35 +39,33 @@ function SignUp() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },        
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+          }),
+        }
+      );
+
       const data = await response.json();
-      console.log(data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to register");
       }
 
-      setSuccess(
-        <>
-          Account created successfully!
-          Redirecting in 3 seconds!
-        </>
-      );
+      setSuccess("Account created successfully! Redirecting...");
       setTimeout(() => {
         localStorage.setItem("email_to_verify", formData.email);
         navigate("/verify-email");
-      }, 3000);
+      }, 2000);
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {
@@ -78,141 +73,154 @@ function SignUp() {
     }
   };
 
+  const getPasswordStrength = (password) => {
+    if (!password) return { strength: 0, text: "" };
+
+    let strength = 0;
+    if (password.length >= 6) strength += 1;
+    if (password.length >= 8) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+    const strengthTexts = ["Very Weak", "Weak", "Fair", "Good", "Strong"];
+    return { strength, text: strengthTexts[strength - 1] || "" };
+  };
+
+  const passwordStrength = getPasswordStrength(formData.password);
+
   return (
-    <section className={classes.signupLogin}>
-      <div className={classes.leftCarousel}>
-        <Splide
-          aria-label="Food Images"
-          options={{
-            rewind: true,
-            gap: "1rem",
-            autoplay: true,
-            interval: 5000,
-            arrows: false,
-            type: "loop",
-            heightRatio: 0.9,
-            autoHeight: true,
-            autoWidth: true,
-            pagination: true,
-          }}
-          className={classes.splide}
-        >
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Have Customized Order.jpg"
-                alt="Buffalo Wings"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Have a <br />
-                  Customized <br />
-                  Order Call
-                </h2>
+    <div className={classes.container}>
+      <div className={classes.card}>
+        <div className={classes.header}>
+          <div className={classes.icon}>
+            <FaUser />
+          </div>
+          <h1>Sign Up</h1>
+          <p>Create an account to get started</p>
+        </div>
+
+        <div className={classes.content}>
+          {error && <div className={classes.errorMessage}>{error}</div>}
+          {success && <div className={classes.successMessage}>{success}</div>}
+
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <div className={classes.inputGroup}>
+              <label htmlFor="name">Full Name</label>
+              <div className={classes.inputWrapper}>
+                <FaUser className={classes.inputIcon} />
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                  disabled={loading}
+                />
               </div>
             </div>
-          </SplideSlide>
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Start Getting Your Order History.jpg"
-                alt="Carrot Juice"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Start Getting <br />
-                  Your Order <br />
-                  History
-                </h2>
+
+            <div className={classes.inputGroup}>
+              <label htmlFor="email">Email Address</label>
+              <div className={classes.inputWrapper}>
+                <FaEnvelope className={classes.inputIcon} />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  disabled={loading}
+                />
               </div>
             </div>
-          </SplideSlide>
-          <SplideSlide>
-            <div className={classes.slideContent}>
-              <img
-                src="src/assets/images/Alternate Black.jpg"
-                alt="Grilled Salmon"
-                className={classes.slideImage}
-              />
-              <div className={classes.textOverlay}>
-                <h2>
-                  Experience <br />
-                  Amazing <br />
-                  Food
-                </h2>
+
+            <div className={classes.inputGroup}>
+              <label htmlFor="password">Password</label>
+              <div className={classes.inputWrapper}>
+                <FaLock className={classes.inputIcon} />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  required
+                  disabled={loading}
+                />
               </div>
             </div>
-          </SplideSlide>
-        </Splide>
-      </div>
-      <div className={classes.rightContent}>
-        <div className={classes.headerContainer}>
-          <h1 className={classes.headerText}>Create an account</h1>
-          <p className={classes.loginOp}>
-            Already have an account?{" "}
-            <Link to="/login">
-              <span className={classes.loginLink}>Log in</span>
+            {formData.password && (
+              <div className={classes.passwordStrength}>
+                <div
+                  className={`${classes.strengthBar} ${
+                    classes[`strength${passwordStrength.strength}`]
+                  }`}
+                >
+                  <div className={classes.strengthFill}></div>
+                </div>
+                <span className={classes.strengthText}>
+                  {passwordStrength.text}
+                </span>
+              </div>
+            )}
+
+            <div className={classes.inputGroup}>
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <div className={classes.inputWrapper}>
+                <FaLock className={classes.inputIcon} />
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Confirm your password"
+                  required
+                  disabled={loading}
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={
+                loading ||
+                !formData.name ||
+                !formData.email ||
+                !formData.password ||
+                !formData.confirmPassword
+              }
+              className={classes.submitButton}
+            >
+              {loading ? (
+                <>
+                  <div className={classes.spinner}></div>
+                  Signing Up...
+                </>
+              ) : (
+                <>
+                  <FaCheck />
+                  Sign Up
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className={classes.footer}>
+            <Link to="/login" className={classes.backButton}>
+              <FaArrowLeft />
+              Already have an account? Log In
             </Link>
-          </p>
+          </div>
         </div>
-
-        {error && <p className={classes.errorMessage}>{error}</p>}
-        {success && <p className={classes.successMessage}>{success}</p>}
-
-        <form className={classes.form} onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Full Name"
-            className={classes.inputField}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email Address"
-            className={classes.inputField}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className={classes.inputField}
-            required
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirm Password"
-            className={classes.inputField}
-            required
-          />
-
-          <button type="submit" className={classes.button} disabled={loading}>
-            {loading ? "Creating account..." : "Create account"}
-          </button>
-        </form>
       </div>
-      <Link to="/menu">
-        <div className={classes.backToHome}>
-          <p className={classes.backToHomeTextnIcon}>
-            <TiHome />
-            <span className={classes.backToHomeTextOnly}>Back To Home</span>
-          </p>
-        </div>
-      </Link>
-    </section>
+    </div>
   );
 }
 
