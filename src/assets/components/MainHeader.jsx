@@ -6,6 +6,7 @@ import Tables from "./Tables";
 import tableData from "../tableData.json";
 import { IoMenu } from "react-icons/io5";
 import MessageModal from "./MessageModal";
+import { FiLogOut } from "react-icons/fi";
 
 function MainHeader() {
   const [isTableVisible, setTableVisibility] = useState(false);
@@ -42,14 +43,9 @@ function MainHeader() {
           <li className={classes.link}>About</li>
         </Link>
         {isLoggedIn && userDetails ? (
-          <>
-            <li className={classes.link} onClick={logout}>
-              Log Out
-            </li>
-            <li className={classes.link}>
-              <Link to="/user-profile">Profile</Link>
-            </li>
-          </>
+          <li className={classes.link}>
+            <Link to="/user-profile">Profile</Link>
+          </li>
         ) : (
           <li className={classes.link} onClick={handleLoginRedirect}>
             Log In
@@ -58,6 +54,15 @@ function MainHeader() {
         <Link to="/menu">
           <li className={`${classes.link} ${classes.menuLink}`}>Menu</li>
         </Link>
+        {/* Logout Button */}
+        {isLoggedIn && userDetails && (
+          <li
+            onClick={logout}
+            className={`${classes.link} ${classes.logoutLink}`}
+          >
+            <FiLogOut size={20} />
+          </li>
+        )}
       </ul>
       <IoMenu className={classes.burgerMenu} onClick={handleMobileNavView} />
       {isMobileNavVisible ? (

@@ -1,6 +1,5 @@
-// updated OrderStatus.jsx
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import classes from "./OrderStatus.module.css";
 import Backdrop from "./Backdrop";
 import { FaWindowClose } from "react-icons/fa";
@@ -8,6 +7,7 @@ import MessageModal from "./MessageModal";
 
 function OrderStatus() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState("active");
   const [orders, setOrders] = useState([]);
   const [showDeleteWarning, setShowDeleteWarning] = useState(false);
@@ -18,6 +18,9 @@ function OrderStatus() {
   const [tableNumber, setTableNumber] = useState();
   const [arrivalStatus, setArrivalStatus] = useState(null);
   const [arrivalMessage, setArrivalMessage] = useState("");
+  const [ingredientsMap, setIngredientsMap] = useState({});
+
+  const intervalIdRef = useRef(null);
 
   const filteredOrders = orders.filter((order) => {
     if (activeTab === "active")
@@ -70,6 +73,38 @@ function OrderStatus() {
     localStorage.setItem(`order_${order.id}`, JSON.stringify(formattedOrder));
     navigate(`${order.id}`);
   };
+
+  // Fetch ingredients and create a map
+  const fetchIngredients = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/api/ingredients`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch ingredients");
+      }
+
+      const data = await response.json();
+      const map = {};
+      data.ingredients.forEach((ingredient) => {
+        map[ingredient.id] = ingredient.name;
+      });
+      setIngredientsMap(map);
+    } catch (error) {
+      console.error("Error fetching ingredients:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchIngredients();
+  }, [fetchIngredients]);
 
   const handleArrivalClick = async (order) => {
     try {
@@ -184,7 +219,8 @@ function OrderStatus() {
     setTooltipOrderId(null);
   };
 
-  const fetchOrderStatuses = async () => {
+  const fetchOrderStatuses = useCallback(async () => {
+    console.log("Fetching order statuses..."); // Add this to confirm polling
     try {
       const response = await fetch(
         `${import.meta.env.VITE_BASE_URL}/api/orders/statuses`,
@@ -203,7 +239,6 @@ function OrderStatus() {
 
       const data = await response.json();
 
-      // Update the order statuses in the state
       setOrders((prevOrders) =>
         prevOrders.map((order) => {
           const updatedStatus = data.orders.find((o) => o.id === order.id);
@@ -215,17 +250,17 @@ function OrderStatus() {
     } catch (error) {
       console.error("Error fetching order statuses:", error);
     }
-  };
+  }, []); // Empty dependency array for fetchOrderStatuses
 
-  const fetchOrders = async () => {
+  // Memoize fetchOrders
+  const fetchOrders = useCallback(async () => {
+    console.log("Fetching initial orders..."); // Add this to confirm initial fetch
     try {
       const authToken = localStorage.getItem("auth_token");
       let loggedInOrders = [];
       let guestOrders = [];
 
-      // If the user is logged in, fetch their profile and orders
       if (authToken) {
-        // Fetch user profile to get the customer ID
         const profileResponse = await fetch(
           `${import.meta.env.VITE_BASE_URL}/api/user/profile`,
           {
@@ -243,7 +278,6 @@ function OrderStatus() {
         const profileData = await profileResponse.json();
         const customerId = profileData.id;
 
-        // Fetch all orders and filter by customer_id
         const allOrdersResponse = await fetch(
           `${import.meta.env.VITE_BASE_URL}/api/orders`,
           {
@@ -265,7 +299,6 @@ function OrderStatus() {
         );
       }
 
-      // Fetch guest orders using customer_temp_id and customer_ip
       const customerTempId = localStorage.getItem("customer_generated_id");
       const customerIp = localStorage.getItem("customer_ip");
 
@@ -289,13 +322,9 @@ function OrderStatus() {
       const guestOrdersData = await guestOrdersResponse.json();
       guestOrders = guestOrdersData.orders;
 
-      // Merge logged-in orders and guest orders
       const allOrders = [...loggedInOrders, ...guestOrders];
-
-      // Sort orders by creation time (most recent first)
       allOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-      // Map and format orders for rendering
       const mappedOrders = allOrders.map((order) => ({
         id: order.id,
         date: new Date(order.order_date_time).toLocaleString(),
@@ -309,6 +338,7 @@ function OrderStatus() {
           name: item.menu_item.name,
           price: parseFloat(item.menu_item.price),
           quantity: item.quantity,
+          excluded_ingredients: item.excluded_ingredients,
           image: `${import.meta.env.VITE_BASE_URL}/storage/${
             item.menu_item.image
           }`,
@@ -319,23 +349,49 @@ function OrderStatus() {
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
-  };
+  }, []); // Empty dependency array for fetchOrders
 
+  // --- Effect 1: Initial Data Fetch and Cleanup for the interval ---
   useEffect(() => {
-    const initializeOrders = async () => {
-      await fetchOrders();
+    // This effect runs once on mount to fetch initial orders.
+    fetchOrders();
 
-      // Only set up the interval if there are orders
-      if (orders.length > 0) {
-        const intervalId = setInterval(fetchOrderStatuses, 3000);
-
-        // Clear the interval when the component unmounts
-        return () => clearInterval(intervalId);
+    // The cleanup function for this useEffect is critical.
+    // It will always run when the component unmounts.
+    return () => {
+      if (intervalIdRef.current) {
+        clearInterval(intervalIdRef.current);
+        intervalIdRef.current = null; // Clear the ref
+        console.log("INTERVAL CLEARED on OrderStatus unmount."); // Confirm cleanup
       }
     };
+  }, [fetchOrders]); // Dependency on memoized fetchOrders
 
-    initializeOrders();
-  }, [orders.length]);
+  // --- Effect 2: Manage the Polling Interval ---
+  useEffect(() => {
+    // Clear any existing interval before setting a new one
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
+      intervalIdRef.current = null;
+      console.log(
+        "Previous interval stopped due to orders.length or location change."
+      );
+    }
+
+    // Start a new interval ONLY if there are orders AND we are on the /orders path
+    if (orders.length > 0 && location.pathname === "/orders") {
+      intervalIdRef.current = setInterval(fetchOrderStatuses, 2000);
+      console.log("New interval started for order status polling.");
+    } else {
+      console.log(
+        "Conditions not met for starting interval (no orders or not on /orders page)."
+      );
+    }
+
+    // This effect depends on orders.length (to start/stop polling based on data)
+    // and location.pathname (to stop polling if we navigate away).
+    // It also depends on fetchOrderStatuses (though it's memoized, it's good practice).
+  }, [orders.length, location.pathname, fetchOrderStatuses]);
 
   return (
     <div className={classes.orderStatus}>
@@ -358,6 +414,9 @@ function OrderStatus() {
         </button>
       </div>
 
+      {filteredOrders.length === 0 && (
+        <p className={classes.noOrderText}>You have no orders here!</p>
+      )}
       <div className={classes.ordersContainer}>
         {filteredOrders.map((order) => (
           <div key={order.id} className={classes.orderCard}>
@@ -393,28 +452,51 @@ function OrderStatus() {
             </div>
 
             <div className={classes.orderItems}>
-              {order.items.map((item, itemIndex) => (
-                <div key={itemIndex} className={classes.orderItem}>
-                  <div
-                    className={classes.itemImageContainer}
-                    style={{
-                      backgroundImage: `url(${item.image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                  />
-                  <div className={classes.ItemDetailsContainer}>
-                    <div className={classes.itemDetails}>
-                      <h4>{item.name}</h4>
-                    </div>
-                    <div className={classes.itemQuantity}>
-                      <p>{item.price} ETB</p>
-                      <span>Qty: {item.quantity}</span>
+              {order.items.map((item, itemIndex) => {
+                // Parse excluded ingredients
+                let excludedIngredients = [];
+                if (item.excluded_ingredients) {
+                  try {
+                    excludedIngredients = JSON.parse(item.excluded_ingredients);
+                  } catch (error) {
+                    console.error("Error parsing excluded ingredients:", error);
+                  }
+                }
+
+                return (
+                  <div key={itemIndex} className={classes.orderItem}>
+                    <div
+                      className={classes.itemImageContainer}
+                      style={{
+                        backgroundImage: `url(${item.image})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    />
+                    <div className={classes.ItemDetailsContainer}>
+                      <div className={classes.itemDetails}>
+                        <h4>{item.name}</h4>
+                      </div>
+                      <div className={classes.itemQuantity}>
+                        <p>{item.price} ETB</p>
+                        <span>Qty: {item.quantity}</span>
+                      </div>
+                      {/* Display excluded ingredients */}
+                      {excludedIngredients.length > 0 && (
+                        <div className={classes.excludedIngredients}>
+                          <span>Excluded:</span>{" "}
+                          {excludedIngredients
+                            .map(
+                              (id) => ingredientsMap[id] || `Ingredient ${id}`
+                            )
+                            .join(", ")}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <div className={classes.orderFooter}>

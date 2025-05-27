@@ -1,97 +1,111 @@
 .headerSection {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .logo {
-    font-size: 32px;
-    font-weight: 700;
+  font-size: 32px;
+  font-weight: 700;
 }
 
 .navlinks {
-    font-weight: bold;
-    display: flex;
-    list-style: none;
+  font-weight: bold;
+  display: flex;
+  list-style: none;
 }
 
 .link {
-    margin-left: 30px;
-    border-radius: 6px;
-    padding: 5px 0px;
-    cursor: pointer;
+  margin-left: 30px;
+  border-radius: 6px;
+  padding: 5px 0px;
+  cursor: pointer;
 }
 
 .menuLink {
-    background: #333;
-    padding: 5px 30px;
-    transition: ease-in-out 0.2s;
+  background: #333;
+  padding: 5px 30px;
+  transition: ease-in-out 0.2s;
+  color: white;
+}
+
+.logoutLink {
+  background: #333;
+  padding: 5px 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.logoutLink > * > * {
     color: white;
 }
 
 .menuLink:hover {
-    background: #555;
+  background: #555;
 }
 
 .menuLink:active {
-    scale: 0.98;
+  scale: 0.98;
 }
 
 .burgerMenu {
-    display: none;
-    font-size: 38px;
+  display: none;
+  font-size: 38px;
 }
 
 .hiddenNavlinks {
-    font-weight: bold;
-    list-style: none;
-    position: absolute;
-    background: rgba(255, 255, 255, 0.5);
-    padding: 60px 40px;
-    right: 0;
-    top: 0;
-    height: 100vh;
-    width: 70%;
-    backdrop-filter: blur(10px);
+  font-weight: bold;
+  list-style: none;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 60px 40px;
+  right: 0;
+  top: 0;
+  height: 100vh;
+  width: 70%;
+  backdrop-filter: blur(10px);
 }
 
 .hiddenNavlinks .link {
-    margin: 0px;
-    font-weight: 900;
+  margin: 0px;
+  font-weight: 900;
 }
 
 .hiddenNavlinks > a > .link {
-    margin: 10px 0px;
+  margin: 10px 0px;
 }
 
 .hiddenNavlinks .link {
-    font-size: 16px;
+  font-size: 16px;
 }
 
 .backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.3);
-    display: flex;
-    z-index: 3;
-    padding: 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  z-index: 3;
+  padding: 40px;
 }
 
 @media screen and (max-width: 800px) {
-    .navlinks {
-        display: none;
-    }
+  .navlinks {
+    display: none;
+  }
 
-    .burgerMenu {
-        display: flex;
-    }
+  .burgerMenu {
+    display: flex;
+  }
 
-    .hiddenNavlinks .menuLink {
-        text-align: center;
-    }
+  .hiddenNavlinks .menuLink {
+    text-align: center;
+  }
 }

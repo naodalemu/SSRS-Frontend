@@ -465,3 +465,17 @@
 .payButton:hover {
   background-color: #218838;
 }
+
+.noOrderText {
+  text-align: center;
+  font-weight: 500;
+  font-size: 1.3rem;
+  color: #999;
+  margin-top: 6rem;
+  width: 100%;
+}
+
+.excludedIngredients {
+  color: coral;
+  font-size: small;
+}
