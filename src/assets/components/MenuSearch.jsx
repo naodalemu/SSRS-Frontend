@@ -24,22 +24,75 @@ function MenuSearch() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  const [paymentStatus, setPaymentStatus] = useState(null);
+  const [paymentMessage, setPaymentMessage] = useState("");
+
   const itemsPerPage = 8;
   const drinkItemsPerPage = 8;
   const foodItemsPerPage = 8;
 
   const cartItems = JSON.parse(localStorage.getItem("cart"));
 
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      const orderId = localStorage.getItem("last_order_id"); // Retrieve the last order ID
+      if (!orderId) return;
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/orders/${orderId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("auth_token")}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch payment status");
+        }
+
+        const data = await response.json();
+        const status = data.order.payment_status;
+
+        if (status === "completed") {
+          setPaymentStatus(true);
+          setPaymentMessage("Your payment was successful!");
+          localStorage.removeItem("last_order_id");
+        } else {
+          setPaymentStatus(false);
+          setPaymentMessage(
+            "Your payment was not successful. Please try again or go pay at the counter."
+          );
+          localStorage.removeItem("last_order_id");
+        }
+      } catch (error) {
+        console.error("Error fetching payment status:", error);
+        setPaymentStatus(false);
+        setPaymentMessage(
+          "Unable to verify payment status. Please contact support."
+        );
+      }
+    };
+
+    checkPaymentStatus();
+  }, []);
+
   // Fetch menu items from the API
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/menuitems`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BASE_URL}/api/menuitems`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("auth_token")}`, // Include auth token if required
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to fetch menu items");
@@ -389,6 +442,18 @@ function MenuSearch() {
           }}
         />
       ) : null}
+
+      {/* Payment Status Notification */}
+      {paymentStatus !== null && (
+        <MessageModal
+          isItError={!paymentStatus}
+          message={paymentMessage}
+          closeMessageBackdrop={() => {
+            setPaymentStatus(null);
+            setPaymentMessage("");
+          }}
+        />
+      )}
     </section>
   );
 }
