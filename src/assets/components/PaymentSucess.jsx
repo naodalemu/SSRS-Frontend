@@ -105,6 +105,7 @@ function PaymentSuccess() {
       console.log(data)
 
       if (data.status === "success" && data.checkout_url) {
+        localStorage.setItem("last_order_id", orderId);
         localStorage.setItem("chapa_tx_ref", data.tx_ref);
         window.location.href = data.checkout_url;
       } else {
