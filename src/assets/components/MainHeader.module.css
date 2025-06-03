@@ -42,7 +42,7 @@
 }
 
 .logoutLink > * > * {
-    color: white;
+  color: white;
 }
 
 .menuLink:hover {
@@ -94,6 +94,48 @@
   display: flex;
   z-index: 3;
   padding: 40px;
+}
+
+.languageSelector {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.languageButton {
+  background: none;
+  border: none;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.languageDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 10px 0;
+  z-index: 10;
+  width: 170px;
+}
+
+.languageDropdown li {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.languageDropdown li:hover {
+  background: #f0f0f0;
 }
 
 @media screen and (max-width: 800px) {

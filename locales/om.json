@@ -1,0 +1,122 @@
+{
+  "logo": "Nyaata",
+  "tables": "Teessoo",
+  "orders": "Ajajawwan",
+  "about": "Waa'ee Keenya",
+  "profile": "Faayilii",
+  "login": "Seeni",
+  "logout": "Ba'i",
+  "menu": "Menu",
+  "language": {
+    "english": "Ingliffa",
+    "amharic": "Amaariffa",
+    "oromo": "Afaan Oromoo"
+  },
+  "menuSearch": {
+    "searchPlaceholder": "Nyaata yookaan dhugaatii barbaadi...",
+    "filters": "Filannoo",
+    "food": "Nyaata",
+    "drink": "Dhugaatii",
+    "checkout": "Baafata",
+    "noFoodFound": "Nyaanni barbaadame hin argamne.",
+    "noDrinkFound": "Dhugaatiin barbaadame hin argamne.",
+    "paymentSuccess": "Kaffaltiin kee milkaa'eera!",
+    "paymentFailed": "Kaffaltiin kee hin milkaa'in. Mee irra deebi'ii yookaan bakka kaffaltii deemii kaffali.",
+    "paymentError": "Kaffaltii mirkaneessu hin dandeenye. Mee deeggarsa gaafadhu.",
+    "orderSuccess": "Ajajni milkaa'eera",
+    "orderFailed": "Rakkoon tokko jiraachuu mala. Mee tajaajilaa tokko quunnamaa. Galatoomi!"
+  },
+  "tablesPage": {
+    "header": "Teessoo Bilisaa Ilaali",
+    "freeTables": "Teessoo Bilisaa",
+    "freeTables_plural": "Teessoo Bilisoo",
+    "occupiedTables": "Teessoo Cufame",
+    "occupiedTables_plural": "Teessoo Cufamanii",
+    "error": "Daataa teessoo fe'uu hin danda'ame"
+  },
+  "userProfile": {
+    "header": "Faayilii Maamilaa",
+    "name": "Maqaa",
+    "email": "Imeelii",
+    "role": "Gahee",
+    "verificationStatus": "Haala Ragaa",
+    "verified": "Ragaa Qaba",
+    "notVerified": "Ragaa Hin Qabne",
+    "verifyEmail": "Imeelii Raggaasi",
+    "accountCreated": "Akaawuntiin Uumame",
+    "lastUpdated": "Yeroo Dhumaa Kan Haaromfame",
+    "changePassword": "Jecha Darbii Jijjiiri",
+    "forgotPassword": "Jecha Darbii Dagattee?",
+    "currentPassword": "Jecha Darbii Amma",
+    "newPassword": "Jecha Darbii Haaraa",
+    "passwordPlaceholder": "Jecha darbii haaraa galchi (dheerina 6 ol)",
+    "savePassword": "Jecha Darbii Galchi",
+    "loadingProfile": "Faayilii Maamilaa Fe'aa Jira...",
+    "tryAgain": "Irra Deebi'ii Yaali",
+    "passwordChanged": "Jecha Darbii Jijjiirame!",
+    "passwordError": {
+      "required": "Jecha darbii ammaafi haaraa barbaachisa",
+      "minLength": "Jecha darbii haaraan dheerina 6 ol qabaachuu qaba"
+    }
+  },
+  "aboutPage": {
+    "header": "Waa'ee Keenya",
+    "description": "Baga nagaan dhufte SSR, iddoo jaalalaafi mi'ooftuu walitti fidu!",
+    "text": "SSR keessatti nyaachuun qofa osoo hin taane, muuxannoo dha. Yeroo balbala keenya seentan irraa jalqabee, urgaan nyaata haaraa qophaa'e, sagalee kolfaa, fi nyaata miidhagaa fi mi'ooftuu arguu dandeessu. Jireenya keenya ka'umsa salphaa qaba ture: namoota nyaata gaarii irratti walitti fiduu. Nyaata salphaa, nyaata jaalalaa, yookaan ayyaana maatii fi hiriyoota waliin kabajuuf as dhufteetta taanaan, yeroo kamiyyuu addaa taasifna.",
+    "feedbackButton": "Yaada Keenya Nuuf Kenni"
+  },
+  "contactPage": {
+    "hint": "IDDOO NU ARGITU",
+    "header": "BAGA NAGAAN DHUFTE",
+    "description": "Kun iddoo keenya sirrii dha. Odeeffannoo qunnamtii keenya fayyadamuudhaan iddoo kamiyyuu irraa nu quunnamaa. Tajaajilli maamiltoota keenya gaaffii keessan deebisuuf isin gargaaruu danda'a!"
+  },
+  "orderStatus": {
+    "activeOrders": "Ajajawwan Hojii Irra Jiran",
+    "orderHistory": "Seenaa Ajajaa",
+    "noOrders": "Asitti ajajni hin jiru!",
+    "order": "Ajaja",
+    "paid": "(Kaffalame)",
+    "status": "Haala",
+    "total": "Waliigala",
+    "cancelOrder": "Ajaja Haqi",
+    "dontCancel": "Haquu Hin Barbaachisu",
+    "cancelWarning": "Ajaja haqxuu barbaaddaa? Yoo kaffaltan, maallaqni deebifama, ajaja haaromsuu ni dandeessu!",
+    "arrivalNotified": "Dhufuu keessan milkaa'inaan beeksifame! Haala ajajaa ilaalaa, yeroo 'Qophaa'e' jedhutti, bakka tokko irraa fudhachuu dandeessu.",
+    "arrivalFailed": "Dhufuu beeksisuu hin milkaa'in. Mee irra deebi'ii yaali.",
+    "excludedIngredients": "Qulqullaa'aa",
+    "tableNumberPlaceholder": "Lakk. Teessoo",
+    "arrived": "Dhufeera",
+    "update": "Haaromsi",
+    "pay": "Kaffaltii",
+    "warning": "Himannaa",
+    "orderCanceled": "Ajaja Haqiinsa Milkaa'eera! Seenaa ajajaa keessan keessatti argachuu dandeessu!",
+    "orderCanceledError": "Ajaja haqxuu hin milkaa'in. Mee irra deebi'ii yaali."
+  },
+  "updateOrder": {
+    "header": "Ajaja",
+    "emptyCartMessage": "Mee wanta tokko ajajaa keessatti dabali.",
+    "totalPrice": "Waliigala:",
+    "currency": "Qarshii",
+    "updateButton": "Haaromsi",
+    "errorMessage": "Rakkoon tokko jiraachuu mala. Mee tajaajilaa tokko quunnamaa. Galatoomi!",
+    "successMessage": "Ajajni haaromfameera!"
+  },
+  "cartSummary": {
+    "header": "Ajajoota Kee Ilaali",
+    "emptyCartMessage": "Mee wanta tokko ajajaa keessatti dabali.",
+    "totalPrice": "Waliigala:",
+    "currency": "Qarshii",
+    "tableNumberPlaceholder": "Lakk. Teessoo",
+    "orderType": {
+      "dineIn": "Teessoo Keessa",
+      "remote": "Irra Deebi'ii"
+    },
+    "proceedToPayment": "Galii Kaffaltii",
+    "orderButtonTooltip": {
+      "emptyCart": "Mee wanta tokko gara ajajaa dabali.",
+      "invalidTableNumber": "Ajajni teessoo keessatti ta'uu qaba. Lakk. teessoo galchi."
+    },
+    "successMessage": "Ajajni kee milkaa'inaan raawwatameera! Ajajni kee akka xumuramuuf gara kaffaltii deemuu qabda.",
+    "errorMessage": "Rakkoon tokko jira. Mee irra deebi'ii yaali."
+  }
+}

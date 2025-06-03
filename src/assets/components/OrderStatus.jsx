@@ -4,6 +4,7 @@ import classes from "./OrderStatus.module.css";
 import Backdrop from "./Backdrop";
 import { FaWindowClose } from "react-icons/fa";
 import MessageModal from "./MessageModal";
+import { useTranslation } from "react-i18next";
 
 function OrderStatus() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function OrderStatus() {
   const [arrivalStatus, setArrivalStatus] = useState(null);
   const [arrivalMessage, setArrivalMessage] = useState("");
   const [ingredientsMap, setIngredientsMap] = useState({});
+  const { t } = useTranslation();
 
   const intervalIdRef = useRef(null);
 
@@ -129,17 +131,16 @@ function OrderStatus() {
       if (!response.ok) {
         console.error("Failed to notify arrival:", result);
         setArrivalStatus(false);
-        setArrivalMessage(result?.error || "Failed to notify arrival");
+        setArrivalMessage(
+          t("orderStatus.arrivalFailed") ||
+            result?.error ||
+            "Failed to notify arrival"
+        );
       } else {
         console.log("Arrival notified:", result);
         setArrivalStatus(true);
         setArrivalMessage(
-          <>
-            Arrival successfully notified!
-            <br />
-            Check the order status and once it is "Ready" you can go take it at
-            one of the windows!
-          </>
+          t("orderStatus.arrivalNotified") || "Arrival notified successfully!"
         );
 
         // Instantly reflect change in UI
@@ -150,7 +151,10 @@ function OrderStatus() {
     } catch (error) {
       console.error("Error notifying arrival:", error);
       setArrivalStatus(false);
-      setArrivalMessage("Unexpected error occurred. Please try again.");
+      setArrivalMessage(
+        t("orderStatus.arrivalFailed") ||
+          "Unexpected error occurred. Please try again."
+      );
     }
   };
 
@@ -180,11 +184,7 @@ function OrderStatus() {
         console.log("Order Canceled:", result);
         setArrivalStatus(false);
         setArrivalMessage(
-          <>
-            Order Canceled Successfully!
-            <br />
-            You can find it in order history tab!
-          </>
+          t("orderStatus.orderCanceled") || "Order canceled successfully!"
         );
         setArrivalStatus(true);
 
@@ -192,7 +192,10 @@ function OrderStatus() {
       }
     } catch (error) {
       console.error("Error canceling order:", error);
-      setArrivalMessage("Unexpected error occurred. Please try again.");
+      setArrivalMessage(
+        t("orderStatus.orderCanceledError") ||
+          "Unexpected error occurred. Please try again."
+      );
       setArrivalStatus(false);
     }
 
@@ -402,7 +405,7 @@ function OrderStatus() {
           }`}
           onClick={() => setActiveTab("active")}
         >
-          Active Orders
+          {t("orderStatus.activeOrders")}
         </button>
         <button
           className={`${classes.tabButton} ${
@@ -410,12 +413,12 @@ function OrderStatus() {
           }`}
           onClick={() => setActiveTab("history")}
         >
-          Order History
+          {t("orderStatus.orderHistory")}
         </button>
       </div>
 
       {filteredOrders.length === 0 && (
-        <p className={classes.noOrderText}>You have no orders here!</p>
+        <p className={classes.noOrderText}>{t("orderStatus.noOrders")}</p>
       )}
       <div className={classes.ordersContainer}>
         {filteredOrders.map((order) => (
@@ -423,9 +426,9 @@ function OrderStatus() {
             <div className={classes.orderHeader}>
               <div className={classes.orderInfo}>
                 <h3>
-                  Order #{order.id}{" "}
+                {t("orderStatus.order")} #{order.id}{" "}
                   {order.payment_status.toLowerCase() === "completed" &&
-                    "(Paid)"}
+                    t("orderStatus.paid")}
                 </h3>
                 <p>{order.date}</p>
               </div>
@@ -531,15 +534,15 @@ function OrderStatus() {
                               onClick={() => handleArrivalClick(order)}
                               disabled={order.arrived || !tableNumber}
                             >
-                              Arrived
+                              {t("orderStatus.arrived")}
                             </button>
                           </div>
                         )}
                         <button
                           className={`${classes.actionButton} ${classes.updateButton}`}
                           onClick={() => handleUpdateClick(order)}
-                        >
-                          Update
+                          >
+                          {t("orderStatus.update")}
                         </button>
                       </>
                     )}
@@ -551,12 +554,12 @@ function OrderStatus() {
                 order.status.toLowerCase() !== "completed" &&
                 order.status.toLowerCase() !== "canceled" && (
                   <button
-                    className={`${classes.actionButton} ${classes.payButton}`}
-                    onClick={() =>
+                  className={`${classes.actionButton} ${classes.payButton}`}
+                  onClick={() =>
                       navigate(`/payment/${order.total}/${order.id}`)
                     }
                   >
-                    Pay
+                    {t("orderStatus.pay")}
                   </button>
                 )}
             </div>
@@ -567,24 +570,20 @@ function OrderStatus() {
       {showDeleteWarning && (
         <Backdrop onCloseBackdrop={() => setShowDeleteWarning(false)}>
           <div className={classes.warningModal}>
-            <h2>Warning</h2>
-            <p>
-              Are you sure you want to <strong>cancel</strong> the order? If you
-              have paid for the order the money will be refunded and feel free
-              to order again!
-            </p>
+            <h2>{t("orderStatus.warning")}</h2>
+            <p>{t("orderStatus.cancelWarning")}</p>
             <div className={classes.modalActions}>
               <button
                 className={classes.deleteButton}
                 onClick={() => setShowDeleteWarning(false)}
               >
-                Don't Cancel
+                {t("orderStatus.dontCancel")}
               </button>
               <button
                 className={classes.deleteButton}
                 onClick={handleDeleteConfirm}
               >
-                Cancel Order
+                {t("orderStatus.cancelOrder")}
               </button>
             </div>
           </div>

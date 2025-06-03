@@ -10,8 +10,10 @@ import {
 import classes from "./UserProfile.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 const UserProfile = () => {
+  const { t } = useTranslation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -44,7 +46,7 @@ const UserProfile = () => {
       const authToken = localStorage.getItem("auth_token"); // Adjust based on your auth storage
 
       if (!authToken) {
-        setError("You are not logged in");
+        setError(t("userProfile.error") || "You are not logged in");
         return;
       }
 
@@ -61,13 +63,13 @@ const UserProfile = () => {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error(t("userProfile.error") || "Failed to fetch profile");
       }
 
       const userData = await response.json();
       setUser(userData);
     } catch (err) {
-      setError("Failed to load profile data");
+      setError(t("userProfile.error") || "Failed to load profile data");
       console.error("Profile fetch error:", err);
     } finally {
       setLoading(false);
@@ -89,12 +91,18 @@ const UserProfile = () => {
     e.preventDefault();
 
     if (!passwordData.current_password || !passwordData.new_password) {
-      setPasswordError("Both current and new passwords are required");
+      setPasswordError(
+        t("userProfile.passwordError.required") ||
+          "Both current and new passwords are required"
+      );
       return;
     }
 
     if (passwordData.new_password.length < 6) {
-      setPasswordError("New password must be at least 6 characters long");
+      setPasswordError(
+        t("userProfile.passwordError.minLength") ||
+          "New password must be at least 6 characters long"
+      );
       return;
     }
 
@@ -118,24 +126,32 @@ const UserProfile = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to change password");
+        throw new Error(
+          errorData.message ||
+            t("userProfile.error") ||
+            "Failed to change password"
+        );
       }
 
-      setPasswordSuccess("Password changed successfully!");
+      setPasswordSuccess(
+        t("userProfile.passwordChanged") || "Password changed successfully!"
+      );
       setTimeout(() => {
         setPasswordData({ current_password: "", new_password: "" });
         setPasswordSuccess("");
         setShowPasswordForm(false);
       }, 2000);
     } catch (err) {
-      setPasswordError(err.message || "Failed to change password");
+      setPasswordError(
+        err.message || t("userProfile.error") || "Failed to change password"
+      );
     } finally {
       setPasswordLoading(false);
     }
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Not set";
+    if (!dateString) return t("userProfile.notSet") || "Not Set";
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
@@ -146,9 +162,9 @@ const UserProfile = () => {
   };
 
   const getVerificationStatus = (isVerified, emailVerifiedAt) => {
-    if (isVerified && emailVerifiedAt) return "Verified";
-    if (isVerified) return "Verified";
-    return "Not Verified";
+    if (isVerified && emailVerifiedAt) return t("userProfile.verified");
+    if (isVerified) return t("userProfile.verified");
+    return t("userProfile.notVerified");
   };
 
   // Generate DiceBear avatar URL
@@ -173,7 +189,7 @@ const UserProfile = () => {
       <div className={classes.container}>
         <div className={classes.loading}>
           <div className={classes.spinner}></div>
-          <p>Loading profile...</p>
+          <p>{t("userProfile.loadingProfile")}</p>
         </div>
       </div>
     );
@@ -185,7 +201,7 @@ const UserProfile = () => {
         <div className={classes.error}>
           <p>{error}</p>
           <button onClick={fetchUserProfile} className={classes.retryButton}>
-            Try Again
+            {t("userProfile.tryAgain")}
           </button>
         </div>
       </div>
@@ -197,28 +213,28 @@ const UserProfile = () => {
       <div className={classes.profileCard}>
         <div className={classes.header}>
           <img src={avatarUrl} alt="Profile" className={classes.avatar} />
-          <h1>User Profile</h1>
+          <h1>{t("userProfile.header")}</h1>
         </div>
 
         <div className={classes.profileInfo}>
           <div className={classes.infoGrid}>
             <div className={classes.infoItem}>
-              <label>Name</label>
+              <label>{t("userProfile.name")}</label>
               <span>{user.name}</span>
             </div>
 
             <div className={classes.infoItem}>
-              <label>Email</label>
+              <label>{t("userProfile.email")}</label>
               <span>{user.email}</span>
             </div>
 
             <div className={classes.infoItem}>
-              <label>Role</label>
+              <label>{t("userProfile.role")}</label>
               <span className={classes.role}>{user.role}</span>
             </div>
 
             <div className={classes.infoItem}>
-              <label>Verification Status</label>
+              <label>{t("userProfile.verificationStatus")}</label>
               <span
                 className={`${classes.status} ${
                   user.is_verified ? classes.verified : classes.unverified
@@ -233,7 +249,7 @@ const UserProfile = () => {
                     onClick={handleVerifyEmail}
                     className={classes.verifyButton}
                   >
-                    Verify Email
+                    {t("userProfile.verifyEmail")}
                   </button>
                 ) : (
                   ""
@@ -242,12 +258,12 @@ const UserProfile = () => {
             </div>
 
             <div className={classes.infoItem}>
-              <label>Account Created</label>
+              <label>{t("userProfile.accountCreated")}</label>
               <span>{formatDate(user.created_at)}</span>
             </div>
 
             <div className={classes.infoItem}>
-              <label>Last Updated</label>
+              <label>{t("userProfile.lastUpdated")}</label>
               <span>{formatDate(user.updated_at)}</span>
             </div>
           </div>
@@ -260,20 +276,21 @@ const UserProfile = () => {
                 onClick={() => setShowPasswordForm(true)}
                 className={classes.changePasswordButton}
               >
-                <FaLock className={classes.lockIcon} /> Change Password
+                <FaLock className={classes.lockIcon} />{" "}
+                {t("userProfile.changePassword")}
               </button>
               <p
                 className={classes.forgetPassword}
                 onClick={handleForgetPassword}
               >
-                Forgot Password
+                {t("userProfile.forgotPassword")}
               </p>
             </div>
           ) : (
             <div className={classes.passwordForm}>
               <div className={classes.formHeader}>
                 <h3>
-                  <FaLock /> Change Password
+                  <FaLock /> {t("userProfile.changePassword")}
                 </h3>
                 <button
                   onClick={() => {
@@ -298,7 +315,7 @@ const UserProfile = () => {
 
               <form onSubmit={handlePasswordSubmit}>
                 <div className={classes.inputGroup}>
-                  <label htmlFor="current_password">Current Password</label>
+                  <label htmlFor="current_password">{t("userProfile.currentPassword")}</label>
                   <div className={classes.passwordInput}>
                     <input
                       type={showCurrentPassword ? "text" : "password"}
@@ -307,7 +324,7 @@ const UserProfile = () => {
                       value={passwordData.current_password}
                       onChange={handlePasswordChange}
                       required
-                      placeholder="Enter current password"
+                      placeholder={t("userProfile.passwordPlaceholder")}
                     />
                     <button
                       type="button"
@@ -322,7 +339,7 @@ const UserProfile = () => {
                 </div>
 
                 <div className={classes.inputGroup}>
-                  <label htmlFor="new_password">New Password</label>
+                  <label htmlFor="new_password">{t("userProfile.newPassword")}</label>
                   <div className={classes.passwordInput}>
                     <input
                       type={showNewPassword ? "text" : "password"}
@@ -331,7 +348,7 @@ const UserProfile = () => {
                       value={passwordData.new_password}
                       onChange={handlePasswordChange}
                       required
-                      placeholder="Enter new password (min 6 characters)"
+                      placeholder={t("userProfile.passwordPlaceholder")}
                       minLength="6"
                     />
                     <button
@@ -353,11 +370,11 @@ const UserProfile = () => {
                     {passwordLoading ? (
                       <>
                         <div className={classes.buttonSpinner}></div>
-                        Saving...
+                        {t("userProfile.saving")}
                       </>
                     ) : (
                       <>
-                        <FaSave /> Save Password
+                        <FaSave /> {t("userProfile.savePassword")}
                       </>
                     )}
                   </button>

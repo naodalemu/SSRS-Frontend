@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./MenuItem.module.css";
 
-function MenuItem({ item, onClick, onAddItem }) {
+function MenuItem({ item, onClick, onAddItem, real=true }) {
   // Function to truncate text with a max character limit
   const truncateText = (text, maxLength) => {
     return text.length > maxLength
@@ -15,7 +15,7 @@ function MenuItem({ item, onClick, onAddItem }) {
         <div
           className={classes.imageContainer}
           style={{
-            backgroundImage: `url(${import.meta.env.VITE_BASE_URL}/storage/${item.image})`,
+            backgroundImage: real ? `url(${import.meta.env.VITE_BASE_URL}/storage/${item.image})` : `url(${item.image})`,
           }}
         />
         <div className={classes.menuItemContent}>

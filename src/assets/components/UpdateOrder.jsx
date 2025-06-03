@@ -5,6 +5,7 @@ import { FaWindowClose } from "react-icons/fa";
 import MessageModal from "./MessageModal";
 import { useNavigate } from "react-router-dom";
 import MenuItemSelector from "./MenuItemSelector";
+import { useTranslation } from "react-i18next";
 
 function UpdateOrder() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ function UpdateOrder() {
   const [tableNumber, setTableNumber] = useState(null);
   const [isValidTableNumber, setIsValidTableNumber] = useState(false);
   const [isError, setIsError] = useState(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchAndStoreOrder = async () => {
@@ -27,7 +29,10 @@ function UpdateOrder() {
           }
         );
 
-        if (!response.ok) throw new Error("Failed to fetch order");
+        if (!response.ok)
+          throw new Error(
+            t("updateOrder.errorMessage") || "Failed to fetch order"
+          );
 
         const result = await response.json();
         const order = result.order;
@@ -161,10 +166,12 @@ function UpdateOrder() {
   return (
     <section>
       <div className={classes.cartSummary} onClick={(e) => e.stopPropagation()}>
-        <h3 className={classes.cartHeader}>Order #{orderId}</h3>
+        <h3 className={classes.cartHeader}>
+          {t("updateOrder.header")} #{orderId}
+        </h3>
         {cart.length === 0 ? (
           <p className={classes.emptyCartMessage}>
-            Please add an item to order.
+            {t("updateOrder.emptyCartMessage")}
           </p>
         ) : (
           <ul className={classes.cartList}>
@@ -177,7 +184,8 @@ function UpdateOrder() {
                   </span>
                   x
                   <span className={classes.priceValue}>
-                    {Number(item.menu_item.price).toFixed(2)} ETB
+                    {Number(item.menu_item.price).toFixed(2)}{" "}
+                    {t("updateOrder.currency")}
                   </span>
                 </div>
                 <div className={classes.orderItemButtonsContainer}>
@@ -207,14 +215,15 @@ function UpdateOrder() {
         )}
         <div className={classes.orderContainer}>
           <p className={classes.totalPrice}>
-            Total: {totalPrice.toFixed(2)} ETB
+            {t("updateOrder.totalPrice")} {totalPrice.toFixed(2)}{" "}
+            {t("updateOrder.currency")}
           </p>
           <button
             onClick={handleOrder}
             className={classes.orderButton}
             disabled={cart.length === 0}
           >
-            Update
+            {t("updateOrder.updateButton")}
           </button>
         </div>
       </div>
@@ -224,8 +233,8 @@ function UpdateOrder() {
           isItError={isError}
           message={
             isError
-              ? "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!"
-              : "Order updated successfully!"
+              ? t("updateOrder.errorMessage")
+              : t("updateOrder.successMessage")
           }
           closeMessageBackdrop={() => setIsError(null)}
         />

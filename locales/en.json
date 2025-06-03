@@ -1,0 +1,121 @@
+{
+  "tables": "Tables",
+  "orders": "Orders",
+  "about": "About",
+  "profile": "Profile",
+  "login": "Log In",
+  "logout": "Log Out",
+  "menu": "Menu",
+  "language": {
+    "english": "English",
+    "amharic": "አማርኛ",
+    "oromo": "Afaan Oromoo"
+  },
+  "menuSearch": {
+    "searchPlaceholder": "Search for food or drinks...",
+    "filters": "Filters",
+    "food": "Food",
+    "drink": "Drink",
+    "checkout": "Checkout",
+    "noFoodFound": "No food found for your search.",
+    "noDrinkFound": "No drink found for your search.",
+    "paymentSuccess": "Your payment was successful!",
+    "paymentFailed": "Your payment was not successful. Please try again or go pay at the counter.",
+    "paymentError": "Unable to verify payment status. Please contact support.",
+    "orderSuccess": "Order placed successfully",
+    "orderFailed": "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!"
+  },
+  "tablesPage": {
+    "header": "Check for Available Tables",
+    "freeTables": "Free Table",
+    "freeTables_plural": "Free Tables",
+    "occupiedTables": "Occupied Table",
+    "occupiedTables_plural": "Occupied Tables",
+    "error": "Failed to load table data"
+  },
+  "userProfile": {
+    "header": "User Profile",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "verificationStatus": "Verification Status",
+    "verified": "Verified",
+    "notVerified": "Not Verified",
+    "verifyEmail": "Verify Email",
+    "accountCreated": "Account Created",
+    "lastUpdated": "Last Updated",
+    "changePassword": "Change Password",
+    "forgotPassword": "Forgot Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "passwordPlaceholder": "Enter new password (min 6 characters)",
+    "savePassword": "Save Password",
+    "loadingProfile": "Loading profile...",
+    "tryAgain": "Try Again",
+    "passwordChanged": "Password changed successfully!",
+    "passwordError": {
+      "required": "Both current and new passwords are required",
+      "minLength": "New password must be at least 6 characters long"
+    }
+  },
+  "aboutPage": {
+    "header": "About Us",
+    "description": "Welcome to SSR, where passion meets flavor!",
+    "text": "At SSR, we believe that dining is more than just eating—it's an experience. From the moment you step through our doors, you'll be greeted with the warm aroma of freshly prepared dishes, the sound of laughter, and the sight of beautifully crafted meals that are as delightful to the eyes as they are to the palate. Our journey began with a simple mission: to bring people together over great food. Whether you're here for a casual lunch, a romantic dinner, or a celebration with friends and family, we strive to make every moment special.",
+    "feedbackButton": "Give Us Feedback"
+  },
+  "contactPage": {
+    "hint": "WHERE TO FIND US",
+    "header": "COME HOME",
+    "description": "This is our exact location on the left. Use our contact information to reach us from anywhere you want. Our customer service will help you settle your curiosity!"
+  },
+  "orderStatus": {
+    "activeOrders": "Active Orders",
+    "orderHistory": "Order History",
+    "noOrders": "You have no orders here!",
+    "order": "Order",
+    "paid": "(Paid)",
+    "status": "Status",
+    "total": "Total",
+    "cancelOrder": "Cancel Order",
+    "dontCancel": "Don't Cancel",
+    "cancelWarning": "Are you sure you want to cancel the order? If you have paid for the order, the money will be refunded, and you can order again!",
+    "arrivalNotified": "Arrival successfully notified! Check the order status, and once it is 'Ready,' you can pick it up at one of the windows.",
+    "arrivalFailed": "Failed to notify arrival. Please try again.",
+    "excludedIngredients": "Excluded Ingredients",
+    "tableNumberPlaceholder": "Table No",
+    "arrived": "Arrived",
+    "update": "Update",
+    "pay": "Pay",
+    "warning": "Warning",
+    "orderCanceled": "Order Canceled Successfully! You can find it in order history tab!",
+    "orderCanceledError": "Order cancellation failed. Please try again."
+  },
+  "updateOrder": {
+    "header": "Order",
+    "emptyCartMessage": "Please add an item to order.",
+    "totalPrice": "Total:",
+    "currency": "ETB",
+    "updateButton": "Update",
+    "errorMessage": "Something must be wrong from our side, order was not successful! Please try to contact a waiter if you can! Thank you for your patience!",
+    "successMessage": "Order updated successfully!"
+  },
+  "cartSummary": {
+    "header": "Check Your Orders",
+    "emptyCartMessage": "Please add an item to order.",
+    "totalPrice": "Total:",
+    "currency": "ETB",
+    "tableNumberPlaceholder": "Table No",
+    "orderType": {
+      "dineIn": "Dine-in",
+      "remote": "Remote"
+    },
+    "proceedToPayment": "Proceed to Payment",
+    "orderButtonTooltip": {
+      "emptyCart": "Add at least one item to your cart before ordering.",
+      "invalidTableNumber": "Enter your table number for dine-in orders."
+    },
+    "successMessage": "Your order has been placed successfully! To complete your order, please proceed with the payment.",
+    "errorMessage": "Something went wrong. Please try again later."
+  }
+}

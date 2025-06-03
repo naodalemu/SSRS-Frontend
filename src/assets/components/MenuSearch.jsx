@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import classes from "./MenuSearch.module.css";
 import { FaFilter } from "react-icons/fa";
 import MenuItem from "./MenuItem";
@@ -26,6 +27,7 @@ function MenuSearch() {
 
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [paymentMessage, setPaymentMessage] = useState("");
+  const { t } = useTranslation();
 
   const itemsPerPage = 8;
   const drinkItemsPerPage = 8;
@@ -248,7 +250,7 @@ function MenuSearch() {
           id="searchbar"
           value={searchTerm}
           onChange={handleSearch}
-          placeholder="Search for food or drinks..."
+          placeholder={t("menuSearch.searchPlaceholder")}
           className={classes.searchInputField}
         />
         <button
@@ -266,7 +268,9 @@ function MenuSearch() {
           <>
             <div className={classes.filterBackdrop} onClick={toggleFilter} />
             <div className={classes.filterContainer}>
-              <div className={classes.filterName}>Filters</div>
+              <div className={classes.filterName}>
+                {t("menuSearch.filters")}
+              </div>
               <div className={classes.filtertagContainer}>
                 {menuTags.map((tag) => (
                   <div className={classes.cateogryContainer} key={tag}>
@@ -293,7 +297,7 @@ function MenuSearch() {
             }`}
             onClick={() => setCurrentCategory("food")}
           >
-            Food
+            {t("menuSearch.food")}
           </div>
           <div
             className={`${classes.drinkCategory} ${
@@ -301,7 +305,7 @@ function MenuSearch() {
             }`}
             onClick={() => setCurrentCategory("drink")}
           >
-            Drink
+            {t("menuSearch.drink")}
           </div>
         </div>
         <button
@@ -309,7 +313,7 @@ function MenuSearch() {
           className={classes.showOrdersButton}
           onClick={toggleCartSummary}
         >
-          Checkout{" "}
+          {t("menuSearch.checkout")}
           {cartItems && cartItems.length > 0 ? (
             <p className={classes.checkoutNotification} />
           ) : null}
@@ -319,12 +323,12 @@ function MenuSearch() {
         {currentCategory === "food" ? (
           <div className={classes.foodDisplayContainer}>
             <div className={classes.sign}>
-              <p>Foods</p>
+              <p>{t("menuSearch.food")}</p>
               <div className={classes.horizontalLine} />
             </div>
             {filteredFoodItems.length === 0 && (
               <div className={classes.emptyMessage}>
-                No food found for your search.
+                {t("menuSearch.noFoodFound")}
               </div>
             )}
             <div className={classes.foodListContainer}>
@@ -363,12 +367,12 @@ function MenuSearch() {
         ) : (
           <div className={classes.drinkDisplayContainer}>
             <div className={classes.sign}>
-              <p>Drinks</p>
+              <p>{t("menuSearch.drink")}</p>
               <div className={classes.horizontalLine} />
             </div>
             {filteredDrinkItems.length === 0 && (
               <div className={classes.emptyMessage}>
-                No drink found for your search.
+                {t("menuSearch.noDrinkFound")}
               </div>
             )}
             <div className={classes.foodListContainer}>
@@ -447,7 +451,11 @@ function MenuSearch() {
       {paymentStatus !== null && (
         <MessageModal
           isItError={!paymentStatus}
-          message={paymentMessage}
+          message={
+            paymentStatus
+              ? t("menuSearch.paymentSuccess")
+              : t("menuSearch.paymentFailed")
+          }
           closeMessageBackdrop={() => {
             setPaymentStatus(null);
             setPaymentMessage("");

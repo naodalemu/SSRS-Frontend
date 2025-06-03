@@ -1,0 +1,121 @@
+{
+  "tables": "ጠረጴዛዎች",
+  "orders": "ትዕዛዞች",
+  "about": "ስለ እኛ",
+  "profile": "መገለጫ",
+  "login": "ግባ",
+  "logout": "ውጣ",
+  "menu": "ምናሌ",
+  "language": {
+    "english": "እንግሊዝኛ",
+    "amharic": "አማርኛ",
+    "oromo": "ኦሮምኛ"
+  },
+  "menuSearch": {
+    "searchPlaceholder": "ምግብ ወይም መጠጦችን ይፈልጉ...",
+    "filters": "ማጣሪያዎች",
+    "food": "ምግብ",
+    "drink": "መጠጥ",
+    "checkout": "ክፍያ",
+    "noFoodFound": "ምግብ አልተገኘም።",
+    "noDrinkFound": "መጠጥ አልተገኘም።",
+    "paymentSuccess": "ክፍያዎ ተሳክቷል!",
+    "paymentFailed": "ክፍያዎ አልተሳካም። እባኮትን እንደገና ይሞክሩ ወይም በካውንተር ይክፈሉ።",
+    "paymentError": "ክፍያዎን ማረጋገጥ አልቻልንም። እባኮትን ደጋፊ ያነጋግሩ።",
+    "orderSuccess": "ትዕዛዝ ተሳክቷል።",
+    "orderFailed": "ከእኛ በኩል ችግር እንዳለ ይመስላል። እባኮትን ከቻሉ አንድ አገልጋይን ያነጋግሩ። እናመሰግናለን!"
+  },
+  "tablesPage": {
+    "header": "ነጻ የሆኑ ጠረጴዛዎችን ይፈትሹ",
+    "freeTables": "ነጻ ጠረጴዛ",
+    "freeTables_other": "ነጻ ጠረጴዛዎች",
+    "occupiedTables": "የተያዙ ጠረጴዛ",
+    "occupiedTables_other": "የተያዙ ጠረጴዛዎች",
+    "error": "የጠረጴዛ መረጃ ማግኘት አልተቻለም"
+  },
+  "userProfile": {
+    "header": "የተጠቃሚ መገለጫ",
+    "name": "ስም",
+    "email": "ኢሜል",
+    "role": "ሚና",
+    "verificationStatus": "የኢሜል ማረጋገጫ ሁኔታ",
+    "verified": "ተረጋግጧል",
+    "notVerified": "አልተረጋገጠም",
+    "verifyEmail": "ኢሜል ያረጋግጡ",
+    "accountCreated": "መለያ ተፈጥሯል",
+    "lastUpdated": "መጨረሻ የተሻሻለበት",
+    "changePassword": "የይለፍ ቃል ይቀይሩ",
+    "forgotPassword": "የይለፍ ቃል ረስተዋል",
+    "currentPassword": "ወቅታዊ የይለፍ ቃል",
+    "newPassword": "አዲስ የይለፍ ቃል",
+    "passwordPlaceholder": "አዲስ የይለፍ ቃል ያስገቡ (ቢያንስ 6 ቁምፊዎች)",
+    "savePassword": "የይለፍ ቃል ያስቀምጡ",
+    "loadingProfile": "መገለጫ በመጫን ላይ...",
+    "tryAgain": "እንደገና ይሞክሩ",
+    "passwordChanged": "የይለፍ ቃል ተቀይሯል!",
+    "passwordError": {
+      "required": "ወቅታዊና አዲስ የይለፍ ቃል ያስፈልጋል",
+      "minLength": "አዲስ የይለፍ ቃል ቢያንስ 6 ቁምፊዎች መሆን አለበት"
+    }
+  },
+  "aboutPage": {
+    "header": "ስለ እኛ",
+    "description": "እንኳን ወደ SSR በደህና መጡ፣ እውቀት እና ጣዕም የሚጋጥምበት ቦታ!",
+    "text": "በSSR ምግብ መብላት በተለምዶ እንደ ምግብ ብቻ አይደለም፣ እንደ ተሞክሮ ነው። ከቤታችን በሚገቡበት ጊዜ ከተዘጋጁ ምግቦች የሚሰማውን ሽታ፣ የሣቅ ድምፅ፣ እና የተዋበ እና የሚያምር ምግቦችን ትምህርት ትሰማላችሁ። ጉዞታችን በቀላል ተልእኮ ተጀመረ፣ ሰዎችን በታላቅ ምግብ ላይ ማካተት። ምንም እንኳን እንደ አግባብ ምሳ፣ እንደ ፍቅር እራት፣ ወይም ከጓደኞች እና ቤተሰብ ጋር የምንከባበር እንደ በዓል እንደምትመጡ፣ እኛ እያንዳንዱን አስተዋይ እና ልዩ ማድረግ እንተጋለን።",
+    "feedbackButton": "እባኮትን አስተያየት ይስጡን"
+  },
+  "contactPage": {
+    "hint": "የምንገኝበት ቦታ",
+    "header": "እንኳን ወደ ቤትዎ መጡ",
+    "description": "ይህ በግልጽ የምንገኝበት ቦታችን ነው። ከማንኛውም ቦታ በመጠቀም እኛን ለማግኘት የእኛን የእውቂያ መረጃ ይጠቀሙ። የደንበኞች አገልግሎታችን የምትጠይቁትን ጥያቄ ለማስተካከል ይረዳል።"
+  },
+  "orderStatus": {
+    "activeOrders": "እየተካሄደ ያለ ትዕዛዝ",
+    "orderHistory": "የትዕዛዝ ማህደር",
+    "noOrders": "እዚህ ምንም ትዕዛዝ የለዎትም!",
+    "order": "ትዕዛዝ",
+    "paid": "(ተከፍሏል)",
+    "status": "ሁኔታ",
+    "total": "ጠቅላላ",
+    "cancelOrder": "ትዕዛዝ ይሰርዙ",
+    "dontCancel": "አትሰርዙ",
+    "cancelWarning": "ትዕዛዝ ማሰረዝ እንደምትፈልጉ እርግጠኛ ነዎት? ተከፍሎ ከሆነ ገንዘቡ ይመለሳል፣ እና እንደገና ማዘዝ ትችላላችሁ!",
+    "arrivalNotified": "መድረስ በተሳካ ሁኔታ ተነግሯል! የትዕዛዝ ሁኔታን ይፈትሹ፣ እና 'ዝግጁ' እንደ ሆነ በአንዱ መስኮቶች ላይ ይውሰዱት።",
+    "arrivalFailed": "መድረስ ማስታወቅ አልተሳካም። እባኮትን እንደገና ይሞክሩ።",
+    "excludedIngredients": "የተሰነጠቁ እንክብካቤዎች",
+    "tableNumberPlaceholder": "የጠረጴዛ ቁጥር",
+    "arrived": "ደርሻለዉ",
+    "update": "አሻሽል",
+    "pay": "ክፈል",
+    "warning": "ማስጠንቀቅያ",
+    "orderCanceled": "ትዕዛዝ ተሰርዟል። የትእዛዝ ማህደር ዉስጥ ማግጘት ትችላላችሁ።",
+    "orderCanceledError": "ትዕዛዝ ማሰረዝ አልተቻለም። እባኮትን እንደገና ይሞክሩ።"
+  },
+  "updateOrder": {
+    "header": "ትዕዛዝ",
+    "emptyCartMessage": "እባኮትን ትዕዛዝ ይጨምሩ።",
+    "totalPrice": "ጠቅላላ:",
+    "currency": "ብር",
+    "updateButton": "አሻሽል",
+    "errorMessage": "ከእኛ በኩል ችግር እንዳለ ይመስላል። እባኮትን ከቻሉ አንድ አገልጋይን ያነጋግሩ። እናመሰግናለን!",
+    "successMessage": "ትዕዛዝ ተሻሽሯል!"
+  },
+  "cartSummary": {
+    "header": "ትዕዛዞችን ያረጋግጡ",
+    "emptyCartMessage": "እባኮትን ትዕዛዝ ይጨምሩ።",
+    "totalPrice": "ጠቅላላ:",
+    "currency": "ብር",
+    "tableNumberPlaceholder": "የጠረጴዛ ቁጥር",
+    "orderType": {
+      "dineIn": "ከዚሁ",
+      "remote": "ከዉጪ"
+    },
+    "proceedToPayment": "ወደ ክፍያ ይቀጥሉ",
+    "orderButtonTooltip": {
+      "emptyCart": "ከማዘዝዎ በትዕዛዝ በፊት እባኮትን ትዕዛዝ ያክሉ።",
+      "invalidTableNumber": "በቤት ውስጥ ትዕዛዝ ለማዘዝ የጠረጴዛ ቁጥር ያስገቡ።"
+    },
+    "successMessage": "ትዕዛዝዎ በተሳካ ሁኔታ ተከናውኗል። ትዕዛዝዎን ለማጠናቀቅ እባኮትን ወደ ክፍያ ይቀጥሉ።",
+    "errorMessage": "አንዳንድ ችግር አለ። እባኮትን እንደገና ይሞክሩ።"
+  }
+}
