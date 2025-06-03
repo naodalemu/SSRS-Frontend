@@ -4,8 +4,10 @@ import { FaWindowClose } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import MessageModal from "./MessageModal";
 import Backdrop from "./Backdrop";
+import { useTranslation } from "react-i18next";
 
 function CartSummary({ closeBackdrop, successMessage }) {
+  const { t } = useTranslation();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [tableNumber, setTableNumber] = useState(null);
@@ -153,9 +155,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
           setIsError(false);
 
           // Show success message first
-          successMessage(
-            "Your order has been placed successfully! To complete your order, please proceed with the payment."
-          );
+          successMessage(t("cartSummary.successMessage"));
 
           // Wait for 2 seconds to show the message before navigating
           setTimeout(() => {
@@ -197,10 +197,10 @@ function CartSummary({ closeBackdrop, successMessage }) {
   return (
     <Backdrop onCloseBackdrop={closeBackdrop}>
       <div className={classes.cartSummary} onClick={(e) => e.stopPropagation()}>
-        <h3 className={classes.cartHeader}>Check Your Orders</h3>
+        <h3 className={classes.cartHeader}>{t("cartSummary.header")}</h3>
         {cart.length === 0 ? (
           <p className={classes.emptyCartMessage}>
-            Please add an item to order.
+            {t("cartSummary.emptyCartMessage")}
           </p>
         ) : (
           <ul className={classes.cartList}>
@@ -209,7 +209,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                 <div className={classes.itemDetails}>
                   <span className={classes.amountValue}>{item.quantity}</span>
                   <span className={classes.itemName}> {item.name} </span>x{" "}
-                  <span className={classes.priceValue}>{item.price} ETB</span>
+                  <span className={classes.priceValue}>{item.price} {t("cartSummary.currency")}</span>
                 </div>
                 <div className={classes.orderItemButtonsContainer}>
                   <button
@@ -238,7 +238,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
         )}
         <div className={classes.orderContainer}>
           <p className={classes.totalPrice}>
-            Total: {totalPrice.toFixed(2)} ETB
+          {t("cartSummary.totalPrice")} {totalPrice.toFixed(2)} {t("cartSummary.currency")}
           </p>
           <div className={classes.orderControllerButtonsContainer}>
             {orderType === "dine-in" && (
@@ -273,7 +273,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                   checked={orderType === "dine-in"}
                   onChange={() => setOrderType("dine-in")}
                 />
-                Dine-in
+                {t("cartSummary.orderType.dineIn")}
               </label>
               <label>
                 <input
@@ -288,7 +288,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                     localStorage.removeItem("tableNumber");
                   }}
                 />
-                Remote
+                {t("cartSummary.orderType.remote")}
               </label>
             </div>
 
@@ -308,7 +308,7 @@ function CartSummary({ closeBackdrop, successMessage }) {
                   : ""
               }
             >
-              Proceed to Payment
+              {t("cartSummary.proceedToPayment")}
             </button>
           </div>
         </div>

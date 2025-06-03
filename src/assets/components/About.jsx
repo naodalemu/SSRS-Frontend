@@ -1,36 +1,29 @@
 import React, { useState, useEffect } from "react";
 import classes from "./About.module.css";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function About() {
+  const { t } = useTranslation();
+  
   return (
     <section className={classes.heroSection}>
       <div className={classes.overlay}>
         <div className={classes.scrollableContainer}>
           <div className={classes.headerContainer}>
             <div className={classes.headerTextPart}>
-              <h1 className={classes.heroContent}>About Us</h1>
+              <h1 className={classes.heroContent}>{t("aboutPage.header")}</h1>
               <h2 className={classes.description}>
-                Welcome to SSR, where passion meets flavor!
+              {t("aboutPage.description")}
               </h2>
             </div>
             <div>
               <Link to="/feedback" className={classes.feedbackButton}>
-                Give Us Feedback
+              {t("aboutPage.feedbackButton")}
               </Link>
             </div>
           </div>
-          <p className={classes.text}>
-            At SSR, we believe that dining is more than just
-            eating—it's an experience. From the moment you step through our
-            doors, you'll be greeted with the warm aroma of freshly prepared
-            dishes, the sound of laughter, and the sight of beautifully crafted
-            meals that are as delightful to the eyes as they are to the palate.
-            Our journey began with a simple mission: to bring people together
-            over great food. Whether you're here for a casual lunch, a romantic
-            dinner, or a celebration with friends and family, we strive to make
-            every moment special.
-          </p>
+          <p className={classes.text}>{t("aboutPage.text")}</p>
           <div className={classes.imageContainer}>
             <div
               className={classes.images}
