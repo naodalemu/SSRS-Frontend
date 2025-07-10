@@ -147,7 +147,7 @@ function MenuItemSelector({ onAddItem }) {
             <div className={classes.cardContent}>
               <div className={classes.imageContainer}>
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}/storage/${item.image}`}
+                  src={`${import.meta.env.VITE_BASE_URL}/images/${item.image}`}
                   alt={item.name}
                   className={classes.itemImage}
                   onError={(e) => {
