@@ -68,7 +68,7 @@ function Modal({ selectedItem, onCloseModal, onTagClicked }) {
           <div
             className={classes.modalImageContainer}
             style={{
-              backgroundImage: `url(${import.meta.env.VITE_BASE_URL}/storage/${selectedItem.image})`,
+              backgroundImage: `url(${import.meta.env.VITE_BASE_URL}/images/${selectedItem.image})`,
             }}
           />
           <div className={classes.modalTextContainer}>

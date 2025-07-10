@@ -15,7 +15,7 @@ function MenuItem({ item, onClick, onAddItem, real=true }) {
         <div
           className={classes.imageContainer}
           style={{
-            backgroundImage: real ? `url(${import.meta.env.VITE_BASE_URL}/storage/${item.image})` : `url(${item.image})`,
+            backgroundImage: real ? `url(${import.meta.env.VITE_BASE_URL}/images/${item.image})` : `url(${item.image})`,
           }}
         />
         <div className={classes.menuItemContent}>
