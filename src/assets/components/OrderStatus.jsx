@@ -342,7 +342,7 @@ function OrderStatus() {
           price: parseFloat(item.menu_item.price),
           quantity: item.quantity,
           excluded_ingredients: item.excluded_ingredients,
-          image: `${import.meta.env.VITE_BASE_URL}/images/${
+          image: `${import.meta.env.VITE_IMAGE_URL}/images/${
             item.menu_item.image
           }`,
         })),
