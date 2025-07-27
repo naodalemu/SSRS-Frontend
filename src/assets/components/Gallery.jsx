@@ -3,13 +3,21 @@ import classes from "./Gallery.module.css";
 import MenuItem from "./MenuItem";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
+import image1 from "../images/grilled_salmon.jpg";
+import image2 from "../images/margherita.jpg";
+import image3 from "../images/lemon_chicken.jpg";
+import image4 from "../images/buffalo_wings.jpg";
+import image5 from "../images/mixed_berry_juice.jpg";
+import image6 from "../images/caprese_salad.jpg";
+import image7 from "../images/herbal_tea.jpg";
+import image8 from "../images/green_tea.jpg";
 
 const foodData = {
     Burgers: [
         {
             "id": 2,
             "name": "Grilled Salmon with Lemon Dill Sauce",
-            "image": "src/assets/images/grilled_salmon.jpg",
+            "image": image1,
             "description": "Experience the fresh, rich flavors of our Grilled Salmon with Lemon Dill Sauce. This dish features a perfectly grilled salmon fillet, seasoned with a blend of herbs and spices, and served with a zesty lemon dill sauce that complements the natural flavors of the fish. Accompanied by a side of roasted vegetables and quinoa, this meal is as healthy as it is delicious.",
             "ingredients": [{"name":"Salmon fillet"}, {"name":"Lemon"}, {"name":"Dill"}, {"name":"Olive oil"}, {"name":"Garlic"}, {"name":"Salt"}, {"name":"Pepper"}, {"name":"Quinoa"}, {"name":"Zucchini"}, {"name":"Bell peppers"}, {"name":"Red onions"}, {"name":"Asparagus"}],
             "tags": [{"name":"Healthy"}, {"name":"Dinner"}, {"name":"Seafood"}],
@@ -19,7 +27,7 @@ const foodData = {
         {
             "id": 3,
             "name": "Margherita Pizza",
-            "image": "src/assets/images/margherita.jpg",
+            "image": image2,
             "description": "Our classic Margherita Pizza is a true Italian delight. Made with fresh, high-quality ingredients, this pizza features a crispy thin crust topped with a rich tomato sauce, slices of fresh mozzarella cheese, and fragrant basil leaves. Drizzled with extra virgin olive oil and baked to perfection, this pizza is a favorite among all ages.",
             "ingredients": [{"name":"Pizza dough"}, {"name":"Tomato sauce"}, {"name":"Mozzarella cheese"}, {"name":"Basil"}, {"name":"Olive oil"}, {"name":"Salt"}],
             "tags": [{"name":"Vegetarian"}, {"name":"Lunch"}, {"name":"Dinner"}, {"name":"Pizza"}],
@@ -29,7 +37,7 @@ const foodData = {
         {
             "id": 4,
             "name": "Caesar Salad with Grilled Chicken",
-            "image": "src/assets/images/lemon_chicken.jpg",
+            "image": image3,
             "description": "Enjoy the fresh and crisp flavors of our Caesar Salad with Grilled Chicken. This classic salad features romaine lettuce, crunchy croutons, and a creamy Caesar dressing, topped with slices of tender grilled chicken breast and shaved Parmesan cheese. Perfect for a light lunch or as a side dish to any meal.",
             "ingredients": [{"name":"Romaine lettuce"}, {"name":"Grilled chicken breast"}, {"name":"Croutons"}, {"name":"Parmesan cheese"}, {"name":"Caesar dressing"}, {"name":"Anchovies"}, {"name":"Lemon juice"}, {"name":"Olive oil"}, {"name":"Garlic"}, {"name":"Dijon mustard"}, {"name":"Egg yolk"}, {"name":"Salt"}, {"name":"Pepper"}],
             "tags": [{"name":"Salad"}, {"name":"Lunch"}, {"name":"Healthy"}, {"name":"Chicken"}],
@@ -39,7 +47,7 @@ const foodData = {
         {
             "id": 5,
             "name": "Spaghetti Carbonara",
-            "image": "src/assets/images/buffalo_wings.jpg",
+            "image": image4,
             "description": "Our Spaghetti Carbonara is a rich and creamy pasta dish that is sure to satisfy. Made with perfectly cooked spaghetti, crispy pancetta, and a creamy sauce made from eggs, Parmesan cheese, and black pepper, this dish is a true comfort food. Topped with a sprinkle of fresh parsley, it's perfect for dinner or a special occasion.",
             "ingredients": [{"name":"Spaghetti"}, {"name":"Pancetta"}, {"name":"Eggs"}, {"name":"Parmesan cheese"}, {"name":"Black pepper"}, {"name":"Parsley"}, {"name":"Salt"}],
             "tags": [{"name":"Pasta"}, {"name":"Dinner"}, {"name":"Comfort Food"}],
@@ -265,7 +273,7 @@ const drinkData = {
         {
             "id": 51,
             "name": "Strawberry Sizzle",
-            "image": "src/assets/images/mixed_berry_juice.jpg",
+            "image": image5,
             "description": "A decadent treat with layers of whipped cream and chocolate shavings.",
             "ingredients": [{"name":"Pineapple juice"}, {"name":"Lemonade"}, {"name":"Simple syrup"}, {"name":"Mint leaves"}],
             "tags": [{"name":"Non-Alcoholic"}, {"name":"Juice"}, {"name":"Tea"}],
@@ -275,7 +283,7 @@ const drinkData = {
         {
             "id": 52,
             "name": "Mojito",
-            "image": "src/assets/images/caprese_salad.jpg",
+            "image": image6,
             "description": "A refreshing cocktail made with rum, lime juice, fresh mint, sugar, and soda water.",
             "ingredients": [{"name":"White rum"}, {"name":"Lime juice"}, {"name":"Mint leaves"}, {"name":"Sugar"}, {"name":"Soda water"}],
             "tags": [{"name":"Alcoholic"}, {"name":"Cocktail"}],
@@ -285,7 +293,7 @@ const drinkData = {
         {
             "id": 53,
             "name": "Mango Smoothie",
-            "image": "src/assets/images/herbal_tea.jpg",
+            "image": image7,
             "description": "A creamy and tropical smoothie made with fresh mango, yogurt, and a touch of honey.",
             "ingredients": [{"name":"Mango"}, {"name":"Yogurt"}, {"name":"Honey"}, {"name":"Ice"}],
             "tags": [{"name":"Non-Alcoholic"}, {"name":"Smoothie"}, {"name":"Healthy"}],
@@ -295,7 +303,7 @@ const drinkData = {
         {
             "id": 54,
             "name": "Espresso Martini",
-            "image": "src/assets/images/green_tea.jpg",
+            "image": image8,
             "description": "A sophisticated cocktail made with vodka, espresso, coffee liqueur, and a hint of vanilla.",
             "ingredients": [{"name":"Vodka"}, {"name":"Espresso"}, {"name":"Coffee liqueur"}, {"name":"Vanilla syrup"}],
             "tags": [{"name":"Alcoholic"}, {"name":"Cocktail"}, {"name":"Coffee"}],
